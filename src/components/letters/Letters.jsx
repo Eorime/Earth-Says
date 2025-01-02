@@ -7,6 +7,8 @@ import {
 	LettersDisplay,
 	LettersRow,
 } from "./style";
+
+//letter imports
 import A1 from "../../assets/Letters/A_3.5541800, 72.8948102.jpg";
 import A2 from "../../assets/Letters/A_52.7601911, -58.9153406.jpg";
 import A3 from "../../assets/Letters/A_70.7922929, 25.0477358.jpg";
@@ -86,6 +88,11 @@ import Z1 from "../../assets/Letters/Z_32.5769955, 56.5787235.jpg";
 import Z2 from "../../assets/Letters/Z_41.4084081, -107.3620640.jpg";
 import Z3 from "../../assets/Letters/Z_66.7623736, -84.6549331.jpg";
 
+//number imports
+import Zero1 from "../../assets/Numbers/0_2.7268560, 72.9590745.jpg";
+import Zero2 from "../../assets/Numbers/0_3.9541283, 126.7090713.jpg";
+import One1 from "../../assets/Numbers/1_32.1622980, 56.6540614.jpg";
+
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
@@ -121,6 +128,19 @@ const Letters = ({ onLetterCountChange }) => {
 		X: [X1, X2, X3],
 		Y: [Y1, Y2, Y3],
 		Z: [Z1, Z2, Z3],
+	};
+
+	const numberImages = {
+		zero: [],
+		one: [],
+		two: [],
+		three: [],
+		for: [],
+		five: [],
+		six: [],
+		seven: [],
+		eight: [],
+		nine: [],
 	};
 
 	// select a random image for a letter and store it with the letter
