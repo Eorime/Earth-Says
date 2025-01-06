@@ -63,7 +63,6 @@ export const TextContainer = styled.div`
 export const ScreenshotContainer = styled.div`
 	position: absolute;
 	bottom: 0;
-	left: 50%;
 	width: 100px;
 	cursor: pointer;
 `;
@@ -73,16 +72,19 @@ export const Rectangle = styled.div`
 	height: 20px;
 	cursor: pointer;
 	position: relative;
-	transition: width 0.3s ease-in-out, height 0.5s ease-in-out;
+	transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 	transform-origin: center;
 	border: 2px solid rgb(102, 102, 102);
 	z-index: 0;
+	left: 50%;
+	transform: translateX(-50%);
 
 	&:hover {
 		width: 40px;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 `;
-
 export const Circle = styled.div`
 	width: 18px;
 	height: 18px;
@@ -94,5 +96,3 @@ export const Circle = styled.div`
 	z-index: 1;
 	border: 2px solid rgb(102, 102, 102);
 `;
-
-//todo: fix the animation to expand on both sides
