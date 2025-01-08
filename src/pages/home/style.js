@@ -86,8 +86,8 @@ export const Rectangle = styled.div`
 	}
 `;
 export const Circle = styled.div`
-	width: 18px;
-	height: 18px;
+	width: 12px;
+	height: 12px;
 	border-radius: 50%;
 	position: absolute;
 	top: 50%;

@@ -42,16 +42,32 @@ const Letters = () => {
 		Z: "letters/Z.png",
 	};
 
+	const symbolImage = {};
+
 	useEffect(() => {
 		const handleKeyDown = (e) => {
-			// prevent the default backspace behavior so IT DOESNT DELETE THE ENTIRE DOM
+			// ignore modifier keys (standalone)
+			if (e.key === "Control" || e.key === "Shift") {
+				return;
+			}
+
+			// ignore key combinations with ctrl and shift
+			if (e.ctrlKey || e.shiftKey) {
+				return;
+			}
+
+			// handle backspace
 			if (e.key === "Backspace") {
 				e.preventDefault();
 				setWord((prev) => prev.slice(0, -1));
-			} else if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+			}
+			// handle letters
+			else if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
 				e.preventDefault();
 				setWord((prev) => prev + e.key.toUpperCase());
-			} else if (e.key === " ") {
+			}
+			// handle space
+			else if (e.key === " ") {
 				e.preventDefault();
 				setWord((prev) => prev + " ");
 			}

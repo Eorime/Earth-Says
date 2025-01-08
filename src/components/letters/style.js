@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 //todo: fix text wrap, make it go down 5 lines
+//also araa centrshi, egec gafixe
 
 export const Container = styled.div`
 	display: flex;
