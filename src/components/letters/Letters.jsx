@@ -83,16 +83,7 @@ const Letters = () => {
 	return (
 		<Container>
 			<DisplayContainer>
-				<LettersRow>
-					<Spacer
-						style={{
-							width:
-								word.length === 0
-									? "50%"
-									: Math.max(0, 50 - word.length * 2.5) + "%",
-						}}
-					/>
-
+				<LettersRow style={{ display: "flex", justifyContent: "center" }}>
 					<LettersDisplay>
 						{word.split("").map((letter, index) => (
 							<LetterBox key={index}>

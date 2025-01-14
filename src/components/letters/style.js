@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 	display: flex;
-	min-height: 100vh;
+	height: 70vh;
 	width: 100%;
 	justify-content: center;
 	align-items: flex-start;
@@ -22,10 +22,9 @@ export const DisplayContainer = styled.div`
 
 export const LettersRow = styled.div`
 	display: flex;
-	min-width: 100%;
+	max-width: 100%;
+	max-height: 100vh;
 `;
-
-export const Spacer = styled.div``;
 
 export const LettersDisplay = styled.div`
 	display: flex;
