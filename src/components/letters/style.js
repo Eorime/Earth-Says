@@ -4,31 +4,39 @@ import styled from "styled-components";
 //also araa centrshi, egec gafixe
 
 export const Container = styled.div`
-	display: flex;
-	height: 70vh;
+	min-height: 70vh;
 	width: 100%;
 	justify-content: center;
 	align-items: flex-start;
 	padding-top: 2rem;
 	display: flex;
-	flex-wrap: wrap;
 `;
 
 export const DisplayContainer = styled.div`
 	width: 100%;
 	height: auto;
 	overflow-x: hidden;
+	justify-content: center;
 `;
 
 export const LettersRow = styled.div`
 	display: flex;
-	max-width: 100%;
-	max-height: 100vh;
+	justify-content: center;
+	margin: 1rem 0;
 `;
 
 export const LettersDisplay = styled.div`
 	display: flex;
 	gap: 1rem;
+	max-width: 1520px;
+	max-height: 665px;
+	overflow-y: hidden;
+	flex-wrap: wrap;
+	justify-content: center;
+
+	@media screen and (max-width: 1600px) {
+		max-height: 400px;
+	}
 `;
 
 export const LetterBox = styled.div`
