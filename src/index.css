@@ -6,6 +6,6 @@ body {
 		linear-gradient(90deg, #191919 1px, transparent 1px),
 		linear-gradient(#0d0d0d 1px, transparent 1px),
 		linear-gradient(90deg, #0d0d0d 1px, transparent 1px);
-	background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+	background-size: 120px 120px, 120px 120px, 20px 20px, 20px 20px;
 	font-family: "Inter", sans-serif;
 }
