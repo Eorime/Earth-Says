@@ -92,6 +92,13 @@ import Z3 from "../../assets/Letters/Z_66.7623736, -84.6549331.jpg";
 import Zero1 from "../../assets/Numbers/0_2.7268560, 72.9590745.jpg";
 import Zero2 from "../../assets/Numbers/0_3.9541283, 126.7090713.jpg";
 import One1 from "../../assets/Numbers/1_32.1622980, 56.6540614.jpg";
+import One2 from "../../assets/Numbers/1_60.3663771, -1.1951833.jpg";
+import Two1 from "../../assets/Numbers/2_32.1518027, 56.6111655.jpg";
+import Two2 from "../../assets/Numbers/2_59.0077367, -111.5841037.jpg";
+import Three2 from "../../assets/Numbers/3_44.7583481, -119.8783178.jpg";
+import Four1 from "../../assets/Numbers/4_-47.3943686, -72.4484623.jpg";
+import Four2 from "../../assets/Numbers/4_50.2961905, -89.6248730.jpg";
+import Five1 from "../../assets/Numbers/5_28.9338383, 33.5005894.jpg";
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
