@@ -60,13 +60,6 @@ export const TextContainer = styled.div`
 	height: 75%;
 `;
 
-export const ScreenshotContainer = styled.div`
-	position: absolute;
-	bottom: 0;
-	width: 100px;
-	cursor: pointer;
-`;
-
 export const Rectangle = styled.div`
 	width: 20px;
 	height: 20px;
@@ -95,4 +88,15 @@ export const Circle = styled.div`
 	transform: translate(-50%, -50%);
 	z-index: 1;
 	border: 2px solid rgb(102, 102, 102);
+`;
+
+export const ScreenshotContainer = styled.div`
+	position: absolute;
+	bottom: 0;
+	width: 100px;
+	cursor: pointer;
+
+	&:active ${Rectangle}, &:active ${Circle} {
+		border: 2px solid white;
+	}
 `;
