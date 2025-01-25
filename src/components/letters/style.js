@@ -1,7 +1,18 @@
-import styled from "styled-components";
+import { styled, keyframes } from "styled-components";
 
 //todo: fix text wrap, make it go down 5 lines
 //also araa centrshi, egec gafixe
+
+const scaleUp = keyframes`
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
 
 export const Container = styled.div`
 	min-height: 70vh;
@@ -49,4 +60,5 @@ export const LetterImage = styled.img`
 	width: 120px;
 	height: 120px;
 	object-fit: contain;
+	animation: ${scaleUp} 0.2s ease-out;
 `;
