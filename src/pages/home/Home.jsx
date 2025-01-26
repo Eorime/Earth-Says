@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Circle,
 	Container,
 	EarthSaysText,
 	fullscreen,
 	FullScreenContainer,
+	FullScreenDecrease,
 	FullScreenIncrease,
 	HomeInnerContainer,
 	IconsContainer,
@@ -16,6 +17,13 @@ import {
 import Letters from "../../components/letters/Letters";
 
 const Home = () => {
+	const [fullScreen, setFullScreen] = useState(false);
+
+	const handleFullScreen = () => {
+		fullscreen();
+		setFullScreen(!fullScreen);
+	};
+
 	return (
 		<Container>
 			<HomeInnerContainer>
@@ -30,7 +38,15 @@ const Home = () => {
 						</Rectangle>
 					</ScreenshotContainer>
 					<FullScreenContainer>
-						<FullScreenIncrease onClick={fullscreen} />
+						{fullScreen ? (
+							<FullScreenDecrease
+								onClick={handleFullScreen}
+							></FullScreenDecrease>
+						) : (
+							<FullScreenIncrease
+								onClick={handleFullScreen}
+							></FullScreenIncrease>
+						)}
 					</FullScreenContainer>
 				</IconsContainer>
 			</HomeInnerContainer>

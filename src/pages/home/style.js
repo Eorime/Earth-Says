@@ -124,7 +124,6 @@ export const Circle = styled.div`
 `;
 
 export const ScreenshotContainer = styled.div`
-	position: absolute;
 	bottom: 0;
 	width: 100px;
 	cursor: pointer;
@@ -161,7 +160,32 @@ export const FullScreenIncrease = styled.div`
 		transform: translateX(-50%);
 	}
 
+	&:active {
+		border: 2px solid #d5d5d5;
+	}
+
 	//when clicked ichiteba sxva tipi
 `;
 
-export const FullScreenDecrease = styled.div``;
+export const FullScreenDecrease = styled.div`
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	cursor: pointer;
+	transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+	transform-origin: center;
+	border: 2px solid rgb(102, 102, 102);
+	z-index: 0;
+	left: 50%;
+	transform: translateX(-50%);
+
+	&:hover {
+		width: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	&:active {
+		border: 2px solid #d5d5d5;
+	}
+`;
