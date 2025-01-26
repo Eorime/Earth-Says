@@ -3,7 +3,10 @@ import {
 	Circle,
 	Container,
 	EarthSaysText,
+	FullScreenContainer,
+	FullScreenIncrease,
 	HomeInnerContainer,
+	IconsContainer,
 	Rectangle,
 	screenshot,
 	ScreenshotContainer,
@@ -19,11 +22,16 @@ const Home = () => {
 				<TextContainer>
 					<Letters />
 				</TextContainer>
-				<ScreenshotContainer onClick={screenshot}>
-					<Rectangle>
-						<Circle />
-					</Rectangle>
-				</ScreenshotContainer>
+				<IconsContainer>
+					<ScreenshotContainer onClick={screenshot}>
+						<Rectangle>
+							<Circle />
+						</Rectangle>
+					</ScreenshotContainer>
+					<FullScreenContainer>
+						<FullScreenIncrease />
+					</FullScreenContainer>
+				</IconsContainer>
 			</HomeInnerContainer>
 		</Container>
 	);

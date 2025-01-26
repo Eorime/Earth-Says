@@ -60,5 +60,5 @@ export const LetterImage = styled.img`
 	width: 120px;
 	height: 120px;
 	object-fit: contain;
-	animation: ${scaleUp} 0.2s ease-out;
+	animation: ${scaleUp} 0.1s ease-out;
 `;
