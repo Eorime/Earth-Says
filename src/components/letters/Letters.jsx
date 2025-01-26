@@ -99,6 +99,9 @@ import Three2 from "../../assets/Numbers/3_44.7583481, -119.8783178.jpg";
 import Four1 from "../../assets/Numbers/4_-47.3943686, -72.4484623.jpg";
 import Four2 from "../../assets/Numbers/4_50.2961905, -89.6248730.jpg";
 import Five1 from "../../assets/Numbers/5_28.9338383, 33.5005894.jpg";
+import Five2 from "../../assets/Numbers/5_41.4064945, -107.4118736.jpg";
+import Six1 from "../../assets/Numbers/6_-23.1019969, -68.3604047.jpg";
+import Six2 from "../../assets/Numbers/6_69.7274393, 69.1199037.jpg";
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
