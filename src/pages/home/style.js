@@ -14,6 +14,39 @@ export const screenshot = () => {
 	});
 };
 
+export const fullscreen = () => {
+	const elem = document.documentElement;
+
+	if (!document.fullscreenElement) {
+		if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		} else if (elem.mozRequestFullScreen) {
+			// firefox
+			elem.mozRequestFullScreen();
+		} else if (elem.webkitRequestFullscreen) {
+			// chrome, safari, opera
+			elem.webkitRequestFullscreen();
+		} else if (elem.msRequestFullscreen) {
+			// edge
+			elem.msRequestFullscreen();
+		}
+	} else {
+		//exits fullscreen
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+			// firefox
+			document.mozCancelFullScreen();
+		} else if (document.webkitExitFullscreen) {
+			// chrome, safari, opera
+			document.webkitExitFullscreen();
+		} else if (document.msExitFullscreen) {
+			// edge
+			document.msExitFullscreen();
+		}
+	}
+};
+
 export const Container = styled.div`
 	width: 100%;
 	height: calc(100vh - 50px);

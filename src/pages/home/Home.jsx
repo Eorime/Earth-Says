@@ -3,6 +3,7 @@ import {
 	Circle,
 	Container,
 	EarthSaysText,
+	fullscreen,
 	FullScreenContainer,
 	FullScreenIncrease,
 	HomeInnerContainer,
@@ -29,7 +30,7 @@ const Home = () => {
 						</Rectangle>
 					</ScreenshotContainer>
 					<FullScreenContainer>
-						<FullScreenIncrease />
+						<FullScreenIncrease onClick={fullscreen} />
 					</FullScreenContainer>
 				</IconsContainer>
 			</HomeInnerContainer>
