@@ -22,13 +22,33 @@ import Letters from "../../components/letters/Letters";
 const Home = () => {
 	const [fullScreen, setFullScreen] = useState(false);
 	const [isHovering, setIsHovering] = useState(false);
+	const [isSoundOn, setIsSoundOn] = useState(true);
 	const waveRef = useRef(null);
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
+	const flatteningAnimationRef = useRef(null);
 
 	const handleFullScreen = () => {
 		fullscreen();
 		setFullScreen(!fullScreen);
+	};
+
+	const createWavePoints = (wave, width, amplitude, segments) => {
+		const interval = width / (segments - 1);
+		const points = [];
+
+		for (let i = 0; i < segments; i++) {
+			const norm = i / (segments - 1);
+			const point = wave.ownerSVGElement.createSVGPoint();
+
+			point.x = i * interval;
+			point.y = amplitude * Math.sin(norm * Math.PI * 4);
+
+			wave.points.appendItem(point);
+			points.push(point);
+		}
+
+		return points;
 	};
 
 	// setup wave points
@@ -36,53 +56,80 @@ const Home = () => {
 		if (!waveRef.current) return;
 
 		const wave = waveRef.current;
-		const width = isHovering ? 40 : 20;
-		const amplitude = isHovering ? 12 : 6;
-		const segments = 20;
-		const interval = width / segments;
+		const width = 42;
+		const amplitude = isSoundOn ? (isHovering ? 8 : 12) : 0;
+		const segments = 210;
 
-		// clear existing points
 		while (wave.points.length > 0) {
 			wave.points.removeItem(0);
 		}
 
-		// create wave points
-		for (let i = 0; i < segments; i++) {
-			const norm = i / (segments - 1);
-			const point = wave.ownerSVGElement.createSVGPoint();
+		animationsRef.current.forEach((anim) => anim.kill());
+		animationsRef.current = [];
+		if (flatteningAnimationRef.current) {
+			flatteningAnimationRef.current.kill();
+		}
 
-			point.x = i * interval;
-			point.y = (amplitude / 2) * Math.sin(norm * Math.PI * 2);
+		const points = createWavePoints(wave, width, amplitude, segments);
 
-			wave.points.appendItem(point);
+		if (isSoundOn) {
+			points.forEach((point, i) => {
+				const norm = i / (segments - 1);
+				const anim = gsap
+					.to(point, 1, {
+						y: -point.y,
+						repeat: -1,
+						yoyo: true,
+						paused: true,
+						ease: "linear",
+					})
+					.progress(norm);
 
-			//create animation
-			const anim = gsap
-				.to(point, 2, {
-					y: -point.y,
-					repeat: -1,
-					yoyo: true,
-					paused: true,
-				})
-				.progress(norm);
-
-			animationsRef.current.push(anim);
+				animationsRef.current.push(anim);
+			});
 		}
 
 		return () => {
 			animationsRef.current.forEach((anim) => anim.kill());
 			animationsRef.current = [];
+			if (flatteningAnimationRef.current) {
+				flatteningAnimationRef.current.kill();
+			}
 		};
-	}, [isHovering]); // rerun when hover changes
+	}, [isHovering, isSoundOn]);
 
-	// hover
+	const handleSoundToggle = () => {
+		if (isSoundOn) {
+			const wave = waveRef.current;
+			const points = Array.from(wave.points);
+
+			animationsRef.current.forEach((anim) => anim.pause());
+
+			flatteningAnimationRef.current = gsap.to(points, {
+				y: 0,
+				duration: 0.2,
+				ease: "power2.inOut",
+				stagger: {
+					amount: 0.1,
+					from: "center",
+				},
+				onComplete: () => {
+					setIsSoundOn(false);
+				},
+			});
+		} else {
+			setIsSoundOn(true);
+		}
+	};
+
+	// hover effect
 	useEffect(() => {
-		if (isHovering) {
+		if (isHovering && isSoundOn) {
 			animationsRef.current.forEach((anim) => anim.play());
 		} else {
 			animationsRef.current.forEach((anim) => anim.pause());
 		}
-	}, [isHovering]);
+	}, [isHovering, isSoundOn]);
 
 	const handleMouseEnter = () => setIsHovering(true);
 	const handleMouseLeave = () => setIsHovering(false);
@@ -109,6 +156,7 @@ const Home = () => {
 					</FullScreenContainer>
 					<SoundContainer>
 						<TurnOffSound
+							onClick={handleSoundToggle}
 							onMouseEnter={handleMouseEnter}
 							onMouseLeave={handleMouseLeave}
 						>
@@ -117,10 +165,10 @@ const Home = () => {
 								style={{
 									width: "100%",
 									height: "100%",
-									transition: "all 0.3s ease-in-out", // match container transition
+									transition: "all 0.3s ease-in-out",
 								}}
 							>
-								<g transform="translate(0, 10)">
+								<g transform="translate(-1, 11)">
 									<polyline
 										ref={waveRef}
 										fill="none"
