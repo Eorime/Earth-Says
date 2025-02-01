@@ -136,6 +136,9 @@ export const ScreenshotContainer = styled.div`
 export const IconsContainer = styled.div`
 	position: relative;
 	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100 %;
 `;
 
 export const FullScreenContainer = styled.div`
@@ -176,12 +179,6 @@ export const FullScreenIncrease = styled.div`
 		left: 50%;
 		transform: translateX(-50%);
 	}
-
-	// &:active {
-	// 	border: 2px solid #d5d5d5;
-	// }
-
-	//when clicked ichiteba sxva tipi
 `;
 
 export const FullScreenDecrease = styled.div`
@@ -216,8 +213,30 @@ export const FullScreenDecrease = styled.div`
 		left: 50%;
 		transform: translateX(-50%);
 	}
-
-	// &:active {
-	// 	border: 2px solid #d5d5d5;
-	// }
 `;
+
+export const SoundContainer = styled.div`
+	position: relative;
+`;
+
+export const TurnOffSound = styled.div`
+	position: relative;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	cursor: pointer;
+	transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+	transform-origin: center;
+	border: 2px solid rgb(102, 102, 102);
+	z-index: 0;
+	left: 50%;
+	transform: translateX(-50%);
+
+	&:hover {
+		width: 40px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+`;
+
+export const TurnOnSound = styled.div``;

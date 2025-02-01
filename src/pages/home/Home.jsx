@@ -12,7 +12,9 @@ import {
 	Rectangle,
 	screenshot,
 	ScreenshotContainer,
+	SoundContainer,
 	TextContainer,
+	TurnOffSound,
 } from "./style";
 import Letters from "../../components/letters/Letters";
 
@@ -48,6 +50,9 @@ const Home = () => {
 							></FullScreenIncrease>
 						)}
 					</FullScreenContainer>
+					<SoundContainer>
+						<TurnOffSound></TurnOffSound>
+					</SoundContainer>
 				</IconsContainer>
 			</HomeInnerContainer>
 		</Container>
