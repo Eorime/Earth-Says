@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import {
-	Circle,
 	Container,
 	EarthSaysText,
 	fullscreen,
@@ -10,14 +9,12 @@ import {
 	FullScreenIncrease,
 	HomeInnerContainer,
 	IconsContainer,
-	Rectangle,
-	screenshot,
-	ScreenshotContainer,
 	SoundContainer,
 	TextContainer,
 	TurnOffSound,
 } from "./style";
 import Letters from "../../components/letters/Letters";
+import Screenshot from "../../components/icons/screenshot/Screenshot";
 
 const Home = () => {
 	const [fullScreen, setFullScreen] = useState(false);
@@ -142,11 +139,7 @@ const Home = () => {
 					<Letters />
 				</TextContainer>
 				<IconsContainer>
-					<ScreenshotContainer onClick={screenshot}>
-						<Rectangle>
-							<Circle />
-						</Rectangle>
-					</ScreenshotContainer>
+					<Screenshot />
 					<FullScreenContainer>
 						{fullScreen ? (
 							<FullScreenDecrease onClick={handleFullScreen} />
