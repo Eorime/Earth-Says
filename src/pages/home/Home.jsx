@@ -3,10 +3,6 @@ import { gsap } from "gsap";
 import {
 	Container,
 	EarthSaysText,
-	fullscreen,
-	FullScreenContainer,
-	FullScreenDecrease,
-	FullScreenIncrease,
 	HomeInnerContainer,
 	IconsContainer,
 	SoundContainer,
@@ -15,20 +11,15 @@ import {
 } from "./style";
 import Letters from "../../components/letters/Letters";
 import Screenshot from "../../components/icons/screenshot/Screenshot";
+import FullScreen from "../../components/icons/fullscreen/FullScreen";
 
 const Home = () => {
-	const [fullScreen, setFullScreen] = useState(false);
 	const [isHovering, setIsHovering] = useState(false);
 	const [isSoundOn, setIsSoundOn] = useState(true);
 	const waveRef = useRef(null);
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
 	const flatteningAnimationRef = useRef(null);
-
-	const handleFullScreen = () => {
-		fullscreen();
-		setFullScreen(!fullScreen);
-	};
 
 	const createWavePoints = (wave, width, amplitude, segments) => {
 		const interval = width / (segments - 1);
@@ -140,13 +131,7 @@ const Home = () => {
 				</TextContainer>
 				<IconsContainer>
 					<Screenshot />
-					<FullScreenContainer>
-						{fullScreen ? (
-							<FullScreenDecrease onClick={handleFullScreen} />
-						) : (
-							<FullScreenIncrease onClick={handleFullScreen} />
-						)}
-					</FullScreenContainer>
+					<FullScreen />
 					<SoundContainer>
 						<TurnOffSound
 							onClick={handleSoundToggle}
