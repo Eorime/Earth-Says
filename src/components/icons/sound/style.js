@@ -4,7 +4,7 @@ export const SoundContainer = styled.div`
 	position: relative;
 `;
 
-export const TurnOffSound = styled.div`
+export const ToggleSound = styled.div`
 	position: relative;
 	width: 20px;
 	height: 20px;
@@ -23,5 +23,3 @@ export const TurnOffSound = styled.div`
 		transform: translateX(-50%);
 	}
 `;
-
-export const TurnOnSound = styled.div``;

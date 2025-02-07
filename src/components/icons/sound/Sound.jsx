@@ -1,10 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { SoundContainer, TurnOffSound } from "./style";
+import { SoundContainer, ToggleSound } from "./style";
 import { gsap } from "gsap";
 
 const Sound = () => {
 	const [isHovering, setIsHovering] = useState(false);
-	const [isSoundOn, setIsSoundOn] = useState(true);
+	const [audio] = useState(() => {
+		const audioElement = new Audio("/sounds/earth-says.mp3");
+		audioElement.loop = true;
+
+		audioElement.onerror = (e) => {
+			console.error("Audio error:", e);
+		};
+
+		return audioElement;
+	});
+	const [isSoundOn, setIsSoundOn] = useState(false);
 	const waveRef = useRef(null);
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
@@ -81,6 +91,7 @@ const Sound = () => {
 			const points = Array.from(wave.points);
 
 			animationsRef.current.forEach((anim) => anim.pause());
+			audio.pause(); // pause audio
 
 			flatteningAnimationRef.current = gsap.to(points, {
 				y: 0,
@@ -96,6 +107,7 @@ const Sound = () => {
 			});
 		} else {
 			setIsSoundOn(true);
+			audio.play(); // play audio
 		}
 	};
 
@@ -113,7 +125,7 @@ const Sound = () => {
 
 	return (
 		<SoundContainer>
-			<TurnOffSound
+			<ToggleSound
 				onClick={handleSoundToggle}
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave}
@@ -137,7 +149,7 @@ const Sound = () => {
 						/>
 					</g>
 				</svg>
-			</TurnOffSound>
+			</ToggleSound>
 		</SoundContainer>
 	);
 };
