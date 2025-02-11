@@ -1,8 +1,12 @@
 import React from "react";
-import { Container } from "./style";
+import { Container, CreditsContainer, Rectangle } from "./style";
 
 const Credits = () => {
-	return <Container>Credits</Container>;
+	return (
+		<CreditsContainer>
+			<Rectangle />
+		</CreditsContainer>
+	);
 };
 
 export default Credits;

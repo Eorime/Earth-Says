@@ -10,6 +10,7 @@ import Letters from "../../components/letters/Letters";
 import Screenshot from "../../components/icons/screenshot/Screenshot";
 import FullScreen from "../../components/icons/fullscreen/FullScreen";
 import Sound from "../../components/icons/sound/Sound";
+import Credits from "../../components/icons/credits/Credits";
 
 const Home = () => {
 	return (
@@ -23,6 +24,7 @@ const Home = () => {
 					<Screenshot />
 					<FullScreen />
 					<Sound />
+					<Credits />
 				</IconsContainer>
 			</HomeInnerContainer>
 		</Container>
