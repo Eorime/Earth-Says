@@ -1,12 +1,14 @@
 import styled from "styled-components";
 
-export const CreditsContainer = styled.div``;
+export const CreditsContainer = styled.div`
+	position: relative;
+`;
 
 export const Rectangle = styled.div`
 	width: 20px;
 	height: 20px;
 	cursor: pointer;
-	position: relative;
+	position: absolute;
 	transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 	transform-origin: center;
 	border: 2px solid rgb(102, 102, 102);

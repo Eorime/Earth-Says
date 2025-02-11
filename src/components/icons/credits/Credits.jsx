@@ -4,7 +4,7 @@ import { Container, CreditsContainer, Rectangle } from "./style";
 const Credits = () => {
 	return (
 		<CreditsContainer>
-			<Rectangle />
+			<Rectangle></Rectangle>
 		</CreditsContainer>
 	);
 };
