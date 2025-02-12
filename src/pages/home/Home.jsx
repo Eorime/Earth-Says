@@ -22,9 +22,9 @@ const Home = () => {
 				</TextContainer>
 				<IconsContainer>
 					<Screenshot />
-					<FullScreen />
 					<Sound />
 					<Credits />
+					<FullScreen />
 				</IconsContainer>
 			</HomeInnerContainer>
 		</Container>

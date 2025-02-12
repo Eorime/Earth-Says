@@ -34,14 +34,10 @@ export const fullscreen = () => {
 };
 
 export const FullScreenContainer = styled.div`
-	position: absolute;
+	position: relative;
 `;
 
 export const FullScreenIncrease = styled.div`
-	// width: 20px;
-	// height: 20px;
-	// border: 2px solid rgb(102, 102, 102);
-
 	z-index: 0;
 	left: 50%;
 	transform: translateX(-50%);

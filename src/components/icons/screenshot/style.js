@@ -46,7 +46,6 @@ export const Circle = styled.div`
 
 export const ScreenshotContainer = styled.div`
 	bottom: 0;
-	width: 100px;
 	cursor: pointer;
 
 	&:active ${Rectangle}, &:active ${Circle} {

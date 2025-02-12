@@ -5,7 +5,6 @@ export const SoundContainer = styled.div`
 `;
 
 export const ToggleSound = styled.div`
-	position: relative;
 	width: 20px;
 	height: 20px;
 	position: absolute;

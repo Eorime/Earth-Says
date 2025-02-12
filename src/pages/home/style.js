@@ -50,5 +50,5 @@ export const IconsContainer = styled.div`
 	position: relative;
 	display: flex;
 	flex-direction: row;
-	gap: 100px;
+	gap: 50px;
 `;
