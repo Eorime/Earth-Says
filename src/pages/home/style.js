@@ -47,7 +47,6 @@ export const TextContainer = styled.div`
 `;
 
 export const IconsContainer = styled.div`
-	position: relative;
 	display: flex;
 	flex-direction: row;
 	gap: 50px;

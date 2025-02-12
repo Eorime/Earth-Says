@@ -1,10 +1,14 @@
+// Credits.js
 import React from "react";
-import { Container, CreditsContainer, Rectangle } from "./style";
+import { CreditsContainer, Rectangle, Figure } from "./style";
 
 const Credits = () => {
 	return (
 		<CreditsContainer>
-			<Rectangle></Rectangle>
+			<Rectangle>
+				<Figure className="first" />
+				<Figure className="second" />
+			</Rectangle>
 		</CreditsContainer>
 	);
 };
