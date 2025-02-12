@@ -25,29 +25,35 @@ export const Rectangle = styled.div`
 
 export const Figure = styled.div`
 	position: absolute;
-	top: 50%;
+	top: 10%;
 	transform: translateY(-50%);
 
 	&.first {
-		left: 10%;
+		left: 50%;
 		transform: translateX(-50%) translateY(-50%);
+		transition: left 0.3s ease-in-out;
 
 		&::before {
 			content: "";
 			position: absolute;
-			width: 8px;
-			height: 8px;
+			width: 4px;
+			height: 4px;
 			border-radius: 50%;
 			border: 2px solid rgb(102, 102, 102);
+			left: 50%;
+			transform: translateX(-50%);
 		}
 
 		&::after {
 			content: "";
 			position: absolute;
 			width: 8px;
-			height: 8px;
-			top: 6px;
+			height: 7px;
+			top: 9px;
 			border: 2px solid rgb(102, 102, 102);
+			border-radius: 4px 4px 0px 0px;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 	}
 
@@ -55,30 +61,39 @@ export const Figure = styled.div`
 		right: 35%;
 		transform: translateX(-50%) translateY(-50%);
 		opacity: 0;
-		transition: opacity 0.1s ease-in-out;
+		transition: opacity 0.3s ease-in-out, right 0.3s ease-in-out;
 
 		&::before {
 			content: "";
 			position: absolute;
-			width: 8px;
-			height: 8px;
+			width: 4px;
+			height: 4px;
 			border-radius: 50%;
 			border: 2px solid rgb(102, 102, 102);
+			left: 50%;
+			transform: translateX(-50%);
 		}
 
 		&::after {
 			content: "";
 			position: absolute;
 			width: 8px;
-			height: 8px;
-			top: 6px;
+			height: 7px;
+			top: 9px;
 			border: 2px solid rgb(102, 102, 102);
+			border-radius: 4px 4px 0px 0px;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 	}
 
 	${Rectangle}:hover & {
+		&.first {
+			left: 25%;
+		}
 		&.second {
 			opacity: 1;
+			right: 25%;
 		}
 	}
 `;
