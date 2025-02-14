@@ -47,11 +47,11 @@ export const Figure = styled.div`
 		&::after {
 			content: "";
 			position: absolute;
-			width: 8px;
+			width: 11px;
 			height: 7px;
 			top: 9px;
 			border: 2px solid rgb(102, 102, 102);
-			border-radius: 4px 4px 0px 0px;
+			border-radius: 7px 7px 0px 0px;
 			left: 50%;
 			transform: translateX(-50%);
 		}
@@ -77,11 +77,11 @@ export const Figure = styled.div`
 		&::after {
 			content: "";
 			position: absolute;
-			width: 8px;
+			width: 11px;
 			height: 7px;
 			top: 9px;
 			border: 2px solid rgb(102, 102, 102);
-			border-radius: 4px 4px 0px 0px;
+			border-radius: 7px 7px 0px 0px;
 			left: 50%;
 			transform: translateX(-50%);
 		}
