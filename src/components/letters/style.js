@@ -18,7 +18,7 @@ export const Container = styled.div`
 	min-height: 70vh;
 	width: 100%;
 	justify-content: center;
-	align-items: flex-start;
+	align-items: center;
 	padding-top: 2rem;
 	display: flex;
 `;
@@ -48,17 +48,33 @@ export const LettersDisplay = styled.div`
 	@media screen and (max-width: 1600px) {
 		max-height: 400px;
 	}
+
+	@media screen and (max-width: 1440px) {
+		max-height: 440px;
+	}
 `;
 
 export const LetterBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	width: 120px;
+	height: 120px;
+
+	@media screen and (max-width: 1440px) {
+		width: 96px;
+		height: 96px;
+	}
+
+	@media screen and (max-width: 500px) {
+		width: 60px;
+		height: 60px;
+	}
 `;
 
 export const LetterImage = styled.img`
-	width: 120px;
-	height: 120px;
+	width: 100%;
+	height: 100%;
 	object-fit: contain;
 	animation: ${scaleUp} 0.1s ease-out;
 `;
