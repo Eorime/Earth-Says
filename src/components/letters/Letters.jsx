@@ -148,7 +148,7 @@ const Letters = ({ onLetterCountChange }) => {
 
 	const numberImages = {
 		zero: [Zero1, Zero2],
-		one: [],
+		one: [One1, One2],
 		two: [],
 		three: [],
 		for: [],
