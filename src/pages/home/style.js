@@ -10,6 +10,10 @@ export const Container = styled.div`
 		height: 94vh;
 	}
 
+	@media (max-width: 500px) {
+		height: 83vh;
+	}
+
 	background: linear-gradient(to right, rgb(102, 102, 102) 2px, transparent 2px)
 			0 0,
 		linear-gradient(to right, rgb(102, 102, 102) 2px, transparent 2px) 0 100%,

@@ -74,7 +74,7 @@ const Letters = () => {
 			setLines((prev) => {
 				const newLines = [...prev];
 				if (newLines[currentLine].length > 0) {
-					newLines[currentLine] = newLines[currentLine].slice(0, -1);
+					newLines[currentLine] = newLines[currentLine].pop();
 				} else if (currentLine > 0) {
 					setCurrentLine(currentLine - 1);
 				}
