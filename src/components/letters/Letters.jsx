@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
 	Container,
 	DisplayContainer,
@@ -7,11 +7,11 @@ import {
 	LettersDisplay,
 	LettersRow,
 } from "./style";
-import { useState, useEffect } from "react";
 
 const Letters = () => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
+	const inputRef = useRef(null);
 
 	const letterImage = {
 		A: "letters/A.png",
@@ -42,44 +42,85 @@ const Letters = () => {
 		Z: "letters/Z.png",
 	};
 
+	const handleInputChange = (e) => {
+		const value = e.target.value;
+		if (value) {
+			const lastChar = value.slice(-1).toUpperCase();
+			if (lastChar.match(/[A-Z]/)) {
+				setLines((prev) => {
+					const newLines = [...prev];
+					newLines[currentLine] = [...newLines[currentLine], lastChar];
+					return newLines;
+				});
+			} else if (lastChar === " ") {
+				setLines((prev) => {
+					const newLines = [...prev];
+					newLines[currentLine] = [...newLines[currentLine], " "];
+					return newLines;
+				});
+			}
+			e.target.value = "";
+		}
+	};
+
+	const handleKeyDown = (e) => {
+		if (e.key === "Enter") {
+			e.preventDefault();
+			if (currentLine < 4) {
+				setCurrentLine((prev) => prev + 1);
+			}
+		} else if (e.key === "Backspace" && e.target.value === "") {
+			e.preventDefault();
+			setLines((prev) => {
+				const newLines = [...prev];
+				if (newLines[currentLine].length > 0) {
+					newLines[currentLine] = newLines[currentLine].slice(0, -1);
+				} else if (currentLine > 0) {
+					setCurrentLine(currentLine - 1);
+				}
+				return newLines;
+			});
+		}
+	};
+
+	const handleContainerClick = () => {
+		inputRef.current?.focus();
+	};
+
 	useEffect(() => {
+		// handle physical keyboard events
 		const handleKeyDown = (e) => {
-			// ignore modifier keys (standalone)
 			if (e.key === "Control" || e.key === "Shift") {
 				return;
 			}
-
-			// ignore key combinations with ctrl and shift
 			if (e.ctrlKey || e.shiftKey) {
 				return;
 			}
 
-			// handle enter key for line breaks
 			if (e.key === "Enter") {
 				e.preventDefault();
 				if (currentLine < 4) {
 					setCurrentLine((prev) => prev + 1);
 				}
-				return;
-			}
-
-			// handle backspace
-			if (e.key === "Backspace") {
+			} else if (e.key === "Backspace") {
 				e.preventDefault();
 				setLines((prev) => {
 					const newLines = [...prev];
 					if (newLines[currentLine].length > 0) {
-						// remove last character from current line
 						newLines[currentLine] = newLines[currentLine].slice(0, -1);
 					} else if (currentLine > 0) {
-						// move to previous line if current line is empty
 						setCurrentLine(currentLine - 1);
 					}
 					return newLines;
 				});
-			}
-			// handle letters
-			else if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+			} else if (e.key === " ") {
+				e.preventDefault();
+				setLines((prev) => {
+					const newLines = [...prev];
+					newLines[currentLine] = [...newLines[currentLine], " "];
+					return newLines;
+				});
+			} else if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
 				e.preventDefault();
 				setLines((prev) => {
 					const newLines = [...prev];
@@ -90,26 +131,37 @@ const Letters = () => {
 					return newLines;
 				});
 			}
-			// handle space
-			else if (e.key === " ") {
-				e.preventDefault();
-				setLines((prev) => {
-					const newLines = [...prev];
-					newLines[currentLine] = [...newLines[currentLine], " "];
-					return newLines;
-				});
-			}
 		};
 
 		document.addEventListener("keydown", handleKeyDown);
-
 		return () => {
 			document.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [currentLine]);
 
 	return (
-		<Container>
+		<Container onClick={handleContainerClick}>
+			<input
+				ref={inputRef}
+				type="text"
+				style={{
+					position: "fixed",
+					top: "-1000px",
+					left: "-1000px",
+					opacity: 0,
+					pointerEvents: "none",
+					height: 0,
+					width: 0,
+					padding: 0,
+					margin: 0,
+					border: "none",
+				}}
+				onChange={handleInputChange}
+				onKeyDown={handleKeyDown}
+				autoCapitalize="characters"
+				autoComplete="off"
+				autoCorrect="off"
+			/>
 			<DisplayContainer>
 				{lines.map((line, lineIndex) => (
 					<LettersRow key={lineIndex}>
