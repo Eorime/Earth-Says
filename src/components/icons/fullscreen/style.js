@@ -35,6 +35,11 @@ export const fullscreen = () => {
 
 export const FullScreenContainer = styled.div`
 	position: relative;
+
+	@media (max-width: 768px) {
+		position: fixed;
+		visibility: hidden;
+	}
 `;
 
 export const FullScreenIncrease = styled.div`
