@@ -106,6 +106,8 @@ import Seven1 from "../../assets/Numbers/7_2.0350947, 128.2195701.jpg";
 import Seven2 from "../../assets/Numbers/7_55.9708973, -79.8778501.jpg";
 import Seven3 from "../../assets/Numbers/7_62.2364319, -67.1955357.jpg";
 import Eight1 from "../../assets/Numbers/8_-1.634558, 123.167095.jpg";
+import Nine1 from "../../assets/Numbers/9_-23.1019969, -68.3604047.jpg";
+import Nine2 from "../../assets/Numbers/9_69.7274393, 69.1199037.jpg";
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
