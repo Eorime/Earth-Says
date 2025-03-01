@@ -95,7 +95,8 @@ import One1 from "../../assets/Numbers/1_32.1622980, 56.6540614.jpg";
 import One2 from "../../assets/Numbers/1_60.3663771, -1.1951833.jpg";
 import Two1 from "../../assets/Numbers/2_32.1518027, 56.6111655.jpg";
 import Two2 from "../../assets/Numbers/2_59.0077367, -111.5841037.jpg";
-import Three2 from "../../assets/Numbers/3_44.7583481, -119.8783178.jpg";
+import Three1 from "../../assets/Numbers/3_44.7583481, -119.8783178.jpg";
+import Three2 from "../../assets/Numbers/3_65.1871059, -112.6337704.jpg";
 import Four1 from "../../assets/Numbers/4_-47.3943686, -72.4484623.jpg";
 import Four2 from "../../assets/Numbers/4_50.2961905, -89.6248730.jpg";
 import Five1 from "../../assets/Numbers/5_28.9338383, 33.5005894.jpg";
@@ -106,6 +107,8 @@ import Seven1 from "../../assets/Numbers/7_2.0350947, 128.2195701.jpg";
 import Seven2 from "../../assets/Numbers/7_55.9708973, -79.8778501.jpg";
 import Seven3 from "../../assets/Numbers/7_62.2364319, -67.1955357.jpg";
 import Eight1 from "../../assets/Numbers/8_-1.634558, 123.167095.jpg";
+import Eight2 from "../../assets/Numbers/8_-18.4193588, 35.5663574.jpg";
+import Eight3 from "../../assets/Numbers/8_69.3419162, 70.6078746.jpg";
 import Nine1 from "../../assets/Numbers/9_-23.1019969, -68.3604047.jpg";
 import Nine2 from "../../assets/Numbers/9_69.7274393, 69.1199037.jpg";
 
@@ -149,14 +152,14 @@ const Letters = ({ onLetterCountChange }) => {
 	const numberImages = {
 		zero: [Zero1, Zero2],
 		one: [One1, One2],
-		two: [],
-		three: [],
-		for: [],
-		five: [],
-		six: [],
-		seven: [],
-		eight: [],
-		nine: [],
+		two: [Two1, Two2],
+		three: [Three1, Three2],
+		four: [Four1, Four2],
+		five: [Five1, Five2],
+		six: [Six1, Six2],
+		seven: [Seven1, Seven2, Seven3],
+		eight: [Eight1, Eight2, Eight3],
+		nine: [Nine1, Nine2],
 	};
 
 	// select a random image for a letter and store it with the letter
