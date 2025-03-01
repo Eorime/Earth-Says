@@ -147,23 +147,20 @@ const Sound = ({ letterCount = 0 }) => {
 	}, [isHovering, isSoundOn]);
 
 	const handleSoundToggle = () => {
+		
 		setHasUserInteracted(true);
-
+	
 		if (isSoundOn) {
-			// turn sound off
-			console.log("Turning sound OFF");
-
 			if (audioElementRef.current) {
 				audioElementRef.current.pause();
 			}
-
-			// animate wave to flat
+	
+			// flatten wave animation
 			const wave = waveRef.current;
 			if (wave) {
 				const points = Array.from(wave.points);
-
 				animationsRef.current.forEach((anim) => anim.pause());
-
+	
 				flatteningAnimationRef.current = gsap.to(points, {
 					y: 0,
 					duration: 0.2,
@@ -180,13 +177,13 @@ const Sound = ({ letterCount = 0 }) => {
 				setIsSoundOn(false);
 			}
 		} else {
-			// turn sound on
-			console.log("Turning sound ON");
+			
 			setIsSoundOn(true);
-
-			// play sound if there are letters
-			if (letterCount > 0) {
-				playSound();
+	
+			if (audioElementRef.current) {
+				audioElementRef.current.play()
+					.then(() => console.log("audio started successfully"))
+					.catch((err) => console.error("audio play failed:", err));
 			}
 		}
 	};
