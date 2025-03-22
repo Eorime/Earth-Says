@@ -147,31 +147,28 @@ const Letters = ({ onLetterCountChange }) => {
 		X: [X1, X2, X3],
 		Y: [Y1, Y2, Y3],
 		Z: [Z1, Z2, Z3],
-	};
-
-	const numberImages = {
-		zero: [Zero1, Zero2],
-		one: [One1, One2],
-		two: [Two1, Two2],
-		three: [Three1, Three2],
-		four: [Four1, Four2],
-		five: [Five1, Five2],
-		six: [Six1, Six2],
-		seven: [Seven1, Seven2, Seven3],
-		eight: [Eight1, Eight2, Eight3],
-		nine: [Nine1, Nine2],
+		0: [Zero1, Zero2],
+		1: [One1, One2],
+		2: [Two1, Two2],
+		3: [Three1, Three2],
+		4: [Four1, Four2],
+		5: [Five1, Five2],
+		6: [Six1, Six2],
+		7: [Seven1, Seven2, Seven3],
+		8: [Eight1, Eight2, Eight3],
+		9: [Nine1, Nine2],
 	};
 
 	// select a random image for a letter and store it with the letter
-	const assignRandomImage = (letter) => {
-		if (!letterImages[letter] || letterImages[letter].length === 0) {
-			return { char: letter, id: Date.now(), imageSrc: null };
+	const assignRandomImage = (char) => {
+		if (!letterImages[char] || letterImages[char].length === 0) {
+			return { char, id: Date.now(), imageSrc: null };
 		}
-		const randomIndex = Math.floor(Math.random() * letterImages[letter].length);
+		const randomIndex = Math.floor(Math.random() * letterImages[char].length);
 		return {
-			char: letter,
+			char,
 			id: Date.now(),
-			imageSrc: letterImages[letter][randomIndex],
+			imageSrc: letterImages[char][randomIndex],
 		};
 	};
 
@@ -193,19 +190,19 @@ const Letters = ({ onLetterCountChange }) => {
 			const lastChar = value.slice(-1).toUpperCase();
 
 			const currentLetterCount = totalLetterCount;
-			const wouldAddLetter = lastChar.match(/[A-Z]/);
+			const wouldAddChar = lastChar.match(/[A-Z0-9]/);
 
-			if (wouldAddLetter && currentLetterCount >= MAX_LETTERS) {
+			if (wouldAddChar && currentLetterCount >= MAX_LETTERS) {
 				e.target.value = "";
 				return;
 			}
 
-			if (lastChar.match(/[A-Z]/)) {
+			if (lastChar.match(/[A-Z0-9]/)) {
 				setLines((prev) => {
 					const newLines = [...prev];
 					// create a letter object with a pre-assigned random image
-					const letterWithImage = assignRandomImage(lastChar);
-					newLines[currentLine] = [...newLines[currentLine], letterWithImage];
+					const charWithImage = assignRandomImage(lastChar);
+					newLines[currentLine] = [...newLines[currentLine], charWithImage];
 					return newLines;
 				});
 			} else if (lastChar === " ") {
@@ -282,7 +279,7 @@ const Letters = ({ onLetterCountChange }) => {
 					];
 					return newLines;
 				});
-			} else if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
+			} else if (e.key.length === 1 && e.key.match(/[a-zA-Z0-9]/)) {
 				e.preventDefault();
 
 				if (totalLetterCount >= MAX_LETTERS) {
@@ -293,8 +290,8 @@ const Letters = ({ onLetterCountChange }) => {
 					const newLines = [...prev];
 					const upperChar = e.key.toUpperCase();
 					// Create a letter object with a pre-assigned random image
-					const letterWithImage = assignRandomImage(upperChar);
-					newLines[currentLine] = [...newLines[currentLine], letterWithImage];
+					const charWithImage = assignRandomImage(upperChar);
+					newLines[currentLine] = [...newLines[currentLine], charWithImage];
 					return newLines;
 				});
 			}
@@ -338,7 +335,7 @@ const Letters = ({ onLetterCountChange }) => {
 									{letterObj.char !== " " && letterObj.imageSrc && (
 										<LetterImage
 											src={letterObj.imageSrc}
-											alt={`Letter ${letterObj.char}`}
+											alt={`Character ${letterObj.char}`}
 										/>
 									)}
 									{letterObj.char === " " && (
