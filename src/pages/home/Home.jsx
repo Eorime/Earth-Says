@@ -11,10 +11,19 @@ import Screenshot from "../../components/icons/screenshot/Screenshot";
 import FullScreen from "../../components/icons/fullscreen/FullScreen";
 import Sound from "../../components/icons/sound/Sound";
 import Credits from "../../components/icons/credits/Credits";
+import Modal from "../../components/modal/Modal";
 
 const Home = () => {
+	const [openModal, setOpenModal] = useState(false);
+
+	const handleCreditClick = () => {
+		setOpenModal(!openModal);
+	};
+
 	return (
 		<Container>
+			{openModal && <Modal onClick={handleCreditClick} openModal={openModal} />}
+
 			<HomeInnerContainer>
 				<EarthSaysText>EARTH SAYS</EarthSaysText>
 				<TextContainer>
@@ -23,7 +32,7 @@ const Home = () => {
 				<IconsContainer>
 					<Screenshot />
 					<Sound />
-					<Credits />
+					<Credits onClick={handleCreditClick} openModal={openModal} />
 					<FullScreen />
 				</IconsContainer>
 			</HomeInnerContainer>

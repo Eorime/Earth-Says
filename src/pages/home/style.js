@@ -56,4 +56,5 @@ export const IconsContainer = styled.div`
 	gap: 50px;
 	position: relative;
 	top: 8vh;
+	transform: translate3d(-5%, 50%, 0);
 `;

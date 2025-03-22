@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const CreditsContainer = styled.div`
 	position: relative;
@@ -7,7 +7,7 @@ export const CreditsContainer = styled.div`
 `;
 
 export const Rectangle = styled.div`
-	width: 20px;
+	width: ${(props) => (props.openModal ? "40px" : "20px")};
 	height: 20px;
 	cursor: pointer;
 	position: absolute;
@@ -29,7 +29,7 @@ export const Figure = styled.div`
 	transform: translateY(-50%);
 
 	&.first {
-		left: 50%;
+		left: ${(props) => (props.openModal ? "25%" : "50%")};
 		transform: translateX(-50%) translateY(-50%);
 		transition: left 0.3s ease-in-out;
 
@@ -58,9 +58,9 @@ export const Figure = styled.div`
 	}
 
 	&.second {
-		right: 35%;
+		right: ${(props) => (props.openModal ? "25%" : "35%")};
 		transform: translateX(-50%) translateY(-50%);
-		opacity: 0;
+		opacity: ${(props) => (props.openModal ? "1" : "0")};
 		transition: opacity 0.3s ease-in-out, right 0.3s ease-in-out;
 
 		&::before {

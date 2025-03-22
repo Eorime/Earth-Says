@@ -1,13 +1,12 @@
-// Credits.js
 import React from "react";
 import { CreditsContainer, Rectangle, Figure } from "./style";
 
-const Credits = () => {
+const Credits = ({ onClick, openModal }) => {
 	return (
 		<CreditsContainer>
-			<Rectangle>
-				<Figure className="first" />
-				<Figure className="second" />
+			<Rectangle onClick={onClick} openModal={openModal}>
+				<Figure className="first" openModal={openModal} />
+				<Figure className="second" openModal={openModal} />
 			</Rectangle>
 		</CreditsContainer>
 	);
