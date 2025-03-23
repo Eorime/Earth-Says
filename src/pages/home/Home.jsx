@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
 	Container,
 	EarthSaysText,
@@ -15,9 +15,14 @@ import Modal from "../../components/modal/Modal";
 
 const Home = () => {
 	const [openModal, setOpenModal] = useState(false);
+	const [letterCount, setLetterCount] = useState(0);
 
 	const handleCreditClick = () => {
 		setOpenModal(!openModal);
+	};
+
+	const handleLetterCountChange = (count) => {
+		setLetterCount(count);
 	};
 
 	return (
@@ -27,11 +32,11 @@ const Home = () => {
 			<HomeInnerContainer>
 				<EarthSaysText>EARTH SAYS</EarthSaysText>
 				<TextContainer>
-					<Letters />
+					<Letters onLetterCountChange={handleLetterCountChange} />
 				</TextContainer>
 				<IconsContainer>
 					<Screenshot />
-					<Sound />
+					<Sound letterCount={letterCount} />
 					<Credits onClick={handleCreditClick} openModal={openModal} />
 					<FullScreen />
 				</IconsContainer>
