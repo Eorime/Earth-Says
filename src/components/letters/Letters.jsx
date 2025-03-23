@@ -8,9 +8,11 @@ import {
 	LettersRow,
 } from "./style";
 
-const Letters = () => {
+const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
+	const [totalLetterCount, setTotalLetterCount] = useState(0);
+	const MAX_LETTERS = 50;
 	const inputRef = useRef(null);
 
 	const letterImage = {
@@ -42,10 +44,31 @@ const Letters = () => {
 		Z: "letters/Z.png",
 	};
 
+	useEffect(() => {
+		const count = lines.reduce((total, line) => {
+			return total + line.filter((char) => char !== " ").length;
+		}, 0);
+
+		setTotalLetterCount(count);
+
+		if (onLetterCountChange) {
+			onLetterCountChange(count);
+		}
+	}, [lines, onLetterCountChange]);
+
 	const handleInputChange = (e) => {
 		const value = e.target.value;
 		if (value) {
 			const lastChar = value.slice(-1).toUpperCase();
+
+			const currentLetterCount = totalLetterCount;
+			const wouldAddLetter = lastChar.match(/[A-Z]/);
+
+			if (wouldAddLetter && currentLetterCount >= MAX_LETTERS) {
+				e.target.value = "";
+				return;
+			}
+
 			if (lastChar.match(/[A-Z]/)) {
 				setLines((prev) => {
 					const newLines = [...prev];
@@ -74,7 +97,6 @@ const Letters = () => {
 			setLines((prev) => {
 				const newLines = [...prev];
 				if (newLines[currentLine].length > 0) {
-					// Correct way to remove the last element
 					newLines[currentLine] = newLines[currentLine].slice(0, -1);
 				} else if (currentLine > 0) {
 					setCurrentLine(currentLine - 1);
@@ -123,6 +145,11 @@ const Letters = () => {
 				});
 			} else if (e.key.length === 1 && e.key.match(/[a-zA-Z]/)) {
 				e.preventDefault();
+
+				if (totalLetterCount >= MAX_LETTERS) {
+					return;
+				}
+
 				setLines((prev) => {
 					const newLines = [...prev];
 					newLines[currentLine] = [
@@ -138,7 +165,7 @@ const Letters = () => {
 		return () => {
 			document.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [currentLine]);
+	}, [currentLine, totalLetterCount]);
 
 	return (
 		<Container onClick={handleContainerClick}>
