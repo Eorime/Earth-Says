@@ -74,7 +74,8 @@ const Letters = () => {
 			setLines((prev) => {
 				const newLines = [...prev];
 				if (newLines[currentLine].length > 0) {
-					newLines[currentLine] = newLines[currentLine].pop();
+					// Correct way to remove the last element
+					newLines[currentLine] = newLines[currentLine].slice(0, -1);
 				} else if (currentLine > 0) {
 					setCurrentLine(currentLine - 1);
 				}
