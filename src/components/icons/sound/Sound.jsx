@@ -2,23 +2,79 @@ import React, { useEffect, useRef, useState } from "react";
 import { SoundContainer, ToggleSound } from "./style";
 import { gsap } from "gsap";
 
-const Sound = () => {
+const Sound = ({ letterCount = 0 }) => {
 	const [isHovering, setIsHovering] = useState(false);
-	const [audio] = useState(() => {
-		const audioElement = new Audio("/sounds/earth-says.mp3");
-		audioElement.loop = true;
-
-		audioElement.onerror = (e) => {
-			console.error("Audio error:", e);
-		};
-
-		return audioElement;
-	});
 	const [isSoundOn, setIsSoundOn] = useState(false);
+	const [hasUserInteracted, setHasUserInteracted] = useState(false);
 	const waveRef = useRef(null);
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
 	const flatteningAnimationRef = useRef(null);
+	const audioElementRef = useRef(null);
+	const prevLetterCountRef = useRef(letterCount);
+
+	// handle initial user interaction
+	useEffect(() => {
+		const handleFirstInteraction = () => {
+			setHasUserInteracted(true);
+			// remove event listeners after first interaction
+			document.removeEventListener("click", handleFirstInteraction);
+			document.removeEventListener("keydown", handleFirstInteraction);
+		};
+
+		document.addEventListener("click", handleFirstInteraction);
+		document.addEventListener("keydown", handleFirstInteraction);
+
+		return () => {
+			document.removeEventListener("click", handleFirstInteraction);
+			document.removeEventListener("keydown", handleFirstInteraction);
+		};
+	}, []);
+
+	// play sound when letterCount changes (if sound is enabled)
+	useEffect(() => {
+		if (
+			isSoundOn &&
+			hasUserInteracted &&
+			letterCount > 0 &&
+			letterCount > prevLetterCountRef.current
+		) {
+			playSound();
+		}
+		prevLetterCountRef.current = letterCount;
+	}, [letterCount, isSoundOn, hasUserInteracted]);
+
+	// update volume based on letter count
+	useEffect(() => {
+		if (audioElementRef.current) {
+			// calculate volume based on letter count
+			const baseVolume = 0;
+			const maxVolumeIncrease = 1;
+			const maxLettersForFullVolume = 50;
+
+			const volumeIncrease =
+				Math.min(letterCount / maxLettersForFullVolume, 1) * maxVolumeIncrease;
+			const newVolume = baseVolume + volumeIncrease;
+
+			// set the volume
+			audioElementRef.current.volume = Math.min(Math.max(newVolume, 0), 1);
+			console.log(
+				`Volume set to ${audioElementRef.current.volume} based on ${letterCount} letters`
+			);
+		}
+	}, [letterCount]);
+
+	const playSound = () => {
+		if (audioElementRef.current && hasUserInteracted) {
+			// only attempt to play if we're not already playing
+			if (audioElementRef.current.paused) {
+				audioElementRef.current
+					.play()
+					.then(() => console.log("Audio started successfully"))
+					.catch((err) => console.error("Audio play failed:", err));
+			}
+		}
+	};
 
 	const createWavePoints = (wave, width, amplitude, segments) => {
 		const interval = width / (segments - 1);
@@ -38,7 +94,7 @@ const Sound = () => {
 		return points;
 	};
 
-	// setup wave points
+	// setup wave animation
 	useEffect(() => {
 		if (!waveRef.current) return;
 
@@ -74,6 +130,9 @@ const Sound = () => {
 
 				animationsRef.current.push(anim);
 			});
+
+			// start animations if sound is on
+			animationsRef.current.forEach((anim) => anim.play());
 		}
 
 		return () => {
@@ -86,45 +145,65 @@ const Sound = () => {
 	}, [isHovering, isSoundOn]);
 
 	const handleSoundToggle = () => {
+		setHasUserInteracted(true); // user has interacted by clicking the toggle
+
 		if (isSoundOn) {
+			// turn sound off
+			console.log("Turning sound OFF");
+
+			if (audioElementRef.current) {
+				audioElementRef.current.pause();
+			}
+
+			// animate wave to flat
 			const wave = waveRef.current;
-			const points = Array.from(wave.points);
+			if (wave) {
+				const points = Array.from(wave.points);
 
-			animationsRef.current.forEach((anim) => anim.pause());
-			audio.pause(); // pause audio
+				animationsRef.current.forEach((anim) => anim.pause());
 
-			flatteningAnimationRef.current = gsap.to(points, {
-				y: 0,
-				duration: 0.2,
-				ease: "power2.inOut",
-				stagger: {
-					amount: 0.1,
-					from: "center",
-				},
-				onComplete: () => {
-					setIsSoundOn(false);
-				},
-			});
+				flatteningAnimationRef.current = gsap.to(points, {
+					y: 0,
+					duration: 0.2,
+					ease: "power2.inOut",
+					stagger: {
+						amount: 0.1,
+						from: "center",
+					},
+					onComplete: () => {
+						setIsSoundOn(false);
+					},
+				});
+			} else {
+				setIsSoundOn(false);
+			}
 		} else {
+			// turn sound on
+			console.log("Turning sound ON");
 			setIsSoundOn(true);
-			audio.play(); // play audio
+
+			// play sound if there are letters
+			if (letterCount > 0) {
+				playSound();
+			}
 		}
 	};
 
-	// hover effect
-	useEffect(() => {
-		if (isHovering && isSoundOn) {
-			animationsRef.current.forEach((anim) => anim.play());
-		} else {
-			animationsRef.current.forEach((anim) => anim.pause());
-		}
-	}, [isHovering, isSoundOn]);
-
+	// handle hover effect for animations
 	const handleMouseEnter = () => setIsHovering(true);
 	const handleMouseLeave = () => setIsHovering(false);
 
 	return (
 		<SoundContainer>
+			{/* hidden audio element that we control directly */}
+			<audio
+				ref={audioElementRef}
+				src="/sounds/earth-says.mp3"
+				loop
+				preload="auto"
+				style={{ display: "none" }}
+			/>
+
 			<ToggleSound
 				onClick={handleSoundToggle}
 				onMouseEnter={handleMouseEnter}
