@@ -31,14 +31,16 @@ const Sound = ({ letterCount = 0 }) => {
 		};
 	}, []);
 
-	// play sound when letterCount changes (if sound is enabled)
+	// Automatically start sound and enable sound on when letter count changes
 	useEffect(() => {
 		if (
-			isSoundOn &&
+			!isSoundOn &&
 			hasUserInteracted &&
 			letterCount > 0 &&
 			letterCount > prevLetterCountRef.current
 		) {
+			// Automatically turn on sound and start playing
+			setIsSoundOn(true);
 			playSound();
 		}
 		prevLetterCountRef.current = letterCount;
@@ -66,7 +68,7 @@ const Sound = ({ letterCount = 0 }) => {
 
 	const playSound = () => {
 		if (audioElementRef.current && hasUserInteracted) {
-			// only attempt to play if we're not already playing
+			// only attempt to play if not already playing
 			if (audioElementRef.current.paused) {
 				audioElementRef.current
 					.play()
@@ -145,7 +147,7 @@ const Sound = ({ letterCount = 0 }) => {
 	}, [isHovering, isSoundOn]);
 
 	const handleSoundToggle = () => {
-		setHasUserInteracted(true); // user has interacted by clicking the toggle
+		setHasUserInteracted(true);
 
 		if (isSoundOn) {
 			// turn sound off
@@ -195,7 +197,7 @@ const Sound = ({ letterCount = 0 }) => {
 
 	return (
 		<SoundContainer>
-			{/* hidden audio element that we control directly */}
+			{/* hidden audio element that's' controled directly */}
 			<audio
 				ref={audioElementRef}
 				src="/sounds/earth-says.mp3"
