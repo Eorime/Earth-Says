@@ -43,7 +43,6 @@ export const EarthSaysText = styled.p`
 	color: white;
 	font-size: clamp(8px, 4vw, 16px);
 	margin: 0;
-	margin-left: -5px;
 	letter-spacing: 1.3px;
 `;
 
