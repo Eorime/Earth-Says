@@ -197,7 +197,7 @@ const Sound = ({ letterCount = 0 }) => {
 
 	return (
 		<SoundContainer>
-			{/* hidden audio element that's' controled directly */}
+			{/* hidden audio element that's controlled directly */}
 			<audio
 				ref={audioElementRef}
 				src="/sounds/earth-says.mp3"

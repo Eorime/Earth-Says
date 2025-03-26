@@ -48,8 +48,8 @@ export const Figure = styled.div`
 			content: "";
 			position: absolute;
 			width: 11px;
-			height: 7px;
-			top: 9px;
+			height: 5px;
+			top: 11px;
 			border: 2px solid rgb(102, 102, 102);
 			border-radius: 7px 7px 0px 0px;
 			left: 50%;
@@ -78,8 +78,8 @@ export const Figure = styled.div`
 			content: "";
 			position: absolute;
 			width: 11px;
-			height: 7px;
-			top: 9px;
+			height: 5px;
+			top: 11px;
 			border: 2px solid rgb(102, 102, 102);
 			border-radius: 7px 7px 0px 0px;
 			left: 50%;
