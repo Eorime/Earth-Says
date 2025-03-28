@@ -147,43 +147,47 @@ const Sound = ({ letterCount = 0 }) => {
 	}, [isHovering, isSoundOn]);
 
 	const handleSoundToggle = () => {
-		
 		setHasUserInteracted(true);
 	
 		if (isSoundOn) {
+			// turn sound off
 			if (audioElementRef.current) {
 				audioElementRef.current.pause();
 			}
 	
-			// flatten wave animation
+			// immediately stop and reset all animations
+			animationsRef.current.forEach((anim) => anim.kill());
+			if (flatteningAnimationRef.current) {
+				flatteningAnimationRef.current.kill();
+			}
+	
+			// immediately reset wave points to zero
 			const wave = waveRef.current;
 			if (wave) {
-				const points = Array.from(wave.points);
-				animationsRef.current.forEach((anim) => anim.pause());
-	
-				flatteningAnimationRef.current = gsap.to(points, {
-					y: 0,
-					duration: 0.2,
-					ease: "power2.inOut",
-					stagger: {
-						amount: 0.1,
-						from: "center",
-					},
-					onComplete: () => {
-						setIsSoundOn(false);
-					},
-				});
-			} else {
-				setIsSoundOn(false);
+				while (wave.points.length > 0) {
+					wave.points.removeItem(0);
+				}
 			}
+	
+			// instantly set state to off
+			setIsSoundOn(false);
 		} else {
-			
+			// turn sound on
 			setIsSoundOn(true);
 	
+			// always try to play, ignoring letter count
 			if (audioElementRef.current) {
 				audioElementRef.current.play()
 					.then(() => console.log("audio started successfully"))
-					.catch((err) => console.error("audio play failed:", err));
+					.catch((error) => {
+						console.error("error playing audio:", error);
+						// try muted first to bypass autoplay restrictions
+						audioElementRef.current.muted = true;
+						audioElementRef.current.play()
+							.then(() => {
+								audioElementRef.current.muted = false;
+							});
+					});
 			}
 		}
 	};
