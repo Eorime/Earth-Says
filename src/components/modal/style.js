@@ -16,6 +16,10 @@ export const ModalContainer = styled.div`
 	gap: 60px;
 	border-radius: 20px;
 
+	@media (max-width: 500px) {
+		width: 200px;
+	}
+
 	&::before {
 		content: "";
 		position: fixed;
@@ -34,4 +38,8 @@ export const Text = styled.span`
 	font-size: 16px;
 	text-align: center;
 	line-height: 2;
+
+	@media (max-width: 500px) {
+		font-size: 11px;
+	}
 `;
