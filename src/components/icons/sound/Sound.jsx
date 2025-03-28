@@ -148,19 +148,19 @@ const Sound = ({ letterCount = 0 }) => {
 
 	const handleSoundToggle = () => {
 		setHasUserInteracted(true);
-	
+
 		if (isSoundOn) {
 			// turn sound off
 			if (audioElementRef.current) {
 				audioElementRef.current.pause();
 			}
-	
+
 			// immediately stop and reset all animations
 			animationsRef.current.forEach((anim) => anim.kill());
 			if (flatteningAnimationRef.current) {
 				flatteningAnimationRef.current.kill();
 			}
-	
+
 			// immediately reset wave points to zero
 			const wave = waveRef.current;
 			if (wave) {
@@ -168,25 +168,25 @@ const Sound = ({ letterCount = 0 }) => {
 					wave.points.removeItem(0);
 				}
 			}
-	
+
 			// instantly set state to off
 			setIsSoundOn(false);
 		} else {
 			// turn sound on
 			setIsSoundOn(true);
-	
+
 			// always try to play, ignoring letter count
 			if (audioElementRef.current) {
-				audioElementRef.current.play()
+				audioElementRef.current
+					.play()
 					.then(() => console.log("audio started successfully"))
 					.catch((error) => {
 						console.error("error playing audio:", error);
 						// try muted first to bypass autoplay restrictions
 						audioElementRef.current.muted = true;
-						audioElementRef.current.play()
-							.then(() => {
-								audioElementRef.current.muted = false;
-							});
+						audioElementRef.current.play().then(() => {
+							audioElementRef.current.muted = false;
+						});
 					});
 			}
 		}

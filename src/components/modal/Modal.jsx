@@ -1,9 +1,10 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { ModalContainer, Text } from "./style";
 
-const Modal = () => {
+const Modal = forwardRef(({ openModal }, ref) => {
+	if (!openModal) return null;
 	return (
-		<ModalContainer>
+		<ModalContainer ref={ref}>
 			<Text>Created By</Text>
 			<Text>
 				Created by: <br />
@@ -12,6 +13,6 @@ const Modal = () => {
 			<Text>All photos used on this website belong to Google</Text>
 		</ModalContainer>
 	);
-};
+});
 
 export default Modal;
