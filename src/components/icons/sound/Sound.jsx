@@ -11,6 +11,7 @@ const Sound = ({ letterCount = 0 }) => {
 	const animationsRef = useRef([]);
 	const audioElementRef = useRef(null);
 	const prevLetterCountRef = useRef(letterCount);
+	const hasLettersRef = useRef(letterCount > 0);
 
 	// handle initial user interaction
 	useEffect(() => {
@@ -30,27 +31,32 @@ const Sound = ({ letterCount = 0 }) => {
 		};
 	}, []);
 
-	// Automatically start sound and enable sound on when letter count changes
+	// Automatically start sound and enable sound on when letterCount changes from 0 to positive
 	useEffect(() => {
-		if (
-			!isSoundOn &&
-			hasUserInteracted &&
-			letterCount > 0 &&
-			letterCount > prevLetterCountRef.current
-		) {
-			// Automatically turn on sound and start playing
+		const wasEmpty = !hasLettersRef.current;
+		const isEmpty = letterCount === 0;
+		const hasLettersNow = letterCount > 0;
+
+		// Update our ref to track letter state
+		hasLettersRef.current = hasLettersNow;
+
+		// Only respond to transitions between empty and non-empty
+		if (wasEmpty && hasLettersNow && hasUserInteracted) {
+			// Going from 0 letters to some letters
 			setIsSoundOn(true);
 			playSound();
-		}
-
-		// If letter count drops to zero, pause audio
-		if (letterCount === 0 && isSoundOn && audioElementRef.current) {
-			audioElementRef.current.pause();
-			setIsSoundOn(false);
+			updateWaveAnimation(true);
+		} else if (!wasEmpty && isEmpty) {
+			// Going from some letters to 0 letters
+			if (audioElementRef.current) {
+				audioElementRef.current.pause();
+				setIsSoundOn(false);
+				updateWaveAnimation(false);
+			}
 		}
 
 		prevLetterCountRef.current = letterCount;
-	}, [letterCount, isSoundOn, hasUserInteracted]);
+	}, [letterCount, hasUserInteracted]);
 
 	// update volume based on letter count
 	useEffect(() => {
@@ -102,8 +108,8 @@ const Sound = ({ letterCount = 0 }) => {
 		return points;
 	};
 
-	// setup wave animation
-	useEffect(() => {
+	// A function to update the wave animation without recreating it on every letter count change
+	const updateWaveAnimation = (shouldAnimate) => {
 		if (!waveRef.current) return;
 
 		// Clean up previous animations
@@ -112,9 +118,7 @@ const Sound = ({ letterCount = 0 }) => {
 
 		const wave = waveRef.current;
 		const width = 42;
-		// Use letterCount to determine if we should show waves
-		const shouldShowWaves = letterCount > 0 && isSoundOn;
-		const amplitude = shouldShowWaves ? (isHovering ? 8 : 12) : 0;
+		const amplitude = shouldAnimate ? (isHovering ? 8 : 12) : 0;
 		const segments = 210;
 
 		// Clear existing points
@@ -123,7 +127,7 @@ const Sound = ({ letterCount = 0 }) => {
 		}
 
 		// Only create animated points if we should show waves
-		if (shouldShowWaves) {
+		if (shouldAnimate && letterCount > 0 && isSoundOn) {
 			const points = createWavePoints(wave, width, amplitude, segments);
 
 			points.forEach((point, i) => {
@@ -143,12 +147,17 @@ const Sound = ({ letterCount = 0 }) => {
 			// If sound is off or no letters, create flat line (zero amplitude)
 			createWavePoints(wave, width, 0, segments);
 		}
+	};
+
+	// Setup wave animation initially and on hover state change
+	useEffect(() => {
+		updateWaveAnimation(letterCount > 0 && isSoundOn);
 
 		return () => {
 			animationsRef.current.forEach((anim) => anim.kill());
 			animationsRef.current = [];
 		};
-	}, [isHovering, isSoundOn, letterCount]);
+	}, [isHovering, isSoundOn]);
 
 	const handleSoundToggle = () => {
 		setHasUserInteracted(true);
@@ -159,6 +168,7 @@ const Sound = ({ letterCount = 0 }) => {
 			if (audioElementRef.current) {
 				audioElementRef.current.pause();
 			}
+			updateWaveAnimation(false);
 		} else if (letterCount > 0) {
 			// Only turn sound on if there are letters
 			if (audioElementRef.current) {
@@ -174,6 +184,7 @@ const Sound = ({ letterCount = 0 }) => {
 						});
 					});
 			}
+			updateWaveAnimation(true);
 		}
 
 		setIsSoundOn(newSoundState);
