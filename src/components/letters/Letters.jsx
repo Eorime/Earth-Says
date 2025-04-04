@@ -341,16 +341,20 @@ const Letters = ({ onLetterCountChange }) => {
 				});
 			} else if (e.key === " ") {
 				e.preventDefault();
-				if (newLines[currentLine].length > 0) {
-					setLines((prev) => {
-						const newLines = [...prev];
+
+				// Check if the current line is empty before allowing a space character
+				setLines((prev) => {
+					const newLines = [...prev];
+
+					// Only add a space if the current line isn't empty
+					if (newLines[currentLine].length > 0) {
 						newLines[currentLine] = [
 							...newLines[currentLine],
 							{ char: " ", id: Date.now(), imageSrc: null },
 						];
-						return newLines;
-					});
-				}
+					}
+					return newLines;
+				});
 			} else if (e.key.length === 1) {
 				e.preventDefault();
 
