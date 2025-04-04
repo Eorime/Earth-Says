@@ -118,6 +118,7 @@ const Letters = ({ onLetterCountChange }) => {
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
 	const MAX_LETTERS = 50;
 	const inputRef = useRef(null);
+	const MAX_CHARS_PER_LINE = 12;
 
 	// arrays of images for each letter
 	const letterImages = {

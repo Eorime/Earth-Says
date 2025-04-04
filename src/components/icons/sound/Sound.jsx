@@ -201,7 +201,7 @@ const Sound = ({ letterCount = 0 }) => {
 			{/* hidden audio element that's controlled directly */}
 			<audio
 				ref={audioElementRef}
-				src="/sounds/earth-says.mp3"
+				src="/sounds/wind.wav"
 				loop
 				preload="auto"
 				style={{ display: "none" }}
