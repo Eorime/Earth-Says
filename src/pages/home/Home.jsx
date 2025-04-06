@@ -64,7 +64,10 @@ const Home = () => {
 					<TextContainer>
 						<Letters onLetterCountChange={handleLetterCountChange} />
 					</TextContainer>
-					<IconsContainer className="icons-container">
+					<IconsContainer
+						className="icons-container"
+						style={{ pointerEvents: "auto" }}
+					>
 						<Screenshot />
 						<Sound letterCount={letterCount} />
 						<Credits onClick={handleCreditClick} openModal={openModal} />
