@@ -112,6 +112,15 @@ import Eight3 from "../../assets/Numbers/8_69.3419162, 70.6078746.jpg";
 import Nine1 from "../../assets/Numbers/9_-23.1019969, -68.3604047.jpg";
 import Nine2 from "../../assets/Numbers/9_69.7274393, 69.1199037.jpg";
 
+//symbol imports
+import Underscore from "../../assets/Symbols/__23.7953479, -76.1355714.jpg";
+import Hyphen from "../../assets/Symbols/-_-24.9348044, 15.5824006.jpg";
+import Comma1 from "../../assets/Symbols/,_-7.0747433, 114.5775325.jpg";
+import Comma2 from "../../assets/Symbols/,_5.9530164, 73.1324277.jpg";
+import Comma3 from "../../assets/Symbols/,_18.3294235, -64.8071554.jpg";
+import Exclamation1 from "../../assets/Symbols/!_-0.0391871, 127.4402888.jpg";
+import Exclamation2 from "../../assets/Symbols/!_54.5927044, -118.0474962.jpg";
+
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
