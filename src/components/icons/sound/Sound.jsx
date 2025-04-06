@@ -9,7 +9,6 @@ const Sound = ({ letterCount = 0 }) => {
 	const waveRef = useRef(null);
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
-	const flatteningAnimationRef = useRef(null);
 	const audioElementRef = useRef(null);
 	const prevLetterCountRef = useRef(letterCount);
 
@@ -43,6 +42,13 @@ const Sound = ({ letterCount = 0 }) => {
 			setIsSoundOn(true);
 			playSound();
 		}
+
+		// If letter count drops to zero, pause audio
+		if (letterCount === 0 && isSoundOn && audioElementRef.current) {
+			audioElementRef.current.pause();
+			setIsSoundOn(false);
+		}
+
 		prevLetterCountRef.current = letterCount;
 	}, [letterCount, isSoundOn, hasUserInteracted]);
 
@@ -100,24 +106,26 @@ const Sound = ({ letterCount = 0 }) => {
 	useEffect(() => {
 		if (!waveRef.current) return;
 
+		// Clean up previous animations
+		animationsRef.current.forEach((anim) => anim.kill());
+		animationsRef.current = [];
+
 		const wave = waveRef.current;
 		const width = 42;
-		const amplitude = isSoundOn ? (isHovering ? 8 : 12) : 0;
+		// Use letterCount to determine if we should show waves
+		const shouldShowWaves = letterCount > 0 && isSoundOn;
+		const amplitude = shouldShowWaves ? (isHovering ? 8 : 12) : 0;
 		const segments = 210;
 
+		// Clear existing points
 		while (wave.points.length > 0) {
 			wave.points.removeItem(0);
 		}
 
-		animationsRef.current.forEach((anim) => anim.kill());
-		animationsRef.current = [];
-		if (flatteningAnimationRef.current) {
-			flatteningAnimationRef.current.kill();
-		}
+		// Only create animated points if we should show waves
+		if (shouldShowWaves) {
+			const points = createWavePoints(wave, width, amplitude, segments);
 
-		const points = createWavePoints(wave, width, amplitude, segments);
-
-		if (isSoundOn) {
 			points.forEach((point, i) => {
 				const norm = i / (segments - 1);
 				const anim = gsap
@@ -125,57 +133,34 @@ const Sound = ({ letterCount = 0 }) => {
 						y: -point.y,
 						repeat: -1,
 						yoyo: true,
-						paused: true,
 						ease: "linear",
 					})
 					.progress(norm);
 
 				animationsRef.current.push(anim);
 			});
-
-			// start animations if sound is on
-			animationsRef.current.forEach((anim) => anim.play());
+		} else {
+			// If sound is off or no letters, create flat line (zero amplitude)
+			createWavePoints(wave, width, 0, segments);
 		}
 
 		return () => {
 			animationsRef.current.forEach((anim) => anim.kill());
 			animationsRef.current = [];
-			if (flatteningAnimationRef.current) {
-				flatteningAnimationRef.current.kill();
-			}
 		};
-	}, [isHovering, isSoundOn]);
+	}, [isHovering, isSoundOn, letterCount]);
 
 	const handleSoundToggle = () => {
 		setHasUserInteracted(true);
+		const newSoundState = !isSoundOn;
 
-		if (isSoundOn) {
-			// turn sound off
+		if (!newSoundState) {
+			// Turn sound off
 			if (audioElementRef.current) {
 				audioElementRef.current.pause();
 			}
-
-			// immediately stop and reset all animations
-			animationsRef.current.forEach((anim) => anim.kill());
-			if (flatteningAnimationRef.current) {
-				flatteningAnimationRef.current.kill();
-			}
-
-			// immediately reset wave points to zero
-			const wave = waveRef.current;
-			if (wave) {
-				while (wave.points.length > 0) {
-					wave.points.removeItem(0);
-				}
-			}
-
-			// instantly set state to off
-			setIsSoundOn(false);
-		} else {
-			// turn sound on
-			setIsSoundOn(true);
-
-			// always try to play, ignoring letter count
+		} else if (letterCount > 0) {
+			// Only turn sound on if there are letters
 			if (audioElementRef.current) {
 				audioElementRef.current
 					.play()
@@ -190,6 +175,8 @@ const Sound = ({ letterCount = 0 }) => {
 					});
 			}
 		}
+
+		setIsSoundOn(newSoundState);
 	};
 
 	// handle hover effect for animations
