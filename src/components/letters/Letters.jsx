@@ -7,7 +7,6 @@ import {
 	LettersDisplay,
 	LettersRow,
 } from "./style";
-import A1 from "../../assets/Letters/A1.jpg";
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
@@ -17,7 +16,7 @@ const Letters = ({ onLetterCountChange }) => {
 	const inputRef = useRef(null);
 
 	const letterImage = {
-		A: A1,
+		A: "xelp",
 		B: "letters/B.png",
 		C: "letters/C.png",
 		D: "letters/D.png",
