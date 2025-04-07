@@ -36,6 +36,55 @@ import J2 from "../../assets/Letters/J_51.1466270, 99.4737983.jpg";
 import K1 from "../../assets/Letters/K_-16.0822796, 125.2296141.jpg";
 import K2 from "../../assets/Letters/K_27.7049681, 35.6274290.jpg";
 import K3 from "../../assets/Letters/K_31.1440814, 57.5221174.jpg";
+import L1 from "../../assets/Letters/L_-8.3314600, 15.0973210.jpg";
+import L2 from "../../assets/Letters/L_-15.6106414, 136.3288146.jpg";
+import L3 from "../../assets/Letters/L_61.0473425, -101.3786237.jpg";
+import M1 from "../../assets/Letters/M_-17.859961, 125.264890.jpg";
+import M2 from "../../assets/Letters/M_12.0851075, -84.2286402.jpg";
+import M3 from "../../assets/Letters/M_56.0943874, -115.7551848.jpg";
+import M4 from "../../assets/Letters/M_64.2582744, 116.5564096.jpg";
+import N1 from "../../assets/Letters/N_-17.8598312, 125.2576030.jpg";
+import N2 from "../../assets/Letters/N_32.5769955, 56.5787235.jpg";
+import N3 from "../../assets/Letters/N_66.7623736, -84.6549331.jpg";
+import O1 from "../../assets/Letters/O_-8.3260424, 15.0649766.jpg";
+import O2 from "../../assets/Letters/O_3.1646228, 72.8981555.jpg";
+import O3 from "../../assets/Letters/O_3.4006072, 73.6082539.jpg";
+import P1 from "../../assets/Letters/P_-4.1617897, 121.5130135.jpg";
+import P2 from "../../assets/Letters/P_50.6516071, -91.2194814.jpg";
+import P3 from "../../assets/Letters/P_69.812115, 18.861134.jpg";
+import Q1 from "../../assets/Letters/Q_0.7922795, 128.4271378.jpg";
+import Q2 from "../../assets/Letters/Q_69.309231, 70.722114.jpg";
+import R1 from "../../assets/Letters/R_38.4396484, -109.7301069.jpg";
+import R2 from "../../assets/Letters/R_38.5944012, -110.0468744.jpg";
+import R3 from "../../assets/Letters/R_51.1392961, 99.4220075.jpg";
+import S1 from "../../assets/Letters/S_-4.5016261, -71.3982632.jpg";
+import S2 from "../../assets/Letters/S_-6.9575610, -71.2495006.jpg";
+import S3 from "../../assets/Letters/S_-7.0519509, -71.5968845.jpg";
+import S4 from "../../assets/Letters/S_-24.1658572, 132.8858198.jpg";
+import S5 from "../../assets/Letters/S_18.8632011, 9.5828455.jpg";
+import S6 from "../../assets/Letters/S_63.0554759, 112.3564609.jpg";
+import T1 from "../../assets/Letters/T_7.3300129, 134.4911511.jpg";
+import T2 from "../../assets/Letters/T_18.3680751, -64.5248566.jpg";
+import T3 from "../../assets/Letters/T_50.3345072, -89.7731274.jpg";
+import T4 from "../../assets/Letters/T_51.4996849, -58.2432850.jpg";
+import U1 from "../../assets/Letters/U_-20.4094934, 34.6506610.jpg";
+import U2 from "../../assets/Letters/U_0.5964991, 127.4708274.jpg";
+import U3 from "../../assets/Letters/U_66.7612188, 77.6202811.jpg";
+import V1 from "../../assets/Letters/V_-11.3863809, -53.1170106.jpg";
+import V2 from "../../assets/Letters/V_32.600781, 56.584671.jpg";
+import V3 from "../../assets/Letters/V_55.8922052, -115.7817679.jpg";
+import W1 from "../../assets/Letters/W_-17.859961, 125.264890.jpg";
+import W2 from "../../assets/Letters/W_21.1299614, -73.5297769.jpg";
+import W3 from "../../assets/Letters/W_56.0943874, -115.7551848.jpg";
+import X1 from "../../assets/Letters/X_-15.8894840, 125.6064293.jpg";
+import X2 from "../../assets/Letters/X_-16.5085232, 124.9428548.jpg";
+import X3 from "../../assets/Letters/X_-23.9806327, 14.5309649.jpg";
+import Y1 from "../../assets/Letters/Y_-0.8541393, -50.9045274.jpg";
+import Y2 from "../../assets/Letters/Y_-22.6681130, 122.4295525.jpg";
+import Y3 from "../../assets/Letters/Y_-22.6681130, 122.4295525.jpg";
+import Z1 from "../../assets/Letters/Z_32.5769955, 56.5787235.jpg";
+import Z2 from "../../assets/Letters/Z_41.4084081, -107.3620640.jpg";
+import Z3 from "../../assets/Letters/Z_66.7623736, -84.6549331.jpg";
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
@@ -55,23 +104,23 @@ const Letters = ({ onLetterCountChange }) => {
 		G: [G1, G2],
 		H: [H1, H2, H3, H4],
 		I: [I1, I2, I3],
-		J: ["letters/J.png"],
-		K: ["letters/K.png"],
-		L: ["letters/L.png"],
-		M: ["letters/M.png"],
-		N: ["letters/N.png"],
-		O: ["letters/O.png"],
-		P: ["letters/P.png"],
-		Q: ["letters/Q.png"],
-		R: ["letters/R.png"],
-		S: ["letters/S.png"],
-		T: ["letters/T.png"],
-		U: ["letters/U.png"],
-		V: ["letters/V.png"],
-		W: ["letters/W.png"],
-		X: ["letters/X.png"],
-		Y: ["letters/Y.png"],
-		Z: ["letters/Z.png"],
+		J: [J1, J2],
+		K: [K1, K2, K3],
+		L: [L1, L2, L3],
+		M: [M1, M2, M3, M4],
+		N: [N1, N2, N3],
+		O: [O1, O2, O3],
+		P: [P1, P2, P3],
+		Q: [Q1, Q2],
+		R: [R1, R2, R3],
+		S: [S1, S2, S3, S4, S5, S6],
+		T: [T1, T2, T3, T4],
+		U: [U1, U2, U3],
+		V: [V1, V2, V3],
+		W: [W1, W2, W3],
+		X: [X1, X2, X3],
+		Y: [Y1, Y2, Y3],
+		Z: [Z1, Z2, Z3],
 	};
 
 	// select a random image for a letter and store it with the letter
