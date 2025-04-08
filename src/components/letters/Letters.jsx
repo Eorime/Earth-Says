@@ -123,12 +123,12 @@ import Exclamation2 from "../../assets/Symbols/!_54.5927044, -118.0474962.jpg";
 import Period1 from "../../assets/Symbols/._6.284543, 73.150693.jpg";
 import Period2 from "../../assets/Symbols/._21.7228080, -71.8103726.jpg";
 import Period3 from "../../assets/Symbols/._51.3977498, 99.6215323.jpg";
-import LeftParentheses1 from "../../assets/Symbols/-36.4526133, -70.9535168.jpg";
-import LeftParentheses2 from "../..//assets/Symbols/7.3093349, 134.4093933";
-import LeftParentheses3 from "../../assets/Symbols/68.7477554, 96.8979194.jpg";
-import RightParentheses1 from "../../assets/Symbols/right_-36.4526133, -70.9535168.jpg";
-import RightParentheses2 from "../../assets/Symbols/right_7.3093349, 134.4093933";
-import RightParentheses3 from "../../assets/Symbols/right_68.7477554, 96.8979194.jpg";
+import ParenthesesLeft1 from "../../assets/Symbols/-36.4526133, -70.9535168.jpg";
+import ParenthesesLeft2 from "../../assets/Symbols/7.3093349, 134.4093933.jpg";
+import ParenthesesLeft3 from "../../assets/Symbols/68.7477554, 96.8979194.jpg";
+import ParenthesesRight1 from "../../assets/Symbols/right_-36.4526133, -70.9535168.jpg";
+import ParenthesesRight2 from "../../assets/Symbols/right_7.3093349, 134.4093933.jpg";
+import ParenthesesRight3 from "../../assets/Symbols/right_68.7477554, 96.8979194.jpg";
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
@@ -175,6 +175,13 @@ const Letters = ({ onLetterCountChange }) => {
 		7: [Seven1, Seven2, Seven3],
 		8: [Eight1, Eight2, Eight3],
 		9: [Nine1, Nine2],
+		_: [Underscore],
+		"-": [Hyphen],
+		",": [Comma1, Comma2, Comma3],
+		"!": [Exclamation1, Exclamation2],
+		".": [Period1, Period2, Period3],
+		"(": [ParenthesesLeft1, ParenthesesLeft2, ParenthesesLeft3],
+		")": [ParenthesesRight1, ParenthesesRight2, ParenthesesRight3],
 	};
 
 	// select a random image for a letter and store it with the letter
@@ -205,21 +212,25 @@ const Letters = ({ onLetterCountChange }) => {
 	const handleInputChange = (e) => {
 		const value = e.target.value;
 		if (value) {
-			const lastChar = value.slice(-1).toUpperCase();
+			const lastChar = value.slice(-1);
 
 			const currentLetterCount = totalLetterCount;
-			const wouldAddChar = lastChar.match(/[A-Z0-9]/);
+			const wouldAddChar = lastChar !== " ";
 
 			if (wouldAddChar && currentLetterCount >= MAX_LETTERS) {
 				e.target.value = "";
 				return;
 			}
 
-			if (lastChar.match(/[A-Z0-9]/)) {
+			if (lastChar !== " ") {
+				const processedChar = lastChar.match(/[a-zA-Z]/)
+					? lastChar.toUpperCase()
+					: lastChar;
+
 				setLines((prev) => {
 					const newLines = [...prev];
 					// create a letter object with a pre-assigned random image
-					const charWithImage = assignRandomImage(lastChar);
+					const charWithImage = assignRandomImage(processedChar);
 					newLines[currentLine] = [...newLines[currentLine], charWithImage];
 					return newLines;
 				});
@@ -265,10 +276,11 @@ const Letters = ({ onLetterCountChange }) => {
 	useEffect(() => {
 		// handle physical keyboard events
 		const handleKeyDown = (e) => {
-			if (e.key === "Control" || e.key === "Shift") {
+			if (e.key === "Control") {
 				return;
 			}
-			if (e.ctrlKey || e.shiftKey) {
+
+			if (e.ctrlKey) {
 				return;
 			}
 
@@ -298,18 +310,22 @@ const Letters = ({ onLetterCountChange }) => {
 					];
 					return newLines;
 				});
-			} else if (e.key.length === 1 && e.key.match(/[a-zA-Z0-9]/)) {
+			} else if (e.key.length === 1) {
 				e.preventDefault();
 
 				if (totalLetterCount >= MAX_LETTERS) {
 					return;
 				}
 
+				console.log("Processing key:", e.key);
+
 				setLines((prev) => {
 					const newLines = [...prev];
-					const upperChar = e.key.toUpperCase();
-					// Create a letter object with a pre-assigned random image
-					const charWithImage = assignRandomImage(upperChar);
+					const processedChar = e.key.match(/[a-zA-Z]/)
+						? e.key.toUpperCase()
+						: e.key;
+					//create a letter object with a pre-assigned random image
+					const charWithImage = assignRandomImage(processedChar);
 					newLines[currentLine] = [...newLines[currentLine], charWithImage];
 					return newLines;
 				});
