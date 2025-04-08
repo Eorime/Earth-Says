@@ -129,6 +129,22 @@ import ParenthesesLeft3 from "../../assets/Symbols/68.7477554, 96.8979194.jpg";
 import ParenthesesRight1 from "../../assets/Symbols/right_-36.4526133, -70.9535168.jpg";
 import ParenthesesRight2 from "../../assets/Symbols/right_7.3093349, 134.4093933.jpg";
 import ParenthesesRight3 from "../../assets/Symbols/right_68.7477554, 96.8979194.jpg";
+import Apostrophe1 from "../../assets/Symbols/'_-7.0747433, 114.5775325.jpg";
+import Apostrophe2 from "../../assets/Symbols/'_5.9530164, 73.1324277.jpg";
+import Apostrophe3 from "../../assets/Symbols/'_18.3294235, -64.8071554.jpg";
+import Colon1 from "../../assets/Symbols/colon_23.6005127, -76.0522627.jpg";
+import Colon2 from "../../assets/Symbols/colon_43.9588986, 15.1769833.jpg";
+import Dash1 from "../../assets/Symbols/Dash_23.7953479, -76.1355714.jpg";
+import Dash2 from "../../assets/Symbols/Dash_23.8836197, -76.2686472.jpg";
+import Less1 from "../../assets/Symbols/Less_-11.3863809, -53.1170106.jpg";
+import Less2 from "../../assets/Symbols/less_55.8922052, -115.7817679.jpg";
+import More1 from "../../assets/Symbols/More_-11.3863809, -53.1170106.jpg";
+import More2 from "../../assets/Symbols/More_55.8922052, -115.7817679.jpg";
+import Question from "../../assets/Symbols/Question_-0.0391871, 127.4402888.jpg";
+import Quotation1 from "../../assets/Symbols/Quotation_51.2047505, -58.3081988.jpg";
+import Quotation2 from "../../assets/Symbols/Quotation_59.9988973, 67.3862190.jpg";
+import Semicolon1 from "../../assets/Symbols/semicolon_53.3458005, -57.2944106.jpg";
+import Semicolon2 from "../../assets/Symbols/semicolon_69.8290673, 18.8311602.jpg";
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
@@ -182,6 +198,14 @@ const Letters = ({ onLetterCountChange }) => {
 		".": [Period1, Period2, Period3],
 		"(": [ParenthesesLeft1, ParenthesesLeft2, ParenthesesLeft3],
 		")": [ParenthesesRight1, ParenthesesRight2, ParenthesesRight3],
+		"'": [Apostrophe1, Apostrophe2, Apostrophe3],
+		":": [Colon1, Colon2],
+		"/": [Dash1, Dash2],
+		"<": [Less1, Less2],
+		">": [More1, More2],
+		"?": [Question],
+		'"': [Quotation1, Quotation2],
+		";": [Semicolon1, Semicolon2],
 	};
 
 	// select a random image for a letter and store it with the letter
@@ -226,6 +250,12 @@ const Letters = ({ onLetterCountChange }) => {
 				const processedChar = lastChar.match(/[a-zA-Z]/)
 					? lastChar.toUpperCase()
 					: lastChar;
+
+				if (!letterImages[processedChar]) {
+					// If not in our map, ignore this input
+					e.target.value = "";
+					return;
+				}
 
 				setLines((prev) => {
 					const newLines = [...prev];
@@ -313,18 +343,21 @@ const Letters = ({ onLetterCountChange }) => {
 			} else if (e.key.length === 1) {
 				e.preventDefault();
 
+				const processedChar = e.key.match(/[a-zA-Z]/)
+					? e.key.toUpperCase()
+					: e.key;
+
+				if (!letterImages[processedChar]) {
+					//if not in our map, just ignore this input
+					return;
+				}
+
 				if (totalLetterCount >= MAX_LETTERS) {
 					return;
 				}
 
-				console.log("Processing key:", e.key);
-
 				setLines((prev) => {
 					const newLines = [...prev];
-					const processedChar = e.key.match(/[a-zA-Z]/)
-						? e.key.toUpperCase()
-						: e.key;
-					//create a letter object with a pre-assigned random image
 					const charWithImage = assignRandomImage(processedChar);
 					newLines[currentLine] = [...newLines[currentLine], charWithImage];
 					return newLines;
