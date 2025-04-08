@@ -48,8 +48,8 @@ export const EarthSaysText = styled.p`
 
 export const TextContainer = styled.div`
 	width: 80%;
-	height: 75%;
-	min-height: 75%;
+	height: auto;
+	max-height: 75%;
 	overflow: hidden;
 `;
 
