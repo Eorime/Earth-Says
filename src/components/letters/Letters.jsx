@@ -120,6 +120,15 @@ import Comma2 from "../../assets/Symbols/,_5.9530164, 73.1324277.jpg";
 import Comma3 from "../../assets/Symbols/,_18.3294235, -64.8071554.jpg";
 import Exclamation1 from "../../assets/Symbols/!_-0.0391871, 127.4402888.jpg";
 import Exclamation2 from "../../assets/Symbols/!_54.5927044, -118.0474962.jpg";
+import Period1 from "../../assets/Symbols/._6.284543, 73.150693.jpg";
+import Period2 from "../../assets/Symbols/._21.7228080, -71.8103726.jpg";
+import Period3 from "../../assets/Symbols/._51.3977498, 99.6215323.jpg";
+import LeftParentheses1 from "../../assets/Symbols/-36.4526133, -70.9535168.jpg";
+import LeftParentheses2 from "../..//assets/Symbols/7.3093349, 134.4093933";
+import LeftParentheses3 from "../../assets/Symbols/68.7477554, 96.8979194.jpg";
+import RightParentheses1 from "../../assets/Symbols/right_-36.4526133, -70.9535168.jpg";
+import RightParentheses2 from "../../assets/Symbols/right_7.3093349, 134.4093933";
+import RightParentheses3 from "../../assets/Symbols/right_68.7477554, 96.8979194.jpg";
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
