@@ -9,7 +9,7 @@ export const screenshot = () => {
 
 		const link = document.createElement("a");
 		link.href = screenshotUrl;
-		link.download = "EarthSays.png";
+		link.download = "EarthSays";
 		link.click();
 	});
 };
