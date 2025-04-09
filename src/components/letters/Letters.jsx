@@ -287,15 +287,10 @@ const Letters = ({ onLetterCountChange }) => {
 			return;
 		} else if (e.key === "Backspace" && e.target.value === "") {
 			e.preventDefault();
-			setLines((prev) => {
-				const newLines = [...prev];
-				if (newLines[currentLine].length > 0) {
-					newLines[currentLine] = newLines[currentLine].slice(0, -1);
-				} else if (currentLine > 0) {
-					setCurrentLine(currentLine - 1);
-				}
-				return newLines;
-			});
+
+			if (currentLine > 0) {
+				setCurrentLine(currentLine - 1);
+			}
 		}
 	};
 
