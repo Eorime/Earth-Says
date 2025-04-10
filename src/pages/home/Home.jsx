@@ -12,11 +12,13 @@ import FullScreen from "../../components/icons/fullscreen/FullScreen";
 import Sound from "../../components/icons/sound/Sound";
 import Credits from "../../components/icons/credits/Credits";
 import Modal from "../../components/modal/Modal";
+import Loader from "../../components/loader/Loader";
 
 const Home = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [letterCount, setLetterCount] = useState(0);
 	const modalRef = useRef();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleOutsideClick = (e) => {
 		if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -46,28 +48,31 @@ const Home = () => {
 	};
 
 	return (
-		<Container>
-			{openModal && (
-				<Modal
-					onClick={handleCreditClick}
-					openModal={openModal}
-					ref={modalRef}
-				/>
-			)}
+		<>
+			{isLoading && <Loader />}
+			<Container>
+				{openModal && (
+					<Modal
+						onClick={handleCreditClick}
+						openModal={openModal}
+						ref={modalRef}
+					/>
+				)}
 
-			<HomeInnerContainer>
-				<EarthSaysText>EARTH SAYS</EarthSaysText>
-				<TextContainer>
-					<Letters onLetterCountChange={handleLetterCountChange} />
-				</TextContainer>
-				<IconsContainer>
-					<Screenshot />
-					<Sound letterCount={letterCount} />
-					<Credits onClick={handleCreditClick} openModal={openModal} />
-					<FullScreen />
-				</IconsContainer>
-			</HomeInnerContainer>
-		</Container>
+				<HomeInnerContainer>
+					<EarthSaysText>EARTH SAYS</EarthSaysText>
+					<TextContainer>
+						<Letters onLetterCountChange={handleLetterCountChange} />
+					</TextContainer>
+					<IconsContainer>
+						<Screenshot />
+						<Sound letterCount={letterCount} />
+						<Credits onClick={handleCreditClick} openModal={openModal} />
+						<FullScreen />
+					</IconsContainer>
+				</HomeInnerContainer>
+			</Container>
+		</>
 	);
 };
 
