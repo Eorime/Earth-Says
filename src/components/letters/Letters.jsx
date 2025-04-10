@@ -207,6 +207,18 @@ const Letters = ({ onLetterCountChange }) => {
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
 	const MAX_LETTERS = 50;
 	const inputRef = useRef(null);
+	const [enterEnabled, setEnterEnabled] = useState(true);
+	document.body.style.pointerEvents = "none";
+
+	const handleEnterKey = () => {
+		if (enterEnabled && currentLine < 4) {
+			setCurrentLine((prev) => prev + 1);
+			setEnterEnabled(false);
+			setTimeout(() => {
+				setEnterEnabled(true);
+			}, 3000);
+		}
+	};
 
 	// select a random image for a letter and store it with the letter
 	const assignRandomImage = (char) => {
@@ -265,14 +277,17 @@ const Letters = ({ onLetterCountChange }) => {
 					return newLines;
 				});
 			} else if (lastChar === " ") {
-				setLines((prev) => {
-					const newLines = [...prev];
-					newLines[currentLine] = [
-						...newLines[currentLine],
-						{ char: " ", id: Date.now(), imageSrc: null },
-					];
-					return newLines;
-				});
+				if (prev[currentLine].length > 0) {
+					setLines((prev) => {
+						const newLines = [...prev];
+						newLines[currentLine] = [
+							...newLines[currentLine],
+							{ char: " ", id: Date.now(), imageSrc: null },
+						];
+						return newLines;
+					});
+				}
+				e.target.value = "";
 			}
 			e.target.value = "";
 		}
@@ -288,6 +303,7 @@ const Letters = ({ onLetterCountChange }) => {
 		} else if (e.key === "Backspace" && e.target.value === "") {
 			e.preventDefault();
 
+			// Only move to previous line if current line is empty
 			if (currentLine > 0) {
 				setCurrentLine(currentLine - 1);
 			}
@@ -311,9 +327,7 @@ const Letters = ({ onLetterCountChange }) => {
 
 			if (e.key === "Enter") {
 				e.preventDefault();
-				if (currentLine < 4) {
-					setCurrentLine((prev) => prev + 1);
-				}
+				handleEnterKey();
 			} else if (e.key === "Backspace") {
 				e.preventDefault();
 				setLines((prev) => {
@@ -327,14 +341,16 @@ const Letters = ({ onLetterCountChange }) => {
 				});
 			} else if (e.key === " ") {
 				e.preventDefault();
-				setLines((prev) => {
-					const newLines = [...prev];
-					newLines[currentLine] = [
-						...newLines[currentLine],
-						{ char: " ", id: Date.now(), imageSrc: null },
-					];
-					return newLines;
-				});
+				if (newLines[currentLine].length > 0) {
+					setLines((prev) => {
+						const newLines = [...prev];
+						newLines[currentLine] = [
+							...newLines[currentLine],
+							{ char: " ", id: Date.now(), imageSrc: null },
+						];
+						return newLines;
+					});
+				}
 			} else if (e.key.length === 1) {
 				e.preventDefault();
 
@@ -364,7 +380,7 @@ const Letters = ({ onLetterCountChange }) => {
 		return () => {
 			document.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [currentLine, totalLetterCount]);
+	}, [currentLine, totalLetterCount, enterEnabled]);
 
 	return (
 		<Container onClick={handleContainerClick}>
