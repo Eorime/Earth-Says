@@ -210,6 +210,25 @@ const Letters = ({ onLetterCountChange }) => {
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	document.body.style.pointerEvents = "none";
 
+	//check if the device supports touch
+	const isTouchDevice = () => {
+		return (
+			"ontouchstart" in window ||
+			navigator.maxTouchPoints > 0 ||
+			navigator.msMaxTouchPoints > 0
+		);
+	};
+
+	//apply pointer events based on device type
+	if (isTouchDevice()) {
+		//touch device - enable pointer events
+		document.body.style.pointerEvents = "auto";
+	} else {
+		//non-touch device - disable pointer events
+		document.body.style.pointerEvents = "none";
+	}
+
+	//todo: do NOT allow to click on the lines straight up
 	const handleEnterKey = () => {
 		if (enterEnabled && currentLine < 4) {
 			setCurrentLine((prev) => prev + 1);
