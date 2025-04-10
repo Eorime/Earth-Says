@@ -14,25 +14,6 @@ export const screenshot = () => {
 	});
 };
 
-// export const Rectangle = styled.div`
-// 	width: 20px;
-// 	height: 20px;
-// 	cursor: pointer;
-// 	position: relative;
-// 	transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
-// 	transform-origin: center;
-// 	border: 2px solid rgb(102, 102, 102);
-// 	z-index: 0;
-// 	left: 50%;
-// 	transform: translateX(-50%);
-
-// 	&:hover {
-// 		width: 40px;
-// 		left: 50%;
-// 		transform: translateX(-50%);
-// 	}
-// `;
-
 export const Rectangle = styled.div`
 	position: absolute;
 	width: 20px;
@@ -75,12 +56,3 @@ export const ScreenshotContainer = styled.div`
 		border: 2px solid white;
 	}
 `;
-
-// export const ScreenshotContainer = styled.div`
-// bottom: 0;
-// cursor: pointer;
-
-// &:active ${Rectangle}, &:active ${Circle} {
-// 	border: 2px solid white;
-// 	}
-// 	`;
