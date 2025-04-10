@@ -2,18 +2,31 @@ import styled from "styled-components";
 import html2canvas from "html2canvas";
 
 export const screenshot = () => {
+	//find and temporarily hide the icons
+	const iconsContainer = document.querySelector(".icons-container");
+
+	if (iconsContainer) {
+		iconsContainer.style.visibility = "hidden";
+	}
+
 	html2canvas(document.body, {
 		backgroundColor: null, // avoid adding a white background
+		ignoreElements: (element) => {
+			return element.classList.contains("icons-container");
+		},
 	}).then((canvas) => {
 		const screenshotUrl = canvas.toDataURL("image/png");
-
 		const link = document.createElement("a");
 		link.href = screenshotUrl;
 		link.download = "EarthSays";
 		link.click();
+
+		// restore visibility after screenshot is taken
+		if (iconsContainer) {
+			iconsContainer.style.visibility = "visible";
+		}
 	});
 };
-
 export const Rectangle = styled.div`
 	position: absolute;
 	width: 20px;
