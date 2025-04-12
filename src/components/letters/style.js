@@ -16,6 +16,7 @@ const scaleUp = keyframes`
 
 export const Container = styled.div`
 	min-height: 70vh;
+	height: 750px;
 	width: 100%;
 	justify-content: center;
 	align-items: center;
@@ -32,6 +33,7 @@ export const DisplayContainer = styled.div`
 `;
 
 export const LettersRow = styled.div`
+	height: 120px;
 	display: flex;
 	justify-content: center;
 	margin: 1rem 0;
