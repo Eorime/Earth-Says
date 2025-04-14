@@ -25,10 +25,7 @@ export const Container = styled.div`
 
 export const DisplayContainer = styled.div`
 	width: 100%;
-	height: 75%;
-	display: flex;
-	position: absolute;
-	flex-direction: column;
+	height: auto;
 	overflow-x: hidden;
 	overflow-y: hidden;
 	justify-content: center;
@@ -38,6 +35,7 @@ export const LettersRow = styled.div`
 	display: flex;
 	justify-content: center;
 	margin: 1rem 0;
+	margin-bottom: 0;
 `;
 
 export const LettersDisplay = styled.div`
