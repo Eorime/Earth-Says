@@ -99,7 +99,7 @@ const Sound = ({ letterCount = 0 }) => {
 			const point = wave.ownerSVGElement.createSVGPoint();
 
 			point.x = i * interval;
-			point.y = amplitude * Math.sin(norm * Math.PI * 4);
+			point.y = amplitude * Math.sin(norm * Math.PI * 5);
 
 			wave.points.appendItem(point);
 			points.push(point);
