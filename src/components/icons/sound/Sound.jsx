@@ -117,7 +117,7 @@ const Sound = ({ letterCount = 0 }) => {
 		animationsRef.current = [];
 
 		const wave = waveRef.current;
-		const width = 42;
+		const width = 50;
 		const amplitude = shouldAnimate ? (isHovering ? 8 : 12) : 0;
 		const segments = 210;
 
