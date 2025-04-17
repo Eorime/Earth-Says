@@ -118,8 +118,8 @@ const Sound = ({ letterCount = 0 }) => {
 
 		const wave = waveRef.current;
 		const width = 50;
-		const amplitude = shouldAnimate ? (isHovering ? 8 : 12) : 0;
-		const segments = 210;
+		const amplitude = shouldAnimate ? (isHovering ? 8 : 10) : 0;
+		const segments = 180;
 
 		// Clear existing points
 		while (wave.points.length > 0) {
