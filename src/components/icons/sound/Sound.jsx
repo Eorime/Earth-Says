@@ -9,6 +9,7 @@ const Sound = ({ letterCount = 0 }) => {
 	const waveRef = useRef(null);
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
+	const waveAnimationRef = useRef(null);
 	const audioElementRef = useRef(null);
 	const prevLetterCountRef = useRef(letterCount);
 	const hasLettersRef = useRef(letterCount > 0);
@@ -99,7 +100,8 @@ const Sound = ({ letterCount = 0 }) => {
 			const point = wave.ownerSVGElement.createSVGPoint();
 
 			point.x = i * interval;
-			point.y = amplitude * Math.sin(norm * Math.PI * 5);
+			// Initial position, phase will be animated
+			point.y = 0;
 
 			wave.points.appendItem(point);
 			points.push(point);
@@ -108,13 +110,14 @@ const Sound = ({ letterCount = 0 }) => {
 		return points;
 	};
 
-	// A function to update the wave animation without recreating it on every letter count change
+	// A function to update the wave animation that moves from left to right
 	const updateWaveAnimation = (shouldAnimate) => {
 		if (!waveRef.current) return;
 
 		// Clean up previous animations
-		animationsRef.current.forEach((anim) => anim.kill());
-		animationsRef.current = [];
+		if (waveAnimationRef.current) {
+			waveAnimationRef.current.kill();
+		}
 
 		const wave = waveRef.current;
 		const width = 50;
@@ -126,23 +129,34 @@ const Sound = ({ letterCount = 0 }) => {
 			wave.points.removeItem(0);
 		}
 
-		// Only create animated points if we should show waves
+		// Create initial points
+		const points = createWavePoints(wave, width, amplitude, segments);
+
+		// Only animate if we should show waves
 		if (shouldAnimate && letterCount > 0 && isSoundOn) {
-			const points = createWavePoints(wave, width, amplitude, segments);
+			// Instead of animating each point individually, animate a phase value
+			// and update all points in the onUpdate callback
+			waveAnimationRef.current = gsap.to(
+				{
+					phase: 0,
+				},
+				{
+					phase: 2 * Math.PI,
+					duration: 2,
+					repeat: -1,
+					ease: "linear",
+					onUpdate: function () {
+						const currentPhase = this.targets()[0].phase;
 
-			points.forEach((point, i) => {
-				const norm = i / (segments - 1);
-				const anim = gsap
-					.to(point, 1, {
-						y: -point.y,
-						repeat: -1,
-						yoyo: true,
-						ease: "linear",
-					})
-					.progress(norm);
-
-				animationsRef.current.push(anim);
-			});
+						for (let i = 0; i < points.length; i++) {
+							const norm = i / (segments - 1);
+							// The phase offset makes the wave move from left to right
+							points[i].y =
+								amplitude * Math.sin(norm * Math.PI * 5 - currentPhase);
+						}
+					},
+				}
+			);
 		} else {
 			// If sound is off or no letters, create flat line (zero amplitude)
 			createWavePoints(wave, width, 0, segments);
@@ -154,8 +168,9 @@ const Sound = ({ letterCount = 0 }) => {
 		updateWaveAnimation(letterCount > 0 && isSoundOn);
 
 		return () => {
-			animationsRef.current.forEach((anim) => anim.kill());
-			animationsRef.current = [];
+			if (waveAnimationRef.current) {
+				waveAnimationRef.current.kill();
+			}
 		};
 	}, [isHovering, isSoundOn]);
 
