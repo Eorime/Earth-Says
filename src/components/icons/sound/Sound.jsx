@@ -90,26 +90,6 @@ const Sound = ({ letterCount = 0 }) => {
 		}
 	};
 
-	// Create semi-random values for a more natural soundwave effect
-	const createSoundwavePattern = (count, baseAmplitude) => {
-		// Seed values to ensure pattern
-		const pattern = [];
-
-		// Generate a pattern with some randomness but still smooth transitions
-		for (let i = 0; i < count; i++) {
-			// Create some variation that will make the soundwave look natural
-			// Mix multiple frequencies for realistic audio visualization
-			const value =
-				Math.sin(i * 0.4) * 0.5 +
-				Math.sin(i * 0.8) * 0.3 +
-				Math.sin(i * 1.2) * 0.2;
-
-			pattern.push(value * baseAmplitude);
-		}
-
-		return pattern;
-	};
-
 	const createWavePoints = (wave, width, segments) => {
 		const interval = width / (segments - 1);
 		const points = [];
@@ -125,7 +105,7 @@ const Sound = ({ letterCount = 0 }) => {
 		return points;
 	};
 
-	// A function to update the wave animation to look like a soundwave
+	// A function to update the wave animation with wider waves
 	const updateWaveAnimation = (shouldAnimate) => {
 		if (!waveRef.current) return;
 
@@ -149,45 +129,26 @@ const Sound = ({ letterCount = 0 }) => {
 
 		// Only animate if we should show waves
 		if (shouldAnimate && letterCount > 0 && isSoundOn) {
-			// Generate pattern values that resemble audio waveforms
-			const patternLength = 30; // Number of distinct pattern values
-			const pattern = createSoundwavePattern(patternLength, baseAmplitude);
-
-			// Animation data
+			// Animation data with simple phase
 			const animContext = {
-				offset: 0,
-				amp: baseAmplitude,
-				intensity: Math.min(0.5 + letterCount / 100, 1), // Intensity based on letter count
+				phase: 0,
 			};
 
-			// Animate parameters
+			// Animate the phase
 			waveAnimationRef.current = gsap.to(animContext, {
-				offset: patternLength, // Move through the pattern
+				phase: 2 * Math.PI,
 				duration: 2,
 				repeat: -1,
 				ease: "none",
 				onUpdate: function () {
-					// Get current animation progress
-					const offset = this.targets()[0].offset % patternLength;
-					const intensity = this.targets()[0].intensity;
+					const currentPhase = this.targets()[0].phase;
 
-					// Update each point
 					for (let i = 0; i < points.length; i++) {
-						// Create a wrapped index into our pattern array
-						const patternIndex = Math.floor((i + offset) % patternLength);
+						const norm = i / (segments - 1);
 
-						// Get base value from pattern
-						let value = pattern[patternIndex];
-
-						// Add slight variation based on position
-						const positionVariation =
-							Math.sin(i * 0.05 + Date.now() * 0.001) * 0.3;
-
-						// Add small random component for realism (minimal jitter)
-						const jitter = (Math.random() * 0.4 - 0.2) * intensity;
-
-						// Combine all factors
-						points[i].y = value + positionVariation + jitter;
+						// This makes each wave cycle much wider
+						points[i].y =
+							baseAmplitude * Math.sin(norm * Math.PI * 2.5 - currentPhase);
 					}
 				},
 			});
