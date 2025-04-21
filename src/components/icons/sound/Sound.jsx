@@ -105,7 +105,7 @@ const Sound = ({ letterCount = 0 }) => {
 		return points;
 	};
 
-	// A function to update the wave animation with wider waves
+	// A function to update the wave animation with varying wave heights
 	const updateWaveAnimation = (shouldAnimate) => {
 		if (!waveRef.current) return;
 
@@ -132,23 +132,33 @@ const Sound = ({ letterCount = 0 }) => {
 			// Animation data with simple phase
 			const animContext = {
 				phase: 0,
+				secondaryPhase: 0,
 			};
 
 			// Animate the phase
 			waveAnimationRef.current = gsap.to(animContext, {
 				phase: 2 * Math.PI,
+				secondaryPhase: 4 * Math.PI, // Different speed for amplitude modulation
 				duration: 2,
 				repeat: -1,
 				ease: "none",
 				onUpdate: function () {
 					const currentPhase = this.targets()[0].phase;
+					const secondaryPhase = this.targets()[0].secondaryPhase;
 
 					for (let i = 0; i < points.length; i++) {
 						const norm = i / (segments - 1);
 
-						// This makes each wave cycle much wider
+						// Create a spatial amplitude modulation
+						// This creates "waves of waves" - higher waves in some areas, lower in others
+						const amplitudeModulation =
+							0.3 + Math.sin(norm * 3 + secondaryPhase * 0.5) * 0.7 + 0.7;
+
+						// Apply both the primary wave and the amplitude modulation
 						points[i].y =
-							baseAmplitude * Math.sin(norm * Math.PI * 2.5 - currentPhase);
+							baseAmplitude *
+							amplitudeModulation *
+							Math.sin(norm * Math.PI * 5 - currentPhase);
 					}
 				},
 			});
