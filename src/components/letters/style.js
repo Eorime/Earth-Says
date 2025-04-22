@@ -56,6 +56,10 @@ export const LettersDisplay = styled.div`
 	@media screen and (max-width: 1440px) {
 		max-height: 440px;
 	}
+
+	@media screen and (max-width: 800px) {
+		gap: 0.5rem;
+	}
 `;
 
 export const LetterBox = styled.div`
@@ -83,4 +87,19 @@ export const LetterImage = styled.img`
 	height: 100%;
 	object-fit: contain;
 	animation: ${scaleUp} 0.1s ease-out;
+`;
+
+export const SpaceBox = styled.div`
+	width: 60px;
+	height: 120px;
+
+	@media screen and (max-width: 1440px) {
+		width: 48px;
+		height: 96px;
+	}
+
+	@media screen and (max-width: 500px) {
+		width: 30px;
+		height: 60px;
+	}
 `;

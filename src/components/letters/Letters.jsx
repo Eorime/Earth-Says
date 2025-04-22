@@ -6,6 +6,7 @@ import {
 	LetterImage,
 	LettersDisplay,
 	LettersRow,
+	SpaceBox,
 } from "./style";
 
 //letter imports
@@ -256,7 +257,7 @@ const Letters = ({ onLetterCountChange }) => {
 			setEnterEnabled(false);
 			setTimeout(() => {
 				setEnterEnabled(true);
-			}, 3000);
+			}, 2000);
 		} else {
 			inputRef.current?.focus();
 			moveCursorToEnd();
@@ -495,19 +496,20 @@ const Letters = ({ onLetterCountChange }) => {
 				{lines.map((line, lineIndex) => (
 					<LettersRow key={lineIndex}>
 						<LettersDisplay>
-							{line.map((letterObj) => (
-								<LetterBox key={letterObj.id}>
-									{letterObj.char !== " " && letterObj.imageSrc && (
-										<LetterImage
-											src={letterObj.imageSrc}
-											alt={`Character ${letterObj.char}`}
-										/>
-									)}
-									{letterObj.char === " " && (
-										<div style={{ width: "4rem", height: "4rem" }} />
-									)}
-								</LetterBox>
-							))}
+							{line.map((letterObj) =>
+								letterObj.char !== " " ? (
+									<LetterBox key={letterObj.id}>
+										{letterObj.imageSrc && (
+											<LetterImage
+												src={letterObj.imageSrc}
+												alt={`Character ${letterObj.char}`}
+											/>
+										)}
+									</LetterBox>
+								) : (
+									<SpaceBox key={letterObj.id} />
+								)
+							)}
 						</LettersDisplay>
 					</LettersRow>
 				))}
