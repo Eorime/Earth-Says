@@ -45,13 +45,14 @@ const Sound = ({ letterCount = 0 }) => {
 			// Going from 0 letters to some letters
 			setIsSoundOn(true);
 			playSound();
-			updateWaveAnimation(true);
+			// Set up initial static wave
+			updateWaveAnimation(true, false);
 		} else if (!wasEmpty && isEmpty) {
 			// Going from some letters to 0 letters
 			if (audioElementRef.current) {
 				audioElementRef.current.pause();
 				setIsSoundOn(false);
-				updateWaveAnimation(false);
+				updateWaveAnimation(false, false);
 			}
 		}
 
@@ -110,7 +111,7 @@ const Sound = ({ letterCount = 0 }) => {
 	};
 
 	// A function to update the wave animation without recreating it on every letter count change
-	const updateWaveAnimation = (shouldAnimate) => {
+	const updateWaveAnimation = (shouldShow, shouldAnimate) => {
 		if (!waveRef.current) return;
 
 		// Clean up previous animations
@@ -119,7 +120,7 @@ const Sound = ({ letterCount = 0 }) => {
 
 		const wave = waveRef.current;
 		const width = 50;
-		const amplitude = shouldAnimate ? (isHovering ? 4 : 4) : 0;
+		const amplitude = shouldShow ? 4 : 0;
 		const segments = 210;
 
 		// Clear existing points
@@ -127,10 +128,11 @@ const Sound = ({ letterCount = 0 }) => {
 			wave.points.removeItem(0);
 		}
 
-		// Only create animated points if we should show waves
-		if (shouldAnimate && letterCount > 0 && isSoundOn) {
-			const points = createWavePoints(wave, width, amplitude, segments);
+		// Create points - static if not animating, animated if hovering
+		const points = createWavePoints(wave, width, amplitude, segments);
 
+		// Only create animated points if we should animate (when hovering)
+		if (shouldShow && shouldAnimate && letterCount > 0 && isSoundOn) {
 			// Create a timeline for the wave effect
 			const timeline = gsap.timeline({
 				repeat: -1,
@@ -162,21 +164,19 @@ const Sound = ({ letterCount = 0 }) => {
 			});
 
 			animationsRef.current = phaseShifts;
-		} else {
-			// If sound is off or no letters, create flat line (zero amplitude)
-			createWavePoints(wave, width, 0, segments);
 		}
 	};
 
 	// Setup wave animation initially and on hover state change
 	useEffect(() => {
-		updateWaveAnimation(letterCount > 0 && isSoundOn);
+		// Only animate when hovering
+		updateWaveAnimation(letterCount > 0 && isSoundOn, isHovering);
 
 		return () => {
 			animationsRef.current.forEach((anim) => anim.kill());
 			animationsRef.current = [];
 		};
-	}, [isHovering, isSoundOn]);
+	}, [isHovering, isSoundOn, letterCount]);
 
 	const handleSoundToggle = () => {
 		setHasUserInteracted(true);
@@ -187,7 +187,7 @@ const Sound = ({ letterCount = 0 }) => {
 			if (audioElementRef.current) {
 				audioElementRef.current.pause();
 			}
-			updateWaveAnimation(false);
+			updateWaveAnimation(false, false);
 		} else if (letterCount > 0) {
 			// Only turn sound on if there are letters
 			if (audioElementRef.current) {
@@ -203,15 +203,21 @@ const Sound = ({ letterCount = 0 }) => {
 						});
 					});
 			}
-			updateWaveAnimation(true);
+			// Show the wave but don't animate unless hovered
+			updateWaveAnimation(true, isHovering);
 		}
 
 		setIsSoundOn(newSoundState);
 	};
 
 	// handle hover effect for animations
-	const handleMouseEnter = () => setIsHovering(true);
-	const handleMouseLeave = () => setIsHovering(false);
+	const handleMouseEnter = () => {
+		setIsHovering(true);
+	};
+
+	const handleMouseLeave = () => {
+		setIsHovering(false);
+	};
 
 	return (
 		<SoundContainer>
