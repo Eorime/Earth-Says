@@ -152,7 +152,7 @@ const Sound = ({ letterCount = 0 }) => {
 						// Create a spatial amplitude modulation
 						// This creates "waves of waves" - higher waves in some areas, lower in others
 						const amplitudeModulation =
-							0.3 + Math.sin(norm * 3 + secondaryPhase * 0.5) * 0.7 + 0.7;
+							0.3 + Math.sin(norm * 3 + secondaryPhase * 0.5) * 0.5 + 0.7;
 
 						// Apply both the primary wave and the amplitude modulation
 						points[i].y =
