@@ -99,7 +99,8 @@ const Sound = ({ letterCount = 0 }) => {
 			const point = wave.ownerSVGElement.createSVGPoint();
 
 			point.x = i * interval;
-			point.y = -(amplitude * Math.sin(norm * Math.PI * 3.5));
+			// Increased frequency from 3.5 to 7 to make waves less wide
+			point.y = -(amplitude * Math.sin(norm * Math.PI * 7));
 
 			wave.points.appendItem(point);
 			points.push(point);
@@ -118,7 +119,7 @@ const Sound = ({ letterCount = 0 }) => {
 
 		const wave = waveRef.current;
 		const width = 50;
-		const amplitude = shouldAnimate ? (isHovering ? 8 : 8) : 0;
+		const amplitude = shouldAnimate ? (isHovering ? 4 : 4) : 0;
 		const segments = 210;
 
 		// Clear existing points
@@ -130,19 +131,37 @@ const Sound = ({ letterCount = 0 }) => {
 		if (shouldAnimate && letterCount > 0 && isSoundOn) {
 			const points = createWavePoints(wave, width, amplitude, segments);
 
+			// Create a timeline for the wave effect
+			const timeline = gsap.timeline({
+				repeat: -1,
+				defaults: { ease: "linear" },
+			});
+
+			// Create a group of animations that will run simultaneously
+			const phaseShifts = [];
+
+			// Create animations with phase shifts
 			points.forEach((point, i) => {
 				const norm = i / (segments - 1);
-				const anim = gsap
-					.to(point, 1, {
-						y: -point.y,
-						repeat: -1,
-						yoyo: true,
-						ease: "linear",
-					})
-					.progress(norm);
 
-				animationsRef.current.push(anim);
+				// Create a phase shift animation (moving right to left instead of left to right)
+				const phaseShift = gsap.to(
+					{},
+					{
+						duration: 1,
+						onUpdate: function () {
+							const phase = -this.progress() * Math.PI * 2; // Negative to reverse direction
+							// Increased frequency from 3.5 to 7 to make waves less wide
+							point.y = -(amplitude * Math.sin(norm * Math.PI * 7 + phase));
+						},
+						repeat: -1,
+					}
+				);
+
+				phaseShifts.push(phaseShift);
 			});
+
+			animationsRef.current = phaseShifts;
 		} else {
 			// If sound is off or no letters, create flat line (zero amplitude)
 			createWavePoints(wave, width, 0, segments);
