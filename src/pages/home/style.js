@@ -44,6 +44,7 @@ export const EarthSaysText = styled.p`
 	font-size: clamp(8px, 4vw, 16px);
 	margin: 0;
 	letter-spacing: 1.3px;
+	user-select: none;
 `;
 
 export const TextContainer = styled.div`
