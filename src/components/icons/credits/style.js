@@ -7,7 +7,7 @@ export const CreditsContainer = styled.div`
 `;
 
 export const Rectangle = styled.div`
-	width: ${(props) => (props.openModal ? "40px" : "20px")};
+	width: ${(props) => (props.openModal ? "40px" : "19px")};
 	height: 20px;
 	cursor: pointer;
 	position: absolute;
@@ -41,6 +41,7 @@ export const Figure = styled.div`
 			border-radius: 50%;
 			border: 2px solid rgb(102, 102, 102);
 			left: 50%;
+			top: 0.5px;
 			transform: translateX(-50%);
 		}
 
@@ -71,6 +72,7 @@ export const Figure = styled.div`
 			border-radius: 50%;
 			border: 2px solid rgb(102, 102, 102);
 			left: 50%;
+			top: 0.5px;
 			transform: translateX(-50%);
 		}
 
