@@ -36,6 +36,8 @@ export const LettersRow = styled.div`
 	justify-content: center;
 	margin: 1rem 0;
 	margin-bottom: 0;
+	user-select: none;
+	pointer-events: none;
 `;
 
 export const LettersDisplay = styled.div`
@@ -62,6 +64,8 @@ export const LetterBox = styled.div`
 	align-items: center;
 	width: 120px;
 	height: 120px;
+	user-select: none;
+	pointer-events: none;
 
 	@media screen and (max-width: 1440px) {
 		width: 96px;
