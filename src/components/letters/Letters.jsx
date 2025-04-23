@@ -230,12 +230,15 @@ const Letters = ({ onLetterCountChange }) => {
 
 	//todo: do NOT allow to click on the lines straight up
 	const handleEnterKey = () => {
-		if (enterEnabled && currentLine < 4) {
+		if (currentLine < 4) {
 			setCurrentLine((prev) => prev + 1);
 			setEnterEnabled(false);
 			setTimeout(() => {
 				setEnterEnabled(true);
 			}, 3000);
+		} else {
+			inputRef.current?.focus();
+			moveCursorToEnd();
 		}
 	};
 
@@ -263,6 +266,17 @@ const Letters = ({ onLetterCountChange }) => {
 			onLetterCountChange(count);
 		}
 	}, [lines, onLetterCountChange]);
+
+	const moveCursorToEnd = () => {
+		if (inputRef.current) {
+			const input = inputRef.current;
+			// Move real cursor
+			const length = input.value.length;
+			input.setSelectionRange(length, length);
+		}
+
+		setCurrentLine((prev) => Math.min(prev, lines.length - 1));
+	};
 
 	const handleInputChange = (e) => {
 		const value = e.target.value;
@@ -310,6 +324,7 @@ const Letters = ({ onLetterCountChange }) => {
 			}
 			e.target.value = "";
 		}
+		moveCursorToEnd();
 	};
 
 	const handleKeyDown = (e) => {
@@ -327,10 +342,14 @@ const Letters = ({ onLetterCountChange }) => {
 				setCurrentLine(currentLine - 1);
 			}
 		}
+		moveCursorToEnd();
 	};
 
 	const handleContainerClick = () => {
-		inputRef.current?.focus();
+		if (inputRef.current) {
+			inputRef.current.focus();
+			moveCursorToEnd();
+		}
 	};
 
 	useEffect(() => {
