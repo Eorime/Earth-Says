@@ -368,23 +368,38 @@ const Letters = ({ onLetterCountChange }) => {
 				handleEnterKey();
 			} else if (e.key === "Backspace") {
 				e.preventDefault();
+
 				setLines((prev) => {
 					const newLines = [...prev];
-					if (newLines[currentLine].length > 0) {
-						newLines[currentLine] = newLines[currentLine].slice(0, -1);
-					} else if (currentLine > 0) {
-						setCurrentLine(currentLine - 1);
+
+					// Find the last line that has at least one character
+					let lastNonEmptyLineIndex = -1;
+					for (let i = newLines.length - 1; i >= 0; i--) {
+						if (newLines[i].length > 0) {
+							lastNonEmptyLineIndex = i;
+							break;
+						}
 					}
+
+					if (lastNonEmptyLineIndex !== -1) {
+						newLines[lastNonEmptyLineIndex] = newLines[
+							lastNonEmptyLineIndex
+						].slice(0, -1);
+
+						// update currentLine if needed
+						setCurrentLine(lastNonEmptyLineIndex);
+					}
+
 					return newLines;
 				});
 			} else if (e.key === " ") {
 				e.preventDefault();
 
-				// Check if the current line is empty before allowing a space character
+				//check if the current line is empty before allowing a space character
 				setLines((prev) => {
 					const newLines = [...prev];
 
-					// Only add a space if the current line isn't empty
+					//only add a space if the current line isn't empty
 					if (newLines[currentLine].length > 0) {
 						newLines[currentLine] = [
 							...newLines[currentLine],
