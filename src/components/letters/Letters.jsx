@@ -230,7 +230,7 @@ const Letters = ({ onLetterCountChange }) => {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	});
+	}, []);
 
 	//check if the device supports touch
 	const isTouchDevice = () => {
