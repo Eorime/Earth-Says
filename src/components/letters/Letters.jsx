@@ -213,15 +213,14 @@ const Letters = ({ onLetterCountChange }) => {
 
 	useEffect(() => {
 		const handleResize = () => {
-			if (window.innerWidth < 1600) {
-				setMaxLetters(30);
-			} else if (window.innerWidth < 800) {
+			if (window.innerWidth < 800) {
 				setMaxLetters(20);
+			} else if (window.innerWidth < 1600) {
+				setMaxLetters(30);
 			} else {
 				setMaxLetters(50);
 			}
 		};
-
 		handleResize();
 
 		window.addEventListener("resize", handleResize);
