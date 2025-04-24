@@ -205,10 +205,32 @@ const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
-	const MAX_LETTERS = 50;
+	const [maxLetters, setMaxLetters] = useState(50);
+	// const MAX_LETTERS = 50;
 	const inputRef = useRef(null);
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	document.body.style.pointerEvents = "none";
+
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth < 1600) {
+				setMaxLetters(30);
+			} else if (window.innerWidth < 800) {
+				setMaxLetters(20);
+			} else {
+				setMaxLetters(50);
+			}
+		};
+
+		handleResize();
+
+		window.addEventListener("resize", handleResize);
+
+		//cleanup
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	});
 
 	//check if the device supports touch
 	const isTouchDevice = () => {
@@ -286,7 +308,7 @@ const Letters = ({ onLetterCountChange }) => {
 			const currentLetterCount = totalLetterCount;
 			const wouldAddChar = lastChar !== " ";
 
-			if (wouldAddChar && currentLetterCount >= MAX_LETTERS) {
+			if (wouldAddChar && currentLetterCount >= maxLetters) {
 				e.target.value = "";
 				return;
 			}
@@ -420,7 +442,7 @@ const Letters = ({ onLetterCountChange }) => {
 					return;
 				}
 
-				if (totalLetterCount >= MAX_LETTERS) {
+				if (totalLetterCount >= maxLetters) {
 					return;
 				}
 
