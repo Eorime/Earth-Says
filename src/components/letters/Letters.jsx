@@ -332,7 +332,11 @@ const Letters = ({ onLetterCountChange }) => {
 					return newLines;
 				});
 			} else if (lastChar === " ") {
-				if (prev[currentLine].length > 0) {
+				const currentLineContent = prev[currentLine];
+				if (
+					currentLineContent.length > 0 &&
+					currentLineContent[currentLineContent.length - 1].char !== " "
+				) {
 					setLines((prev) => {
 						const newLines = [...prev];
 						newLines[currentLine] = [
@@ -420,9 +424,13 @@ const Letters = ({ onLetterCountChange }) => {
 				//check if the current line is empty before allowing a space character
 				setLines((prev) => {
 					const newLines = [...prev];
+					const currentLineContent = newLines[currentLine];
 
 					//only add a space if the current line isn't empty
-					if (newLines[currentLine].length > 0) {
+					if (
+						currentLineContent.length > 0 &&
+						currentLineContent[currentLineContent.length - 1].char !== " "
+					) {
 						newLines[currentLine] = [
 							...newLines[currentLine],
 							{ char: " ", id: Date.now(), imageSrc: null },
