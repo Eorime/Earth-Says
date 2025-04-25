@@ -28,7 +28,7 @@ export const Container = styled.div`
 
 export const DisplayContainer = styled.div`
 	width: 100%;
-	height: auto;
+	height: 100%;
 	overflow-x: hidden;
 	overflow-y: hidden;
 	justify-content: center;
