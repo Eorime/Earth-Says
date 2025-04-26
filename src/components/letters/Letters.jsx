@@ -203,11 +203,10 @@ export const letterImages = {
 };
 
 const Letters = ({ onLetterCountChange }) => {
-	const [lines, setLines] = useState([[], [], [], [], []]);
+	const [lines, setLines] = useState([[], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
 	const [maxLetters, setMaxLetters] = useState(50);
-	// const MAX_LETTERS = 50;
 	const inputRef = useRef(null);
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	document.body.style.pointerEvents = "none";
@@ -252,7 +251,7 @@ const Letters = ({ onLetterCountChange }) => {
 
 	//todo: do NOT allow to click on the lines straight up
 	const handleEnterKey = () => {
-		if (currentLine < 4) {
+		if (currentLine < 3) {
 			setCurrentLine((prev) => prev + 1);
 			setEnterEnabled(false);
 			setTimeout(() => {

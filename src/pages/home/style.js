@@ -34,7 +34,7 @@ export const HomeInnerContainer = styled.div`
 	justify-content: space-around;
 	align-items: center;
 	width: 100%;
-	height: 95%;
+	height: 100%;
 `;
 
 export const EarthSaysText = styled.p`

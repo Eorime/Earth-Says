@@ -54,15 +54,23 @@ export const FullScreenIncrease = styled.div`
 	width: 24px;
 	height: 23px;
 
-	background: linear-gradient(to right, rgb(102, 102, 102) 2px, transparent 2px)
+	background: linear-gradient(
+				to right,
+				rgb(102, 102, 102) 1.8px,
+				transparent 1.8px
+			)
 			0 0,
-		linear-gradient(to right, rgb(102, 102, 102) 2px, transparent 2px) 0 100%,
-		linear-gradient(to left, rgb(102, 102, 102) 2px, transparent 2px) 100% 0,
-		linear-gradient(to left, rgb(102, 102, 102) 2px, transparent 2px) 100% 100%,
-		linear-gradient(to bottom, rgb(102, 102, 102) 2px, transparent 2px) 0 0,
-		linear-gradient(to bottom, rgb(102, 102, 102) 2px, transparent 2px) 100% 0,
-		linear-gradient(to top, rgb(102, 102, 102) 2px, transparent 2px) 0 100%,
-		linear-gradient(to top, rgb(102, 102, 102) 2px, transparent 2px) 100% 100%;
+		linear-gradient(to right, rgb(102, 102, 102) 1.8px, transparent 1.8px) 0
+			100%,
+		linear-gradient(to left, rgb(102, 102, 102) 1.8px, transparent 1.8px) 100% 0,
+		linear-gradient(to left, rgb(102, 102, 102) 1.8px, transparent 1.8px) 100%
+			100%,
+		linear-gradient(to bottom, rgb(102, 102, 102) 1.8px, transparent 1.8px) 0 0,
+		linear-gradient(to bottom, rgb(102, 102, 102) 1.8px, transparent 1.8px) 100%
+			0,
+		linear-gradient(to top, rgb(102, 102, 102) 1.8px, transparent 1.8px) 0 100%,
+		linear-gradient(to top, rgb(102, 102, 102) 1.8px, transparent 1.8px) 100%
+			100%;
 
 	background-repeat: no-repeat;
 	background-size: 8px 8px;

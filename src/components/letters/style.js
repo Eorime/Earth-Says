@@ -15,7 +15,10 @@ const scaleUp = keyframes`
 `;
 
 export const Container = styled.div`
-	min-height: 70vh;
+	height: calc(
+		var(--windowHeight) - var(--horizontal-top-padding) -
+			var(--horizontal-bottom-padding) - var(--extra-height)
+));
 	width: 100%;
 	justify-content: center;
 	align-items: center;
@@ -66,8 +69,18 @@ export const LetterBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 120px;
-	height: 120px;
+	width: calc(
+		(
+				var(--windowHeight) - var(--horizontal-top-padding) -
+					var(--horizontal-bottom-padding) - var(--extra-height)
+			) / 4
+	);
+	height: calc(
+		(
+				var(--windowHeight) - var(--horizontal-top-padding) -
+					var(--horizontal-bottom-padding) - var(--extra-height)
+			) / 4
+	);
 	user-select: none;
 	pointer-events: none;
 

@@ -19,12 +19,41 @@ const Home = () => {
 	const [letterCount, setLetterCount] = useState(0);
 	const modalRef = useRef();
 	const [isLoading, setIsLoading] = useState(false);
+	const [windowSize, setWindowSize] = useState({
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
 
 	const handleOutsideClick = (e) => {
 		if (modalRef.current && !modalRef.current.contains(e.target)) {
 			setOpenModal(!openModal);
 		}
 	};
+
+	useEffect(() => {
+		const handleResize = () => {
+			const newWidth = window.innerWidth;
+			const newHeight = window.innerHeight;
+
+			setWindowSize({
+				width: newWidth,
+				height: newHeight,
+			});
+
+			document.documentElement.style.setProperty(
+				"--windowHeight",
+				`${newHeight}px`
+			);
+			document.documentElement.style.setProperty(
+				"--windowWidth",
+				`${newWidth}px`
+			);
+
+			window.addEventListener("resize", handleResize);
+		};
+		handleResize();
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	useEffect(() => {
 		if (openModal) {
