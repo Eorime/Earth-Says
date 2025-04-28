@@ -49,8 +49,10 @@ export const EarthSaysText = styled.p`
 
 export const TextContainer = styled.div`
 	width: 95%;
-	height: auto;
-	max-height: 75%;
+	height: calc(
+		var(--windowHeight) - var(--horizontal-top-padding) -
+			var(--horizontal-bottom-padding) - var(--extra-height) + 3 * var(--gap)
+	);
 	overflow: hidden;
 `;
 

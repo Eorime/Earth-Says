@@ -210,26 +210,10 @@ const Letters = ({ onLetterCountChange }) => {
 	const inputRef = useRef(null);
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	document.body.style.pointerEvents = "none";
-
-	useEffect(() => {
-		const handleResize = () => {
-			if (window.innerWidth < 800) {
-				setMaxLetters(20);
-			} else if (window.innerWidth < 1600) {
-				setMaxLetters(30);
-			} else {
-				setMaxLetters(50);
-			}
-		};
-		handleResize();
-
-		window.addEventListener("resize", handleResize);
-
-		//cleanup
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
+	const [windowSize, setWindowSize] = useState({
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
 
 	//check if the device supports touch
 	const isTouchDevice = () => {
@@ -250,6 +234,7 @@ const Letters = ({ onLetterCountChange }) => {
 	}
 
 	//todo: do NOT allow to click on the lines straight up
+
 	const handleEnterKey = () => {
 		if (currentLine < 3) {
 			setCurrentLine((prev) => prev + 1);
@@ -467,6 +452,32 @@ const Letters = ({ onLetterCountChange }) => {
 			document.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [currentLine, totalLetterCount, enterEnabled]);
+
+	useEffect(() => {
+		const handleResize = () => {
+			const boxSize = 0;
+			const newWidth = window.innerWidth;
+			const newHeight = window.innerHeight;
+
+			setWindowSize({
+				width: newWidth,
+				height: newHeight,
+			});
+
+			document.documentElement.style.setProperty(
+				"--windowHeight",
+				`${newHeight}px`
+			);
+			document.documentElement.style.setProperty(
+				"--windowWidth",
+				`${newWidth}px`
+			);
+
+			window.addEventListener("resize", handleResize);
+		};
+		handleResize();
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	return (
 		<Container onClick={handleContainerClick}>

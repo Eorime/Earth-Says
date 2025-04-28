@@ -15,14 +15,10 @@ const scaleUp = keyframes`
 `;
 
 export const Container = styled.div`
-	height: calc(
-		var(--windowHeight) - var(--horizontal-top-padding) -
-			var(--horizontal-bottom-padding) - var(--extra-height)
-));
+	height: 100%;
 	width: 100%;
 	justify-content: center;
 	align-items: center;
-	padding-top: 2rem;
 	display: flex;
 `;
 
@@ -31,16 +27,19 @@ export const DisplayContainer = styled.div`
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
 	justify-content: center;
 `;
 
 export const LettersRow = styled.div`
 	display: flex;
 	justify-content: center;
-	margin: 1rem 0;
 	margin-bottom: 0;
 	user-select: none;
 	pointer-events: none;
+	height: calc(100% / 4);
 `;
 
 export const LettersDisplay = styled.div`
