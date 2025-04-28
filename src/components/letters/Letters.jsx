@@ -206,7 +206,7 @@ const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
-	const [maxLetters, setMaxLetters] = useState(50);
+	const [maxLetters, setMaxLetters] = useState(60);
 	const inputRef = useRef(null);
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	document.body.style.pointerEvents = "none";
@@ -262,7 +262,8 @@ const Letters = ({ onLetterCountChange }) => {
 	}
 
 	const handleEnterKey = () => {
-		if (currentLine < 3) {
+		if (currentLine < 3 && lines[currentLine - 1]?.length !== 0) {
+			console.log(lines[currentLine - 1]?.length);
 			setCurrentLine((prev) => prev + 1);
 			setEnterEnabled(false);
 			setTimeout(() => {
@@ -312,6 +313,13 @@ const Letters = ({ onLetterCountChange }) => {
 
 	const handleInputChange = (e) => {
 		const value = e.target.value;
+		// Don't allow typing if already on the fourth line\
+
+		if (currentLine >= 3 && lines[3].length >= maxRowLetters) {
+			e.target.value = "";
+			return;
+		}
+
 		if (value) {
 			const lastChar = value.slice(-1);
 
@@ -353,6 +361,12 @@ const Letters = ({ onLetterCountChange }) => {
 								return updatedLines;
 							});
 						}, 10);
+					} else if (
+						currentLine >= 3 &&
+						newLines[currentLine].length >= maxRowLetters
+					) {
+						// Don't add anything if we're on the fourth line and it's full
+						return newLines;
 					} else {
 						// create a letter object with a pre-assigned random image
 						const charWithImage = assignRandomImage(processedChar);
@@ -364,6 +378,12 @@ const Letters = ({ onLetterCountChange }) => {
 				// Check and move to next line after adding character if needed
 				setTimeout(() => checkAndMoveToNextLine(), 0);
 			} else if (lastChar === " ") {
+				// Don't add space if on fourth line and it's full
+				if (currentLine >= 3 && lines[3].length >= maxRowLetters) {
+					e.target.value = "";
+					return;
+				}
+
 				setLines((prev) => {
 					const newLines = [...prev];
 					const currentLineContent = prev[currentLine];
@@ -388,16 +408,10 @@ const Letters = ({ onLetterCountChange }) => {
 	};
 
 	const handleKeyDown = (e) => {
-		if (e.key === "Enter") {
-			e.preventDefault();
-			if (currentLine < 4) {
-				setCurrentLine((prev) => prev + 1);
-			}
-			return;
-		} else if (e.key === "Backspace" && e.target.value === "") {
+		if (e.key === "Backspace" && e.target.value === "") {
 			e.preventDefault();
 
-			// Only move to previous line if current line is empty
+			// only move to previous line if current line is empty
 			if (currentLine > 0) {
 				setCurrentLine(currentLine - 1);
 			}
@@ -455,6 +469,11 @@ const Letters = ({ onLetterCountChange }) => {
 			} else if (e.key === " ") {
 				e.preventDefault();
 
+				// Don't add space if on fourth line and it's full
+				if (currentLine >= 3 && lines[3].length > maxRowLetters) {
+					return;
+				}
+
 				//check if the current line is empty before allowing a space character
 				setLines((prev) => {
 					const newLines = [...prev];
@@ -487,6 +506,11 @@ const Letters = ({ onLetterCountChange }) => {
 			} else if (e.key.length === 1) {
 				e.preventDefault();
 
+				// Don't allow typing if already on the fourth line and t's full
+				if (currentLine >= 3 && lines[3].length >= maxRowLetters + 2) {
+					return;
+				}
+
 				const processedChar = e.key.match(/[a-zA-Z]/)
 					? e.key.toUpperCase()
 					: e.key;
@@ -512,6 +536,12 @@ const Letters = ({ onLetterCountChange }) => {
 							return newLines;
 						});
 					}, 10);
+				} else if (
+					currentLine >= 3 &&
+					lines[currentLine].length >= maxRowLetters
+				) {
+					// Don't add anything if we're on the fourth line and it's full
+					return;
 				} else {
 					// Add character normally
 					setLines((prev) => {

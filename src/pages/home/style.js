@@ -60,7 +60,5 @@ export const IconsContainer = styled.div`
 	display: flex;
 	flex-direction: row;
 	gap: 50px;
-	position: relative;
 	top: 8vh;
-	transform: translate3d(-5%, 50%, 0);
 `;
