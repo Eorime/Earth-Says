@@ -29,7 +29,7 @@ export const DisplayContainer = styled.div`
 	overflow-y: hidden;
 	display: flex;
 	flex-direction: column;
-	gap: var(--gap);
+	// gap: var(--gap);
 	justify-content: center;
 `;
 
