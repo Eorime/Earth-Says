@@ -215,6 +215,26 @@ const Letters = ({ onLetterCountChange }) => {
 		height: window.innerHeight,
 	});
 
+	let [maxRowLetters, setMaxRowLetters] = useState();
+
+	useEffect(() => {
+		const handleResize = () => {
+			const boxSize = document.querySelector("#box").offsetHeight + 16;
+
+			const maxBoxes = Math.floor(window.innerWidth / boxSize);
+
+			setMaxRowLetters(maxBoxes);
+		};
+		console.log(maxRowLetters);
+		handleResize();
+
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, [maxRowLetters]);
+
 	//check if the device supports touch
 	const isTouchDevice = () => {
 		return (
@@ -234,7 +254,6 @@ const Letters = ({ onLetterCountChange }) => {
 	}
 
 	//todo: do NOT allow to click on the lines straight up
-
 	const handleEnterKey = () => {
 		if (currentLine < 3) {
 			setCurrentLine((prev) => prev + 1);
@@ -505,7 +524,7 @@ const Letters = ({ onLetterCountChange }) => {
 			<DisplayContainer>
 				{lines.map((line, lineIndex) => (
 					<LettersRow key={lineIndex}>
-						<LettersDisplay>
+						<LettersDisplay id="box">
 							{line.map((letterObj) =>
 								letterObj.char !== " " ? (
 									<LetterBox key={letterObj.id}>
