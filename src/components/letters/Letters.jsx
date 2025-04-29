@@ -250,7 +250,7 @@ const Letters = ({ onLetterCountChange }) => {
 		// only run this effect if we have valid maxRowLetters and the current line has content
 		if (
 			maxRowLetters > 0 &&
-			lines[currentLine]?.length >= maxRowLetters &&
+			lines[currentLine]?.length === maxRowLetters &&
 			currentLine < 3
 		) {
 			setCurrentLine((prevLine) => prevLine + 1);
