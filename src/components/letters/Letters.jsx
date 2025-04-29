@@ -206,7 +206,6 @@ const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
-	const [maxLetters, setMaxLetters] = useState(60);
 	const [maxRowLetters, setMaxRowLetters] = useState(0);
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	const inputRef = useRef(null);
@@ -217,12 +216,6 @@ const Letters = ({ onLetterCountChange }) => {
 			const boxSize = document.querySelector("#box").offsetHeight + 16;
 			const maxBoxes = Math.floor(window.innerWidth / boxSize);
 			setMaxRowLetters(maxBoxes);
-
-			if (window.innerWidth < 800) {
-				setMaxLetters(24);
-			} else {
-				setMaxLetters(60);
-			}
 
 			// set CSS variables for responsive design
 			document.documentElement.style.setProperty(
@@ -252,14 +245,17 @@ const Letters = ({ onLetterCountChange }) => {
 		}
 	}, [lines, onLetterCountChange]);
 
-	// check if current line is full and move to next if needed
-	const checkAndMoveToNextLine = useCallback(() => {
-		if (lines[currentLine]?.length === maxRowLetters && currentLine < 3) {
-			setCurrentLine((prev) => prev + 1);
-			return true;
+	// check if current line is full and should move to next
+	useEffect(() => {
+		// only run this effect if we have valid maxRowLetters and the current line has content
+		if (
+			maxRowLetters > 0 &&
+			lines[currentLine]?.length >= maxRowLetters &&
+			currentLine < 3
+		) {
+			setCurrentLine((prevLine) => prevLine + 1);
 		}
-		return false;
-	}, [currentLine, lines, maxRowLetters]);
+	}, [lines, currentLine, maxRowLetters]);
 
 	// assign a random image to a character
 	const assignRandomImage = (char) => {
@@ -304,7 +300,7 @@ const Letters = ({ onLetterCountChange }) => {
 		}
 
 		// check total letter limit
-		if (char !== " " && totalLetterCount >= maxLetters) {
+		if (char !== " " && totalLetterCount >= maxRowLetters * 4) {
 			return false;
 		}
 
@@ -344,8 +340,6 @@ const Letters = ({ onLetterCountChange }) => {
 			});
 		}
 
-		// check if we need to move to next line
-		setTimeout(() => checkAndMoveToNextLine(), 0);
 		return true;
 	};
 
@@ -442,8 +436,7 @@ const Letters = ({ onLetterCountChange }) => {
 		enterEnabled,
 		maxRowLetters,
 		lines,
-		checkAndMoveToNextLine,
-		maxLetters,
+		maxRowLetters,
 	]);
 
 	return (
