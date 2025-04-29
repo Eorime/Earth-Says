@@ -487,7 +487,7 @@ const Letters = ({ onLetterCountChange }) => {
 										)}
 									</LetterBox>
 								) : (
-									<SpaceBox key={letterObj.id} />
+									<SpaceBox key={letterObj.id} style={{ width: "0.5rem" }} />
 								)
 							)}
 						</LettersDisplay>
