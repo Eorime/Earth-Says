@@ -207,16 +207,56 @@ const Letters = ({ onLetterCountChange }) => {
 	const [currentLine, setCurrentLine] = useState(0);
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
 	const [maxLetters, setMaxLetters] = useState(60);
-	const inputRef = useRef(null);
+	const [maxRowLetters, setMaxRowLetters] = useState(0);
 	const [enterEnabled, setEnterEnabled] = useState(true);
-	document.body.style.pointerEvents = "none";
-	const [windowSize, setWindowSize] = useState({
-		width: window.innerWidth,
-		height: window.innerHeight,
-	});
+	const inputRef = useRef(null);
 
-	let [maxRowLetters, setMaxRowLetters] = useState(0);
+	// disable pointer events for non-touch devices
+	useEffect(() => {
+		const isTouchDevice =
+			"ontouchstart" in window ||
+			navigator.maxTouchPoints > 0 ||
+			navigator.msMaxTouchPoints > 0;
 
+		document.body.style.pointerEvents = isTouchDevice ? "auto" : "none";
+	}, []);
+
+	// calculate max letters per row based on window size
+	useEffect(() => {
+		const handleResize = () => {
+			const boxSize = document.querySelector("#box").offsetHeight + 16;
+			const maxBoxes = Math.floor(window.innerWidth / boxSize);
+			setMaxRowLetters(maxBoxes);
+
+			// set CSS variables for responsive design
+			document.documentElement.style.setProperty(
+				"--windowHeight",
+				`${window.innerHeight}px`
+			);
+			document.documentElement.style.setProperty(
+				"--windowWidth",
+				`${window.innerWidth}px`
+			);
+		};
+
+		handleResize();
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
+
+	// update letter count and notify parent component
+	useEffect(() => {
+		const count = lines.reduce((total, line) => {
+			return total + line.filter((charObj) => charObj.char !== " ").length;
+		}, 0);
+
+		setTotalLetterCount(count);
+		if (onLetterCountChange) {
+			onLetterCountChange(count);
+		}
+	}, [lines, onLetterCountChange]);
+
+	// check if current line is full and move to next if needed
 	const checkAndMoveToNextLine = useCallback(() => {
 		if (lines[currentLine]?.length === maxRowLetters && currentLine < 3) {
 			setCurrentLine((prev) => prev + 1);
@@ -225,57 +265,7 @@ const Letters = ({ onLetterCountChange }) => {
 		return false;
 	}, [currentLine, lines, maxRowLetters]);
 
-	useEffect(() => {
-		const handleResize = () => {
-			const boxSize = document.querySelector("#box").offsetHeight + 16;
-
-			const maxBoxes = Math.floor(window.innerWidth / boxSize);
-
-			setMaxRowLetters(maxBoxes);
-		};
-		console.log(maxRowLetters);
-		handleResize();
-
-		window.addEventListener("resize", handleResize);
-
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, [maxRowLetters]);
-
-	//check if the device supports touch
-	const isTouchDevice = () => {
-		return (
-			"ontouchstart" in window ||
-			navigator.maxTouchPoints > 0 ||
-			navigator.msMaxTouchPoints > 0
-		);
-	};
-
-	//apply pointer events based on device type
-	if (isTouchDevice()) {
-		//touch device - enable pointer events
-		document.body.style.pointerEvents = "auto";
-	} else {
-		//non-touch device - disable pointer events
-		document.body.style.pointerEvents = "none";
-	}
-
-	const handleEnterKey = () => {
-		if (currentLine < 3 && lines[currentLine - 1]?.length !== 0) {
-			console.log(lines[currentLine - 1]?.length);
-			setCurrentLine((prev) => prev + 1);
-			setEnterEnabled(false);
-			setTimeout(() => {
-				setEnterEnabled(true);
-			}, 2000);
-		} else {
-			inputRef.current?.focus();
-			moveCursorToEnd();
-		}
-	};
-
-	// select a random image for a letter and store it with the letter
+	// assign a random image to a character
 	const assignRandomImage = (char) => {
 		if (!letterImages[char] || letterImages[char].length === 0) {
 			return { char, id: Date.now(), imageSrc: null };
@@ -288,126 +278,123 @@ const Letters = ({ onLetterCountChange }) => {
 		};
 	};
 
-	useEffect(() => {
-		const count = lines.reduce((total, line) => {
-			return total + line.filter((charObj) => charObj.char !== " ").length;
-		}, 0);
-
-		setTotalLetterCount(count);
-
-		if (onLetterCountChange) {
-			onLetterCountChange(count);
+	// handle Enter key presses
+	const handleEnterKey = () => {
+		if (currentLine < 3 && lines[currentLine - 1]?.length !== 0) {
+			setCurrentLine((prev) => prev + 1);
+			setEnterEnabled(false);
+			setTimeout(() => setEnterEnabled(true), 1000);
+		} else {
+			inputRef.current?.focus();
+			moveCursorToEnd();
 		}
-	}, [lines, onLetterCountChange]);
+	};
 
+	// move cursor to the end of input field
 	const moveCursorToEnd = () => {
 		if (inputRef.current) {
 			const input = inputRef.current;
-			// Move real cursor
 			const length = input.value.length;
 			input.setSelectionRange(length, length);
 		}
-
 		setCurrentLine((prev) => Math.min(prev, lines.length - 1));
 	};
 
+	// add a character to the current line
+	const addCharacter = (char) => {
+		// don't allow typing if we've reached the limits
+		if (currentLine >= 3 && lines[3].length >= maxRowLetters) {
+			return false;
+		}
+
+		// check total letter limit
+		if (char !== " " && totalLetterCount >= maxLetters) {
+			return false;
+		}
+
+		// process the character
+		const processedChar = char.match(/[a-zA-Z]/) ? char.toUpperCase() : char;
+
+		// ignore if character isn't in our map
+		if (char !== " " && !letterImages[processedChar]) {
+			return false;
+		}
+
+		// handle space character
+		if (char === " ") {
+			setLines((prev) => {
+				const newLines = [...prev];
+				const currentLineContent = prev[currentLine];
+
+				// only add space if the line isn't empty and doesn't end with space
+				if (
+					currentLineContent.length > 0 &&
+					currentLineContent[currentLineContent.length - 1].char !== " "
+				) {
+					newLines[currentLine] = [
+						...newLines[currentLine],
+						{ char: " ", id: Date.now(), imageSrc: null },
+					];
+				}
+				return newLines;
+			});
+		} else {
+			// handle regular character
+			setLines((prev) => {
+				const newLines = [...prev];
+				const charWithImage = assignRandomImage(processedChar);
+				newLines[currentLine] = [...newLines[currentLine], charWithImage];
+				return newLines;
+			});
+		}
+
+		// check if we need to move to next line
+		setTimeout(() => checkAndMoveToNextLine(), 0);
+		return true;
+	};
+
+	// delete the last character
+	const deleteLastCharacter = () => {
+		setLines((prev) => {
+			const newLines = [...prev];
+
+			// find the last line that has at least one character
+			let lastNonEmptyLineIndex = -1;
+			for (let i = newLines.length - 1; i >= 0; i--) {
+				if (newLines[i].length > 0) {
+					lastNonEmptyLineIndex = i;
+					break;
+				}
+			}
+
+			if (lastNonEmptyLineIndex !== -1) {
+				newLines[lastNonEmptyLineIndex] = newLines[lastNonEmptyLineIndex].slice(
+					0,
+					-1
+				);
+				setCurrentLine(lastNonEmptyLineIndex);
+			}
+
+			return newLines;
+		});
+	};
+
+	// handle input changes (for mobile devices)
 	const handleInputChange = (e) => {
 		const value = e.target.value;
-		// Don't allow typing if already on the fourth line\
-
-		if (currentLine >= 3 && lines[3].length >= maxRowLetters) {
-			e.target.value = "";
-			return;
-		}
 
 		if (value) {
 			const lastChar = value.slice(-1);
-
-			const currentLetterCount = totalLetterCount;
-			const wouldAddChar = lastChar !== " ";
-
-			if (wouldAddChar && currentLetterCount >= maxLetters) {
-				e.target.value = "";
-				return;
-			}
-
-			if (lastChar !== " ") {
-				const processedChar = lastChar.match(/[a-zA-Z]/)
-					? lastChar.toUpperCase()
-					: lastChar;
-
-				if (!letterImages[processedChar]) {
-					// If not in our map, ignore this input
-					e.target.value = "";
-					return;
-				}
-
-				setLines((prev) => {
-					const newLines = [...prev];
-					// Check if current line is full, if so, move to next line
-					if (
-						newLines[currentLine].length >= maxRowLetters &&
-						currentLine < 3
-					) {
-						// Don't add the character here, it will be added after setCurrentLine sets the new line
-						setTimeout(() => {
-							setLines((prevLines) => {
-								const updatedLines = [...prevLines];
-								const charWithImage = assignRandomImage(processedChar);
-								updatedLines[currentLine] = [
-									...updatedLines[currentLine],
-									charWithImage,
-								];
-								return updatedLines;
-							});
-						}, 10);
-					} else if (
-						currentLine >= 3 &&
-						newLines[currentLine].length >= maxRowLetters
-					) {
-						// Don't add anything if we're on the fourth line and it's full
-						return newLines;
-					} else {
-						// create a letter object with a pre-assigned random image
-						const charWithImage = assignRandomImage(processedChar);
-						newLines[currentLine] = [...newLines[currentLine], charWithImage];
-					}
-					return newLines;
-				});
-
-				// Check and move to next line after adding character if needed
-				setTimeout(() => checkAndMoveToNextLine(), 0);
-			} else if (lastChar === " ") {
-				// Don't add space if on fourth line and it's full
-				if (currentLine >= 3 && lines[3].length >= maxRowLetters) {
-					e.target.value = "";
-					return;
-				}
-
-				setLines((prev) => {
-					const newLines = [...prev];
-					const currentLineContent = prev[currentLine];
-					if (
-						currentLineContent.length > 0 &&
-						currentLineContent[currentLineContent.length - 1].char !== " "
-					) {
-						newLines[currentLine] = [
-							...newLines[currentLine],
-							{ char: " ", id: Date.now(), imageSrc: null },
-						];
-					}
-					return newLines;
-				});
-
-				// Check and move to next line after adding space if needed
-				setTimeout(() => checkAndMoveToNextLine(), 0);
-			}
-			e.target.value = "";
+			addCharacter(lastChar);
 		}
+
+		// clear the input field
+		e.target.value = "";
 		moveCursorToEnd();
 	};
 
-	const handleKeyDown = (e) => {
+	// handle specific key events for the input field
+	const handleInputKeyDown = (e) => {
 		if (e.key === "Backspace" && e.target.value === "") {
 			e.preventDefault();
 
@@ -419,6 +406,7 @@ const Letters = ({ onLetterCountChange }) => {
 		moveCursorToEnd();
 	};
 
+	// handle clicks on the container
 	const handleContainerClick = () => {
 		if (inputRef.current) {
 			inputRef.current.focus();
@@ -426,134 +414,25 @@ const Letters = ({ onLetterCountChange }) => {
 		}
 	};
 
+	// handle keyboard events globally
 	useEffect(() => {
-		// handle physical keyboard events
 		const handleKeyDown = (e) => {
-			if (e.key === "Control") {
-				return;
-			}
-
-			if (e.ctrlKey) {
+			// ignore control key and control combinations
+			if (e.key === "Control" || e.ctrlKey) {
 				return;
 			}
 
 			if (e.key === "Enter") {
 				e.preventDefault();
-				handleEnterKey();
+				if (enterEnabled) {
+					handleEnterKey();
+				}
 			} else if (e.key === "Backspace") {
 				e.preventDefault();
-
-				setLines((prev) => {
-					const newLines = [...prev];
-
-					// Find the last line that has at least one character
-					let lastNonEmptyLineIndex = -1;
-					for (let i = newLines.length - 1; i >= 0; i--) {
-						if (newLines[i].length > 0) {
-							lastNonEmptyLineIndex = i;
-							break;
-						}
-					}
-
-					if (lastNonEmptyLineIndex !== -1) {
-						newLines[lastNonEmptyLineIndex] = newLines[
-							lastNonEmptyLineIndex
-						].slice(0, -1);
-
-						// update currentLine if needed
-						setCurrentLine(lastNonEmptyLineIndex);
-					}
-
-					return newLines;
-				});
-			} else if (e.key === " ") {
-				e.preventDefault();
-
-				// Don't add space if on fourth line and it's full
-				if (currentLine >= 3 && lines[3].length > maxRowLetters) {
-					return;
-				}
-
-				//check if the current line is empty before allowing a space character
-				setLines((prev) => {
-					const newLines = [...prev];
-					const currentLineContent = newLines[currentLine];
-
-					//only add a space if the current line isn't empty
-					if (
-						currentLineContent.length > 0 &&
-						currentLineContent[currentLineContent.length - 1].char !== " "
-					) {
-						// Check if line is full before adding space
-						if (currentLineContent.length >= maxRowLetters && currentLine < 3) {
-							// Line is full, we need to move to next line first
-							setTimeout(() => {
-								setCurrentLine((prevLine) => prevLine + 1);
-							}, 0);
-							return newLines;
-						}
-
-						newLines[currentLine] = [
-							...newLines[currentLine],
-							{ char: " ", id: Date.now(), imageSrc: null },
-						];
-					}
-					return newLines;
-				});
-
-				// Check and move to next line after adding space if needed
-				setTimeout(() => checkAndMoveToNextLine(), 0);
+				deleteLastCharacter();
 			} else if (e.key.length === 1) {
 				e.preventDefault();
-
-				// Don't allow typing if already on the fourth line and t's full
-				if (currentLine >= 3 && lines[3].length >= maxRowLetters + 2) {
-					return;
-				}
-
-				const processedChar = e.key.match(/[a-zA-Z]/)
-					? e.key.toUpperCase()
-					: e.key;
-
-				if (!letterImages[processedChar]) {
-					//if not in our map, just ignore this input
-					return;
-				}
-
-				if (totalLetterCount >= maxLetters) {
-					return;
-				}
-
-				// Check if current line is full before adding character
-				if (lines[currentLine].length >= maxRowLetters && currentLine < 3) {
-					setCurrentLine((prevLine) => prevLine + 1);
-					// Add character after line change
-					setTimeout(() => {
-						setLines((prev) => {
-							const newLines = [...prev];
-							const charWithImage = assignRandomImage(processedChar);
-							newLines[currentLine] = [...newLines[currentLine], charWithImage];
-							return newLines;
-						});
-					}, 10);
-				} else if (
-					currentLine >= 3 &&
-					lines[currentLine].length >= maxRowLetters
-				) {
-					// Don't add anything if we're on the fourth line and it's full
-					return;
-				} else {
-					// Add character normally
-					setLines((prev) => {
-						const newLines = [...prev];
-						const charWithImage = assignRandomImage(processedChar);
-						newLines[currentLine] = [...newLines[currentLine], charWithImage];
-						return newLines;
-					});
-
-					// Check and move to next line if needed
-					setTimeout(() => checkAndMoveToNextLine(), 0);
-				}
+				addCharacter(e.key);
 			}
 		};
 
@@ -569,32 +448,6 @@ const Letters = ({ onLetterCountChange }) => {
 		lines,
 		checkAndMoveToNextLine,
 	]);
-
-	useEffect(() => {
-		const handleResize = () => {
-			const boxSize = 0;
-			const newWidth = window.innerWidth;
-			const newHeight = window.innerHeight;
-
-			setWindowSize({
-				width: newWidth,
-				height: newHeight,
-			});
-
-			document.documentElement.style.setProperty(
-				"--windowHeight",
-				`${newHeight}px`
-			);
-			document.documentElement.style.setProperty(
-				"--windowWidth",
-				`${newWidth}px`
-			);
-
-			window.addEventListener("resize", handleResize);
-		};
-		handleResize();
-		return () => window.removeEventListener("resize", handleResize);
-	}, []);
 
 	return (
 		<Container onClick={handleContainerClick}>
@@ -614,7 +467,7 @@ const Letters = ({ onLetterCountChange }) => {
 					border: "none",
 				}}
 				onChange={handleInputChange}
-				onKeyDown={handleKeyDown}
+				onKeyDown={handleInputKeyDown}
 				autoCapitalize="characters"
 				autoComplete="off"
 				autoCorrect="off"

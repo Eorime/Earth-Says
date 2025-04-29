@@ -1,8 +1,5 @@
 import { styled, keyframes } from "styled-components";
 
-//todo: fix text wrap, make it go down 5 lines
-//also araa centrshi, egec gafixe
-
 const scaleUp = keyframes`
   from {
     transform: scale(0.8);
