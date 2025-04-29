@@ -211,16 +211,6 @@ const Letters = ({ onLetterCountChange }) => {
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	const inputRef = useRef(null);
 
-	// disable pointer events for non-touch devices
-	useEffect(() => {
-		const isTouchDevice =
-			"ontouchstart" in window ||
-			navigator.maxTouchPoints > 0 ||
-			navigator.msMaxTouchPoints > 0;
-
-		document.body.style.pointerEvents = isTouchDevice ? "auto" : "none";
-	}, []);
-
 	// calculate max letters per row based on window size
 	useEffect(() => {
 		const handleResize = () => {
@@ -487,7 +477,7 @@ const Letters = ({ onLetterCountChange }) => {
 										)}
 									</LetterBox>
 								) : (
-									<SpaceBox key={letterObj.id} style={{ width: "0.5rem" }} />
+									<SpaceBox key={letterObj.id} style={{ width: "1rem" }} />
 								)
 							)}
 						</LettersDisplay>
