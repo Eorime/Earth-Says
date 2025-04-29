@@ -100,7 +100,6 @@ const Sound = ({ letterCount = 0 }) => {
 			const point = wave.ownerSVGElement.createSVGPoint();
 
 			point.x = i * interval;
-			// Increased frequency from 3.5 to 7 to make waves less wide
 			point.y = -(amplitude * Math.sin(norm * Math.PI * 7));
 
 			wave.points.appendItem(point);

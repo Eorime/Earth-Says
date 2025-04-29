@@ -206,7 +206,7 @@ const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
-	const [maxLetters, setMaxLetters] = useState(60);
+	const maxLetters = 60;
 	const [maxRowLetters, setMaxRowLetters] = useState(0);
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	const inputRef = useRef(null);
