@@ -219,7 +219,7 @@ const Letters = ({ onLetterCountChange }) => {
 			setMaxRowLetters(maxBoxes);
 
 			if (window.innerWidth < 800) {
-				setMaxLetters(35);
+				setMaxLetters(24);
 			} else {
 				setMaxLetters(60);
 			}

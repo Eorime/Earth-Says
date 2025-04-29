@@ -27,10 +27,11 @@ export const DisplayContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	gap: 1rem;
 
 	@media screen and (max-width: 800px) {
+		gap: 0.5;
 		height: auto;
-		gap: 1rem;
 	}
 `;
 
