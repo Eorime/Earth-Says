@@ -26,8 +26,12 @@ export const DisplayContainer = styled.div`
 	overflow-y: hidden;
 	display: flex;
 	flex-direction: column;
-	// gap: var(--gap);
 	justify-content: center;
+
+	@media screen and (max-width: 800px) {
+		height: auto;
+		gap: 1rem;
+	}
 `;
 
 export const LettersRow = styled.div`

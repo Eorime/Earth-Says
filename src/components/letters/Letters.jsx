@@ -206,7 +206,7 @@ const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
 	const [totalLetterCount, setTotalLetterCount] = useState(0);
-	const maxLetters = 60;
+	const [maxLetters, setMaxLetters] = useState(60);
 	const [maxRowLetters, setMaxRowLetters] = useState(0);
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	const inputRef = useRef(null);
@@ -217,6 +217,12 @@ const Letters = ({ onLetterCountChange }) => {
 			const boxSize = document.querySelector("#box").offsetHeight + 16;
 			const maxBoxes = Math.floor(window.innerWidth / boxSize);
 			setMaxRowLetters(maxBoxes);
+
+			if (window.innerWidth < 800) {
+				setMaxLetters(35);
+			} else {
+				setMaxLetters(60);
+			}
 
 			// set CSS variables for responsive design
 			document.documentElement.style.setProperty(
@@ -437,6 +443,7 @@ const Letters = ({ onLetterCountChange }) => {
 		maxRowLetters,
 		lines,
 		checkAndMoveToNextLine,
+		maxLetters,
 	]);
 
 	return (
