@@ -347,21 +347,21 @@ const Letters = ({ onLetterCountChange }) => {
 		setLines((prev) => {
 			const newLines = [...prev];
 
-			// ff current line has characters, delete from there
-			if (newLines[currentLine].length > 0) {
-				newLines[currentLine] = newLines[currentLine].slice(0, -1);
-				return newLines;
+			// find the last line that has at least one character
+			let lastNonEmptyLineIndex = -1;
+			for (let i = newLines.length - 1; i >= 0; i--) {
+				if (newLines[i].length > 0) {
+					lastNonEmptyLineIndex = i;
+					break;
+				}
 			}
 
-			// ff current line is empty and not the first line, move up one line
-			if (currentLine > 0) {
-				// move to previous line
-				setCurrentLine(currentLine - 1);
-
-				// delete the last character from that line if it has any
-				if (newLines[currentLine - 1].length > 0) {
-					newLines[currentLine - 1] = newLines[currentLine - 1].slice(0, -1);
-				}
+			if (lastNonEmptyLineIndex !== -1) {
+				newLines[lastNonEmptyLineIndex] = newLines[lastNonEmptyLineIndex].slice(
+					0,
+					-1
+				);
+				setCurrentLine(lastNonEmptyLineIndex);
 			}
 
 			return newLines;
