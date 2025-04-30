@@ -14,24 +14,15 @@ const scaleUp = keyframes`
 export const Container = styled.div`
 	height: 100%;
 	width: 100%;
-	justify-content: center;
-	align-items: center;
-	display: flex;
 `;
 
 export const DisplayContainer = styled.div`
 	width: 100%;
 	height: 100%;
-	overflow-x: hidden;
-	overflow-y: hidden;
+	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	// gap: 1rem;
-
-	@media screen and (max-width: 800px) {
-		height: auto;
-	}
 `;
 
 export const LettersRow = styled.div`
@@ -41,62 +32,29 @@ export const LettersRow = styled.div`
 	user-select: none;
 	pointer-events: none;
 	height: calc(100% / 4);
-
-	@media screen and (max-width: 800px) {
-		margin-bottom: 0.5rem;
+	margin-bottom: var(--gap);
+	&:last-child {
+		margin-bottom: 0;
 	}
 `;
 
 export const LettersDisplay = styled.div`
 	display: flex;
-	gap: 1rem;
-	max-width: 1520px;
-	max-height: 665px;
+	gap: 0 var(--gap);
 	overflow-y: hidden;
-	flex-wrap: wrap;
 	justify-content: center;
-
-	@media screen and (max-width: 1600px) {
-		max-height: 400px;
-	}
-
-	@media screen and (max-width: 1440px) {
-		max-height: 440px;
-	}
-
-	@media screen and (max-width: 800px) {
-		gap: 0.5rem;
-	}
+	width: 100%;
+	height: 100%;
 `;
 
 export const LetterBox = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: calc(
-		(
-				var(--windowHeight) - var(--horizontal-top-padding) -
-					var(--horizontal-bottom-padding) - var(--extra-height)
-			) / 4
-	);
-	height: calc(
-		(
-				var(--windowHeight) - var(--horizontal-top-padding) -
-					var(--horizontal-bottom-padding) - var(--extra-height)
-			) / 4
-	);
+	width: var(--box-size);
+	height: var(--box-size);
 	user-select: none;
 	pointer-events: none;
-
-	@media screen and (max-width: 1440px) {
-		width: 96px;
-		height: 96px;
-	}
-
-	@media screen and (max-width: 500px) {
-		width: 60px;
-		height: 60px;
-	}
 `;
 
 export const LetterImage = styled.img`
@@ -107,16 +65,18 @@ export const LetterImage = styled.img`
 `;
 
 export const SpaceBox = styled.div`
-	width: 60px;
-	height: 120px;
-
-	@media screen and (max-width: 1440px) {
-		width: 48px;
-		height: 96px;
-	}
-
-	@media screen and (max-width: 500px) {
-		width: 30px;
-		height: 60px;
-	}
+	width: calc(
+		(
+				var(--windowHeight) - var(--horizontal-top-padding) -
+					var(--horizontal-bottom-padding) - 2 * var(--extra-height) - 3 *
+					var(--gap)
+			) / 4
+	);
+	height: calc(
+		(
+				var(--windowHeight) - var(--horizontal-top-padding) -
+					var(--horizontal-bottom-padding) - 2 * var(--extra-height) - 3 *
+					var(--gap)
+			) / 4
+	);
 `;

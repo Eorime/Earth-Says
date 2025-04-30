@@ -2,17 +2,9 @@ import styled from "styled-components";
 
 export const Container = styled.div`
 	width: 100%;
-	height: calc(100vh - 50px);
+	height: 100%;
 	background-color: black;
 	position: relative;
-
-	@media (max-width: 1300px) {
-		height: 94vh;
-	}
-
-	@media (max-width: 500px) {
-		height: 83vh;
-	}
 
 	background: linear-gradient(to right, rgb(102, 102, 102) 2px, transparent 2px)
 			0 0,
@@ -29,36 +21,42 @@ export const Container = styled.div`
 `;
 
 export const HomeInnerContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
 	width: 100%;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
 `;
 
 export const EarthSaysText = styled.p`
-	position: absolute;
-	top: 0;
 	color: white;
 	font-size: clamp(8px, 4vw, 16px);
 	margin: 0;
 	letter-spacing: 1.3px;
 	user-select: none;
+	width: 100%;
+	text-align: center;
 `;
 
 export const TextContainer = styled.div`
-	width: 95%;
+	--box-size: calc(
+		(
+				var(--windowHeight) - var(--horizontal-top-padding) -
+					var(--horizontal-bottom-padding) - 2 * var(--extra-height) - 3 *
+					var(--gap)
+			) / 4
+	);
+
+	width: 100%;
 	height: calc(
 		var(--windowHeight) - var(--horizontal-top-padding) -
-			var(--horizontal-bottom-padding) - var(--extra-height) + 3 * var(--gap)
+			var(--horizontal-bottom-padding) - 2 * var(--extra-height)
 	);
-	overflow: hidden;
+	padding-top: var(--horizontal-top-padding);
+	padding-bottom: var(--horizontal-bottom-padding);
 `;
 
 export const IconsContainer = styled.div`
+	width: 100%;
 	display: flex;
-	flex-direction: row;
 	gap: 50px;
-	top: 8vh;
 `;

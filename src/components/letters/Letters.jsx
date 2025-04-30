@@ -204,7 +204,7 @@ export const letterImages = {
 
 //TODO: roca savsea line mag shemtxvevashi enter skips a line, fix that
 //TODO: responsive, simaglis cvlilebaze gap ar aqvs linebs shoris
-//TODO: when we start from other line than the first, the backspace
+//TODO: when we start from other line than the first, the backspace ar mushaobs normalurad
 //TODO: wera daiwyos shuidan da avides zemot
 //TODO: overall responsive design, especially on smaller screens
 //TODO: loader
@@ -483,7 +483,7 @@ const Letters = ({ onLetterCountChange }) => {
 										)}
 									</LetterBox>
 								) : (
-									<SpaceBox key={letterObj.id} style={{ width: "1rem" }} />
+									<SpaceBox key={letterObj.id} />
 								)
 							)}
 						</LettersDisplay>
