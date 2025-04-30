@@ -272,7 +272,7 @@ const Letters = ({ onLetterCountChange }) => {
 
 	// handle Enter key presses
 	const handleEnterKey = () => {
-		if (currentLine < 3 && lines[currentLine - 1]?.length !== 0) {
+		if (currentLine < 3) {
 			setCurrentLine((prev) => prev + 1);
 			setEnterEnabled(false);
 			setTimeout(() => setEnterEnabled(true), 1000);
@@ -281,7 +281,6 @@ const Letters = ({ onLetterCountChange }) => {
 			moveCursorToEnd();
 		}
 	};
-
 	// move cursor to the end of input field
 	const moveCursorToEnd = () => {
 		if (inputRef.current) {
