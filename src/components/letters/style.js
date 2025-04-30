@@ -30,7 +30,6 @@ export const DisplayContainer = styled.div`
 	// gap: 1rem;
 
 	@media screen and (max-width: 800px) {
-		gap: 0.5;
 		height: auto;
 	}
 `;
@@ -42,6 +41,10 @@ export const LettersRow = styled.div`
 	user-select: none;
 	pointer-events: none;
 	height: calc(100% / 4);
+
+	@media screen and (max-width: 800px) {
+		margin-bottom: 0.5rem;
+	}
 `;
 
 export const LettersDisplay = styled.div`
