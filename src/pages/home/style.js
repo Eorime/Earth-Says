@@ -56,7 +56,8 @@ export const TextContainer = styled.div`
 `;
 
 export const IconsContainer = styled.div`
-	width: 100%;
 	display: flex;
 	gap: 50px;
+	position: absolute;
+	bottom: 5%;
 `;

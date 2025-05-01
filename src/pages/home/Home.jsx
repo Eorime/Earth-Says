@@ -93,15 +93,23 @@ const Home = () => {
 					<TextContainer>
 						<Letters onLetterCountChange={handleLetterCountChange} />
 					</TextContainer>
-					<IconsContainer
-						className="icons-container"
-						style={{ pointerEvents: "auto" }}
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "center",
+							position: "relative",
+						}}
 					>
-						<Screenshot />
-						<Sound letterCount={letterCount} />
-						<Credits onClick={handleCreditClick} openModal={openModal} />
-						<FullScreen />
-					</IconsContainer>
+						<IconsContainer
+							className="icons-container"
+							style={{ pointerEvents: "auto" }}
+						>
+							<Screenshot />
+							<Sound letterCount={letterCount} />
+							<Credits onClick={handleCreditClick} openModal={openModal} />
+							<FullScreen />
+						</IconsContainer>
+					</div>
 				</HomeInnerContainer>
 			</Container>
 		</>

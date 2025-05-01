@@ -203,15 +203,9 @@ export const letterImages = {
 };
 
 //TODO: roca savsea line mag shemtxvevashi enter skips a line, fix that
-//TODO: responsive, simaglis cvlilebaze gap ar aqvs linebs shoris
-//TODO: when we start from other line than the first, the backspace ar mushaobs normalurad
 //TODO: wera daiwyos shuidan da avides zemot
-//TODO: overall responsive design, especially on smaller screens
 //TODO: loader
-
-//TODO: add logic that keeps count of the letters we've writteon on the LINE.
-//if its a letter add 1, if its a space, add 0.5 to the variable. if that variable is equal OR
-//0.5 less than maxRowLetters, move to the next line.
+//TODO: smaller screens, smaller letter boxes
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], []]);
