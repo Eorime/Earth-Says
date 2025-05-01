@@ -262,7 +262,7 @@ const Letters = ({ onLetterCountChange }) => {
 	useEffect(() => {
 		if (
 			maxRowLetters > 0 &&
-			lineWeights[currentLine] >= maxRowLetters - 0.5 &&
+			lineWeights[currentLine] === maxRowLetters - 0.5 &&
 			currentLine < 3
 		) {
 			setCurrentLine((prevLine) => prevLine + 1);
@@ -318,7 +318,7 @@ const Letters = ({ onLetterCountChange }) => {
 	// add a character to the current line
 	const addCharacter = (char) => {
 		// don't allow typing if we've reached the limits
-		if (currentLine >= 3 && lines[3].length >= maxRowLetters) {
+		if (currentLine >= 3 && lines[3].length === maxRowLetters) {
 			return false;
 		}
 
@@ -350,6 +350,13 @@ const Letters = ({ onLetterCountChange }) => {
 						...newLines[currentLine],
 						{ char: " ", id: Date.now(), imageSrc: null },
 					];
+
+					// Update line weight by adding 0.5 for space
+					setLineWeights((prevWeights) => {
+						const newWeights = [...prevWeights];
+						newWeights[currentLine] += 0.5;
+						return newWeights;
+					});
 				}
 				return newLines;
 			});
@@ -359,6 +366,14 @@ const Letters = ({ onLetterCountChange }) => {
 				const newLines = [...prev];
 				const charWithImage = assignRandomImage(processedChar);
 				newLines[currentLine] = [...newLines[currentLine], charWithImage];
+
+				// Update line weight by adding 1 for letter
+				setLineWeights((prevWeights) => {
+					const newWeights = [...prevWeights];
+					newWeights[currentLine] += 1;
+					return newWeights;
+				});
+
 				return newLines;
 			});
 		}
@@ -381,6 +396,22 @@ const Letters = ({ onLetterCountChange }) => {
 			}
 
 			if (lastNonEmptyLineIndex !== -1) {
+				// get the character that will be deleted
+				const charToDelete =
+					newLines[lastNonEmptyLineIndex][
+						newLines[lastNonEmptyLineIndex].length - 1
+					];
+
+				// update line weight by subtracting 1 for letter or 0.5 for space
+				if (charToDelete) {
+					setLineWeights((prevWeights) => {
+						const newWeights = [...prevWeights];
+						newWeights[lastNonEmptyLineIndex] -=
+							charToDelete.char === " " ? 0.5 : 1;
+						return newWeights;
+					});
+				}
+
 				newLines[lastNonEmptyLineIndex] = newLines[lastNonEmptyLineIndex].slice(
 					0,
 					-1
