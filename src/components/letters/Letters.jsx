@@ -209,6 +209,10 @@ export const letterImages = {
 //TODO: overall responsive design, especially on smaller screens
 //TODO: loader
 
+//TODO: add logic that keeps count of the letters we've writteon on the LINE.
+//if its a letter add 1, if its a space, add 0.5 to the variable. if that variable is equal OR
+//0.5 less than maxRowLetters, move to the next line.
+
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
@@ -216,6 +220,8 @@ const Letters = ({ onLetterCountChange }) => {
 	const [maxRowLetters, setMaxRowLetters] = useState(0);
 	const [enterEnabled, setEnterEnabled] = useState(true);
 	const inputRef = useRef(null);
+	//new
+	const [lineWeights, setLineWeights] = useState([0, 0, 0, 0]);
 
 	// calculate max letters per row based on window size
 	useEffect(() => {
@@ -251,6 +257,17 @@ const Letters = ({ onLetterCountChange }) => {
 			onLetterCountChange(count);
 		}
 	}, [lines, onLetterCountChange]);
+
+	//new
+	useEffect(() => {
+		if (
+			maxRowLetters > 0 &&
+			lineWeights[currentLine] >= maxRowLetters - 0.5 &&
+			currentLine < 3
+		) {
+			setCurrentLine((prevLine) => prevLine + 1);
+		}
+	}, [lineWeights, currentLine, maxRowLetters]);
 
 	// check if current line is full and should move to next
 	useEffect(() => {
@@ -483,7 +500,7 @@ const Letters = ({ onLetterCountChange }) => {
 										)}
 									</LetterBox>
 								) : (
-									<SpaceBox key={letterObj.id} />
+									<SpaceBox style={{ width: "1.8rem" }} key={letterObj.id} />
 								)
 							)}
 						</LettersDisplay>
