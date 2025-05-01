@@ -146,6 +146,7 @@ import Quotation1 from "../../assets/Symbols/Quotation_51.2047505, -58.3081988.j
 import Quotation2 from "../../assets/Symbols/Quotation_59.9988973, 67.3862190.jpg";
 import Semicolon1 from "../../assets/Symbols/semicolon_53.3458005, -57.2944106.jpg";
 import Semicolon2 from "../../assets/Symbols/semicolon_69.8290673, 18.8311602.jpg";
+import Heart from "../../assets/Symbols/Heart_21.8878476, -71.9975137.jpg";
 
 // arrays of images for each letter
 export const letterImages = {
@@ -200,6 +201,7 @@ export const letterImages = {
 	"?": [Question],
 	'"': [Quotation1, Quotation2],
 	";": [Semicolon1, Semicolon2],
+	"<3": Heart,
 };
 
 //TODO: roca savsea line mag shemtxvevashi enter skips a line, fix that
@@ -216,6 +218,59 @@ const Letters = ({ onLetterCountChange }) => {
 	const inputRef = useRef(null);
 	//new
 	const [lineWeights, setLineWeights] = useState([0, 0, 0, 0]);
+	//track heart character sequence
+	const [lastChar, setLastChar] = useState(null);
+
+	const heartImageUrl = Heart;
+
+	//new function to check for a heart sequence
+	const checkForHeartEmoji = (char) => {
+		if (lastChar === "<" && char === "3") {
+			// remove the '<' character that was previously added
+			setLines((prev) => {
+				const newLines = [...prev];
+				const lineContent = prev[currentLine];
+
+				if (lineContent.length > 0) {
+					// remove the last character ('<')
+					newLines[currentLine] = lineContent.slice(0, -1);
+
+					// update line weight to reduce by 1 for the removed '<'
+					setLineWeights((prevWeights) => {
+						const newWeights = [...prevWeights];
+						newWeights[currentLine] -= 1;
+						return newWeights;
+					});
+
+					// add a heart
+					const heartEmoji = {
+						char: "<3",
+						id: Date.now(),
+						imageSrc: heartImageUrl,
+					};
+
+					newLines[currentLine] = [...newLines[currentLine], heartEmoji];
+
+					// update line weight to add 1 for the heart emoji
+					setLineWeights((prevWeights) => {
+						const newWeights = [...prevWeights];
+						newWeights[currentLine] += 1;
+						return newWeights;
+					});
+				}
+
+				return newLines;
+			});
+
+			// reset lastChar after handling the heart emoji
+			setLastChar(null);
+			return true;
+		}
+
+		// update lastChar for potential future sequence
+		setLastChar(char);
+		return false;
+	};
 
 	// calculate max letters per row based on window size
 	useEffect(() => {
@@ -321,11 +376,16 @@ const Letters = ({ onLetterCountChange }) => {
 			return false;
 		}
 
+		// Check for heart emoji sequence first
+		if (checkForHeartEmoji(char)) {
+			return true;
+		}
+
 		// process the character
 		const processedChar = char.match(/[a-zA-Z]/) ? char.toUpperCase() : char;
 
-		// ignore if character isn't in our map
-		if (char !== " " && !letterImages[processedChar]) {
+		// ignore if character isn't in our map and it's not < which we need for the heart
+		if (char !== " " && char !== "<" && !letterImages[processedChar]) {
 			return false;
 		}
 
@@ -361,7 +421,7 @@ const Letters = ({ onLetterCountChange }) => {
 				const charWithImage = assignRandomImage(processedChar);
 				newLines[currentLine] = [...newLines[currentLine], charWithImage];
 
-				// Update line weight by adding 1 for letter
+				// update line weight by adding 1 for letter
 				setLineWeights((prevWeights) => {
 					const newWeights = [...prevWeights];
 					newWeights[currentLine] += 1;
@@ -415,6 +475,9 @@ const Letters = ({ onLetterCountChange }) => {
 
 			return newLines;
 		});
+
+		// Reset lastChar when deleting
+		setLastChar(null);
 	};
 
 	// handle input changes (for mobile devices)
@@ -485,6 +548,7 @@ const Letters = ({ onLetterCountChange }) => {
 		maxRowLetters,
 		lines,
 		maxRowLetters,
+		lastChar,
 	]);
 
 	return (
