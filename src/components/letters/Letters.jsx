@@ -207,7 +207,6 @@ export const letterImages = {
 //TODO: roca savsea line mag shemtxvevashi enter skips a line, fix that
 //TODO: wera daiwyos shuidan da avides zemot
 //TODO: loader
-//TODO: smaller screens, smaller letter boxes
 
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], []]);

@@ -2,30 +2,48 @@ import styled from "styled-components";
 import html2canvas from "html2canvas";
 
 export const screenshot = () => {
-	//find and temporarily hide the icons
 	const iconsContainer = document.querySelector(".icons-container");
 
 	if (iconsContainer) {
 		iconsContainer.style.visibility = "hidden";
 	}
 
-	html2canvas(document.body, {
-		backgroundColor: null, // avoid adding a white background
-		ignoreElements: (element) => {
-			return element.classList.contains("icons-container");
-		},
-	}).then((canvas) => {
-		const screenshotUrl = canvas.toDataURL("image/png");
-		const link = document.createElement("a");
-		link.href = screenshotUrl;
-		link.download = "EarthSays";
-		link.click();
+	import("dom-to-image")
+		.then((domtoimage) => {
+			const node = document.body;
 
-		// restore visibility after screenshot is taken
-		if (iconsContainer) {
-			iconsContainer.style.visibility = "visible";
-		}
-	});
+			domtoimage
+				.toPng(node, {
+					filter: (element) => {
+						return !element.classList?.contains("icons-container");
+					},
+					bgcolor: null, // transparent background
+				})
+				.then((dataUrl) => {
+					const link = document.createElement("a");
+					link.href = dataUrl;
+					link.download = "EarthSays.png";
+					link.click();
+
+					if (iconsContainer) {
+						iconsContainer.style.visibility = "visible";
+					}
+				})
+				.catch((error) => {
+					console.error("Screenshot failed:", error);
+
+					if (iconsContainer) {
+						iconsContainer.style.visibility = "visible";
+					}
+				});
+		})
+		.catch((error) => {
+			console.error("Could not load dom-to-image:", error);
+
+			if (iconsContainer) {
+				iconsContainer.style.visibility = "visible";
+			}
+		});
 };
 export const Rectangle = styled.div`
 	position: absolute;
