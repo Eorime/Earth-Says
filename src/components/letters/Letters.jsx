@@ -221,6 +221,15 @@ const Letters = ({ onLetterCountChange }) => {
 	//track heart character sequence
 	const [lastChar, setLastChar] = useState(null);
 
+	useEffect(() => {
+		if (totalLetterCount === 0) {
+			setCurrentLine(0);
+		}
+	}, [totalLetterCount]);
+
+	//if meores current letter count maximaluria we have to move the content up da ara currentLine, cuz otherwise
+	//prosta pirvelze aiyvans inputs
+
 	const heartImageUrl = Heart;
 
 	//new function to check for a heart sequence

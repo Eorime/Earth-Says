@@ -73,9 +73,6 @@ const Sound = ({ letterCount = 0 }) => {
 
 			// set the volume
 			audioElementRef.current.volume = Math.min(Math.max(newVolume, 0), 1);
-			console.log(
-				`Volume set to ${audioElementRef.current.volume} based on ${letterCount} letters`
-			);
 		}
 	}, [letterCount]);
 
@@ -85,8 +82,8 @@ const Sound = ({ letterCount = 0 }) => {
 			if (audioElementRef.current.paused) {
 				audioElementRef.current
 					.play()
-					.then(() => console.log("Audio started successfully"))
-					.catch((err) => console.error("Audio play failed:", err));
+					.then(() => console.log("hi :3"))
+					.catch((err) => console.error(err));
 			}
 		}
 	};
