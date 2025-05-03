@@ -38,7 +38,7 @@ export const screenshot = () => {
 				});
 		})
 		.catch((error) => {
-			console.error("Could not load dom-to-image:", error);
+			console.error(error);
 
 			if (iconsContainer) {
 				iconsContainer.style.visibility = "visible";
