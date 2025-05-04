@@ -22,6 +22,11 @@ const Home = () => {
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
+	const [isLoading, setIsLoading] = useState(true);
+
+	const handleLoaderComplete = () => {
+		setIsLoading(false);
+	};
 
 	const handleOutsideClick = (e) => {
 		if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -77,39 +82,43 @@ const Home = () => {
 
 	return (
 		<>
-			<Container>
-				{openModal && (
-					<Modal
-						onClick={handleCreditClick}
-						openModal={openModal}
-						ref={modalRef}
-					/>
-				)}
+			{isLoading ? (
+				<Loader onComplete={handleLoaderComplete} />
+			) : (
+				<Container>
+					{openModal && (
+						<Modal
+							onClick={handleCreditClick}
+							openModal={openModal}
+							ref={modalRef}
+						/>
+					)}
 
-				<HomeInnerContainer>
-					<EarthSaysText>EARTH SAYS</EarthSaysText>
-					<TextContainer>
-						<Letters onLetterCountChange={handleLetterCountChange} />
-					</TextContainer>
-					<div
-						style={{
-							display: "flex",
-							justifyContent: "center",
-							position: "relative",
-						}}
-					>
-						<IconsContainer
-							className="icons-container"
-							style={{ pointerEvents: "auto" }}
+					<HomeInnerContainer>
+						<EarthSaysText>EARTH SAYS</EarthSaysText>
+						<TextContainer>
+							<Letters onLetterCountChange={handleLetterCountChange} />
+						</TextContainer>
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								position: "relative",
+							}}
 						>
-							<Screenshot />
-							<Sound letterCount={letterCount} />
-							<Credits onClick={handleCreditClick} openModal={openModal} />
-							<FullScreen />
-						</IconsContainer>
-					</div>
-				</HomeInnerContainer>
-			</Container>
+							<IconsContainer
+								className="icons-container"
+								style={{ pointerEvents: "auto" }}
+							>
+								<Screenshot />
+								<Sound letterCount={letterCount} />
+								<Credits onClick={handleCreditClick} openModal={openModal} />
+								<FullScreen />
+							</IconsContainer>
+						</div>
+					</HomeInnerContainer>
+				</Container>
+			)}
 		</>
 	);
 };
