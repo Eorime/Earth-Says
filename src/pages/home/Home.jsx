@@ -78,7 +78,7 @@ const Home = () => {
 
 	return (
 		<>
-			{isLoading && <Loader />}
+			<Loader />
 			<Container>
 				{openModal && (
 					<Modal
