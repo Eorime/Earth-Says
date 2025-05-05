@@ -83,7 +83,7 @@ import X1 from "../../assets/Letters/X_-15.8894840, 125.6064293.jpg";
 import X2 from "../../assets/Letters/X_-16.5085232, 124.9428548.jpg";
 import X3 from "../../assets/Letters/X_-23.9806327, 14.5309649.jpg";
 import Y1 from "../../assets/Letters/Y_-0.8541393, -50.9045274.jpg";
-import Y2 from "../../assets/Letters/Y_-22.6681130, 122.4295525.jpg";
+import Y2 from "../../assets/Letters/Y_-15.892431, 125.592784.jpg";
 import Y3 from "../../assets/Letters/Y_-22.6681130, 122.4295525.jpg";
 import Z1 from "../../assets/Letters/Z_32.5769955, 56.5787235.jpg";
 import Z2 from "../../assets/Letters/Z_41.4084081, -107.3620640.jpg";
