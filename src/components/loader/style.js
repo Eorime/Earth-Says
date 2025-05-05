@@ -13,10 +13,11 @@ export const LoaderContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 100%;
-	height: 100%;
+	width: var(--box-size);
+	height: var(--box-size);
 	flex-direction: column;
 	gap: 1rem;
+	margin-top: -5%;
 `;
 
 export const LoaderLetterBox = styled.div`

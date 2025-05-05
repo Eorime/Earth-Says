@@ -251,7 +251,7 @@ const S2Arr = [
 	letterImages.S[1],
 ];
 
-const Loader = () => {
+const Loader = ({ onComplete }) => {
 	const [index, setIndex] = useState(0);
 	const [done, setDone] = useState(false);
 
@@ -268,12 +268,20 @@ const Loader = () => {
 	);
 
 	useEffect(() => {
-		if (index >= maxLength - 1) {
-			setDone(true);
-			return;
+		if (index >= maxLength - 1 && !done) {
+			const stopTimeout = setTimeout(() => {
+				setDone(true);
+
+				setTimeout(() => {
+					if (typeof onComplete === "function") {
+						onComplete();
+					}
+				}, 2000);
+			}, 300);
+
+			return () => clearTimeout(stopTimeout);
 		}
 
-		// continue animation if not done
 		if (!done) {
 			const timer = setTimeout(() => {
 				setIndex(index + 1);
@@ -281,7 +289,7 @@ const Loader = () => {
 
 			return () => clearTimeout(timer);
 		}
-	}, [index, done, maxLength]);
+	}, [index, done, maxLength, onComplete]);
 
 	const eImg = index < EArr.length ? EArr[index] : EArr[EArr.length - 1];
 	const aImg = index < AArr.length ? AArr[index] : AArr[AArr.length - 1];
