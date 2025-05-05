@@ -18,7 +18,9 @@ const Home = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [letterCount, setLetterCount] = useState(0);
 	const modalRef = useRef();
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(() => {
+		return !sessionStorage.getItem("loaderShown");
+	});
 	const [windowSize, setWindowSize] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
@@ -26,6 +28,7 @@ const Home = () => {
 
 	const handleLoaderComplete = () => {
 		setIsLoading(false);
+		sessionStorage.setItem("loaderShown", "true");
 	};
 
 	const handleOutsideClick = (e) => {
