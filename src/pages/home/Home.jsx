@@ -18,18 +18,10 @@ const Home = () => {
 	const [openModal, setOpenModal] = useState(false);
 	const [letterCount, setLetterCount] = useState(0);
 	const modalRef = useRef();
-	const [isLoading, setIsLoading] = useState(() => {
-		return !sessionStorage.getItem("loaderShown");
-	});
 	const [windowSize, setWindowSize] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
-
-	const handleLoaderComplete = () => {
-		setIsLoading(false);
-		sessionStorage.setItem("loaderShown", "true");
-	};
 
 	const handleOutsideClick = (e) => {
 		if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -85,43 +77,39 @@ const Home = () => {
 
 	return (
 		<>
-			{isLoading ? (
-				<Loader onComplete={handleLoaderComplete} />
-			) : (
-				<Container>
-					{openModal && (
-						<Modal
-							onClick={handleCreditClick}
-							openModal={openModal}
-							ref={modalRef}
-						/>
-					)}
+			<Container>
+				{openModal && (
+					<Modal
+						onClick={handleCreditClick}
+						openModal={openModal}
+						ref={modalRef}
+					/>
+				)}
 
-					<HomeInnerContainer>
-						<EarthSaysText>EARTH SAYS</EarthSaysText>
-						<TextContainer>
-							<Letters onLetterCountChange={handleLetterCountChange} />
-						</TextContainer>
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								position: "relative",
-							}}
+				<HomeInnerContainer>
+					<EarthSaysText>EARTH SAYS</EarthSaysText>
+					<TextContainer>
+						<Letters onLetterCountChange={handleLetterCountChange} />
+					</TextContainer>
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "center",
+							position: "relative",
+						}}
+					>
+						<IconsContainer
+							className="icons-container"
+							style={{ pointerEvents: "auto" }}
 						>
-							<IconsContainer
-								className="icons-container"
-								style={{ pointerEvents: "auto" }}
-							>
-								<Screenshot />
-								<Sound letterCount={letterCount} />
-								<Credits onClick={handleCreditClick} openModal={openModal} />
-								<FullScreen />
-							</IconsContainer>
-						</div>
-					</HomeInnerContainer>
-				</Container>
-			)}
+							<Screenshot />
+							<Sound letterCount={letterCount} />
+							<Credits onClick={handleCreditClick} openModal={openModal} />
+							<FullScreen />
+						</IconsContainer>
+					</div>
+				</HomeInnerContainer>
+			</Container>
 		</>
 	);
 };

@@ -7,6 +7,7 @@ import {
 } from "./style";
 import { letterImages } from "../letters/Letters";
 
+// Arrays of image sequences
 const EArr = [
 	letterImages.A[0],
 	letterImages.B[1],
@@ -22,7 +23,6 @@ const EArr = [
 	letterImages.D[0],
 	letterImages.E[1],
 ];
-
 const AArr = [
 	letterImages.W[2],
 	letterImages.Q[1],
@@ -41,7 +41,6 @@ const AArr = [
 	letterImages.S[0],
 	letterImages.A[0],
 ];
-
 const RArr = [
 	letterImages.U[1],
 	letterImages.D[2],
@@ -60,9 +59,9 @@ const RArr = [
 	letterImages.R[2],
 	letterImages.L[0],
 	letterImages.B[0],
+	letterImages.T[0],
 	letterImages.R[1],
 ];
-
 const TArr = [
 	letterImages.A[1],
 	letterImages.E[0],
@@ -83,9 +82,10 @@ const TArr = [
 	letterImages.L[1],
 	letterImages.V[2],
 	letterImages.Q[0],
+	letterImages.W[1],
+	letterImages.N[2],
 	letterImages.T[3],
 ];
-
 const HArr = [
 	letterImages.W[0],
 	letterImages.S[1],
@@ -107,10 +107,12 @@ const HArr = [
 	letterImages.L[2],
 	letterImages.J[0],
 	letterImages.M[0],
+	letterImages.N[0],
+	letterImages.R[0],
+	letterImages.K[1],
 	letterImages.E[2],
 	letterImages.H[1],
 ];
-
 const SArr = [
 	letterImages.T[3],
 	letterImages.C[0],
@@ -138,6 +140,7 @@ const SArr = [
 	letterImages.K[0],
 	letterImages.C[1],
 	letterImages.A[1],
+	letterImages.E[2],
 	letterImages.S[0],
 ];
 const A2Arr = [
@@ -169,7 +172,6 @@ const A2Arr = [
 	letterImages.R[0],
 	letterImages.I[1],
 	letterImages.S[2],
-	letterImages.L[2],
 	letterImages.J[0],
 	letterImages.A[1],
 ];
@@ -207,7 +209,6 @@ const YArr = [
 	letterImages.A[1],
 	letterImages.L[2],
 	letterImages.S[5],
-	letterImages.T[3],
 	letterImages.Y[1],
 ];
 const S2Arr = [
@@ -254,6 +255,14 @@ const S2Arr = [
 const Loader = ({ onComplete }) => {
 	const [index, setIndex] = useState(0);
 	const [done, setDone] = useState(false);
+	const [removeIndex, setRemoveIndex] = useState(null);
+	const [specialIndex, setSpecialIndex] = useState(0);
+
+	const dotsArr = [
+		letterImages["."][2],
+		letterImages["."][1],
+		letterImages["."][0],
+	];
 
 	const maxLength = Math.max(
 		EArr.length,
@@ -268,54 +277,80 @@ const Loader = ({ onComplete }) => {
 	);
 
 	useEffect(() => {
-		if (index >= maxLength - 1 && !done) {
-			const stopTimeout = setTimeout(() => {
+		if (index >= maxLength || done) return;
+
+		const interval = setInterval(() => {
+			setIndex((prev) => prev + 1);
+		}, 100);
+
+		return () => clearInterval(interval);
+	}, [index, done, maxLength]);
+
+	useEffect(() => {
+		if (index >= maxLength && !done) {
+			const delayBeforeDots = setTimeout(() => {
 				setDone(true);
-
-				setTimeout(() => {
-					if (typeof onComplete === "function") {
-						onComplete();
+				let i = 0;
+				const specialTimer = setInterval(() => {
+					if (i >= dotsArr.length) {
+						clearInterval(specialTimer);
+						setTimeout(() => setRemoveIndex(9 + dotsArr.length), 1000);
+					} else {
+						setSpecialIndex((prev) => prev + 1);
+						i++;
 					}
-				}, 2000);
-			}, 300);
-
-			return () => clearTimeout(stopTimeout);
+				}, 200);
+			}, 600);
+			return () => clearTimeout(delayBeforeDots);
 		}
+	}, [index, done]);
 
-		if (!done) {
-			const timer = setTimeout(() => {
-				setIndex(index + 1);
-			}, 150);
+	useEffect(() => {
+		if (removeIndex === null || removeIndex < 0) return;
 
-			return () => clearTimeout(timer);
-		}
-	}, [index, done, maxLength, onComplete]);
+		const cleanupTimer = setTimeout(() => {
+			if (removeIndex === 0) {
+				if (typeof onComplete === "function") {
+					onComplete();
+				}
+			}
+			setRemoveIndex((prev) => prev - 1);
+		}, 50);
 
-	const eImg = index < EArr.length ? EArr[index] : EArr[EArr.length - 1];
-	const aImg = index < AArr.length ? AArr[index] : AArr[AArr.length - 1];
-	const rImg = index < RArr.length ? RArr[index] : RArr[RArr.length - 1];
-	const tImg = index < TArr.length ? TArr[index] : TArr[TArr.length - 1];
-	const hImg = index < HArr.length ? HArr[index] : HArr[HArr.length - 1];
-	const sImg = index < SArr.length ? SArr[index] : SArr[SArr.length - 1];
-	const a2Img = index < A2Arr.length ? A2Arr[index] : A2Arr[A2Arr.length - 1];
-	const yImg = index < YArr.length ? YArr[index] : YArr[YArr.length - 1];
-	const s2Img = index < S2Arr.length ? S2Arr[index] : S2Arr[S2Arr.length - 1];
+		return () => clearTimeout(cleanupTimer);
+	}, [removeIndex, onComplete]);
+
+	const getImage = (arr) =>
+		index < arr.length ? arr[index] : arr[arr.length - 1];
+
+	const images = [
+		getImage(EArr),
+		getImage(AArr),
+		getImage(RArr),
+		getImage(TArr),
+		getImage(HArr),
+		getImage(SArr),
+		getImage(A2Arr),
+		getImage(YArr),
+		getImage(S2Arr),
+		...dotsArr.slice(0, specialIndex),
+	];
+
+	const visibleImages =
+		done && removeIndex !== null ? images.slice(0, removeIndex) : images;
 
 	return (
 		<Container>
 			<LoaderContainer>
 				<LoaderLetterBox>
-					<LoaderLetterImg src={eImg} />
-					<LoaderLetterImg src={aImg} />
-					<LoaderLetterImg src={rImg} />
-					<LoaderLetterImg src={tImg} />
-					<LoaderLetterImg src={hImg} />
+					{visibleImages.slice(0, 5).map((img, i) => (
+						<LoaderLetterImg key={`top-${i}`} src={img} />
+					))}
 				</LoaderLetterBox>
 				<LoaderLetterBox>
-					<LoaderLetterImg src={sImg} />
-					<LoaderLetterImg src={a2Img} />
-					<LoaderLetterImg src={yImg} />
-					<LoaderLetterImg src={s2Img} />
+					{visibleImages.slice(5).map((img, i) => (
+						<LoaderLetterImg key={`bottom-${i}`} src={img} />
+					))}
 				</LoaderLetterBox>
 			</LoaderContainer>
 		</Container>
