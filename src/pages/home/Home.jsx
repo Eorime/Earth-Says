@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
 	Container,
+	Cursor,
+	CursorContainer,
 	EarthSaysText,
 	HomeInnerContainer,
 	IconsContainer,
+	Prompt,
 	TextContainer,
 } from "./style";
 import Letters from "../../components/letters/Letters";
@@ -23,10 +26,42 @@ const Home = () => {
 		height: window.innerHeight,
 	});
 	const [isLoading, setIsLoading] = useState(true);
+	const [showPrompt, setShowPrompt] = useState(false);
+	const [cursorVisible, setCursorVisible] = useState(true);
+	const hasModifier =
+		event.ctrlKey || event.altKey || event.shiftKey || event.metaKey;
 
 	const handleLoaderComplete = () => {
 		setIsLoading(false);
+		setShowPrompt(true);
 	};
+
+	// set up the cursor blinking effect
+	useEffect(() => {
+		if (!showPrompt) return;
+
+		const cursorInterval = setInterval(() => {
+			setCursorVisible((prev) => !prev);
+		}, 500); // blink every 500ms
+
+		return () => clearInterval(cursorInterval);
+	}, [showPrompt]);
+
+	// add keyboard event listener to hide prompt when any key is pressed
+	useEffect(() => {
+		if (!showPrompt) return;
+
+		const handleKeyPress = (event) => {
+			const validKeys = /^[a-zA-Z0-9,\.!\?;:"'\(\)<>]$/;
+
+			if (validKeys.test(event.key) && !hasModifier) {
+				setShowPrompt(false);
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyPress);
+		return () => window.removeEventListener("keydown", handleKeyPress);
+	}, [showPrompt]);
 
 	const handleOutsideClick = (e) => {
 		if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -98,6 +133,12 @@ const Home = () => {
 						<EarthSaysText>EARTH SAYS</EarthSaysText>
 						<TextContainer>
 							<Letters onLetterCountChange={handleLetterCountChange} />
+							{showPrompt && (
+								<CursorContainer>
+									<Cursor visible={cursorVisible} />
+									<Prompt>TYPE SOMETHING</Prompt>
+								</CursorContainer>
+							)}
 						</TextContainer>
 						<div
 							style={{
