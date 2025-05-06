@@ -13,16 +13,23 @@ export const LoaderContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: var(--box-size);
-	height: var(--box-size);
 	flex-direction: column;
 	gap: 1rem;
 	margin-top: -5%;
 `;
 
 export const LoaderLetterBox = styled.div`
+	--box-size: calc(
+		(
+				var(--windowHeight) - var(--horizontal-top-padding) -
+					var(--horizontal-bottom-padding) - 2 * var(--extra-height) - 3 *
+					var(--gap)
+			) / 4
+	);
 	display: flex;
 	flex-direction: row;
+	width: var(--box-size);
+	height: var(--box-size);
 	justify-content: center;
 	align-items: center;
 	user-select: none;
@@ -30,8 +37,8 @@ export const LoaderLetterBox = styled.div`
 `;
 
 export const LoaderLetterImg = styled.img`
-	width: 100px;
-	height: 100px;
+	width: 100%;
+	height: 100%;
 	object-fit: contain;
 	margin: 0 0.6rem;
 `;
