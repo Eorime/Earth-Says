@@ -35,6 +35,7 @@ const Home = () => {
 		setIsLoading(false);
 		setShowPrompt(true);
 	};
+	const [showPromptText, setShowPromptText] = useState(false);
 
 	// set up the cursor blinking effect
 	useEffect(() => {
@@ -44,7 +45,15 @@ const Home = () => {
 			setCursorVisible((prev) => !prev);
 		}, 500); // blink every 500ms
 
-		return () => clearInterval(cursorInterval);
+		// set a timeout to show the prompt text after 1 second
+		const textTimeout = setTimeout(() => {
+			setShowPromptText(true);
+		}, 2000);
+
+		return () => {
+			clearInterval(cursorInterval);
+			clearTimeout(textTimeout);
+		};
 	}, [showPrompt]);
 
 	// add keyboard event listener to hide prompt when any key is pressed
@@ -136,7 +145,7 @@ const Home = () => {
 							{showPrompt && (
 								<CursorContainer>
 									<Cursor visible={cursorVisible} />
-									<Prompt>TYPE SOMETHING</Prompt>
+									{showPromptText && <Prompt>TYPE SOMETHING</Prompt>}
 								</CursorContainer>
 							)}
 						</TextContainer>

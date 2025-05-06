@@ -87,17 +87,17 @@ export const CursorContainer = styled.div`
 export const Cursor = styled.div`
 	width: 1px;
 	height: clamp(80px, 4vw, 100px);
-	background-color: rgb(102, 102, 102);
+	background-color: rgb(193, 192, 192);
 	visibility: ${(props) => (props.visible ? "visible" : "hidden")};
 `;
 
 export const Prompt = styled.p`
+	animation: ${fadeIn} 1s ease-in-out forwards;
 	font-size: 20px;
 	color: rgb(102, 102, 102);
-	margin: 5px 0 0 0;
+	margin: 15px 0 0 0;
 	font-family: "Grotesk";
 	font-size: clamp(8px, 4vw, 16px);
-	margin: 0;
 	letter-spacing: 1.5px;
 	user-select: none;
 `;

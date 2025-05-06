@@ -83,8 +83,6 @@ export const FullScreenIncrease = styled.div`
 `;
 
 export const FullScreenDecrease = styled.div`
-	// width: 40px;
-	// height: 20px;
 	position: absolute;
 	cursor: pointer;
 	transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
