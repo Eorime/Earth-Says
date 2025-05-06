@@ -1,11 +1,15 @@
 import styled from "styled-components";
-import html2canvas from "html2canvas";
 
 export const screenshot = () => {
 	const iconsContainer = document.querySelector(".icons-container");
 
+	// store the original display style
+	let originalDisplay = "flex";
+
 	if (iconsContainer) {
-		iconsContainer.style.visibility = "hidden";
+		// store original display before changing it and use display none
+		originalDisplay = window.getComputedStyle(iconsContainer).display;
+		iconsContainer.style.display = "none";
 	}
 
 	import("dom-to-image")
@@ -15,6 +19,7 @@ export const screenshot = () => {
 			domtoimage
 				.toPng(node, {
 					filter: (element) => {
+						// Additional filter to make sure icons container is excluded
 						return !element.classList?.contains("icons-container");
 					},
 					bgcolor: null, // transparent background
@@ -25,26 +30,30 @@ export const screenshot = () => {
 					link.download = "EarthSays.png";
 					link.click();
 
+					// restore the icons container with its original display property
 					if (iconsContainer) {
-						iconsContainer.style.visibility = "visible";
+						iconsContainer.style.display = originalDisplay;
 					}
 				})
 				.catch((error) => {
 					console.error("Screenshot failed:", error);
 
+					// restore the icons container even if screenshot fails
 					if (iconsContainer) {
-						iconsContainer.style.visibility = "visible";
+						iconsContainer.style.display = originalDisplay;
 					}
 				});
 		})
 		.catch((error) => {
 			console.error(error);
 
+			// restore the icons container if module import fails
 			if (iconsContainer) {
-				iconsContainer.style.visibility = "visible";
+				iconsContainer.style.display = originalDisplay;
 			}
 		});
 };
+
 export const Rectangle = styled.div`
 	position: absolute;
 	width: 20px;
