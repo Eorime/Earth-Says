@@ -68,8 +68,16 @@ const Home = () => {
 			}
 		};
 
+		const handleTouch = () => {
+			setShowPrompt(false);
+		};
+
+		window.addEventListener("touchstart", handleTouch);
 		window.addEventListener("keydown", handleKeyPress);
-		return () => window.removeEventListener("keydown", handleKeyPress);
+		return () => {
+			window.removeEventListener("keydown", handleKeyPress),
+				window.removeEventListener("touchstart", handleTouch);
+		};
 	}, [showPrompt]);
 
 	const handleOutsideClick = (e) => {

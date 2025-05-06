@@ -5,6 +5,13 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: "Grotesk";
+	src: url("./assets/fonts/SpaceGrotesk-Light.ttf") format("truetype");
+	font-weight: 200;
+	font-style: normal;
+}
+
 html {
 	width: 100vw;
 	height: 100vh;
