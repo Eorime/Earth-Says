@@ -48,7 +48,7 @@ const Home = () => {
 		// set a timeout to show the prompt text after 1 second
 		const textTimeout = setTimeout(() => {
 			setShowPromptText(true);
-		}, 2000);
+		}, 1500);
 
 		return () => {
 			clearInterval(cursorInterval);
