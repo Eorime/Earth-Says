@@ -6,12 +6,21 @@ const Sound = ({ letterCount = 0 }) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const [isSoundOn, setIsSoundOn] = useState(false);
 	const [hasUserInteracted, setHasUserInteracted] = useState(false);
+	const [currentSoundIndex, setCurrentSoundIndex] = useState(0); // Track current sound index
 	const waveRef = useRef(null);
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
 	const audioElementRef = useRef(null);
 	const prevLetterCountRef = useRef(letterCount);
 	const hasLettersRef = useRef(letterCount > 0);
+
+	const soundsArray = [
+		"/sounds/sound1.mp3",
+		"/sounds/sound2.mp3",
+		"/sounds/sound3.mp3",
+		"/sounds/sound4.mp3",
+		"/sounds/sound5.mp3",
+	];
 
 	// handle initial user interaction
 	useEffect(() => {
@@ -44,6 +53,7 @@ const Sound = ({ letterCount = 0 }) => {
 		if (wasEmpty && hasLettersNow && hasUserInteracted) {
 			// Going from 0 letters to some letters
 			setIsSoundOn(true);
+			rotateToNextSound();
 			playSound();
 			// Set up initial static wave
 			updateWaveAnimation(true, false);
@@ -75,6 +85,17 @@ const Sound = ({ letterCount = 0 }) => {
 			audioElementRef.current.volume = Math.min(Math.max(newVolume, 0), 1);
 		}
 	}, [letterCount]);
+
+	// Rotate to the next sound in the array
+	const rotateToNextSound = () => {
+		const nextIndex = (currentSoundIndex + 1) % soundsArray.length;
+		setCurrentSoundIndex(nextIndex);
+
+		// Update audio source if the element exists
+		if (audioElementRef.current) {
+			audioElementRef.current.src = soundsArray[nextIndex];
+		}
+	};
 
 	const playSound = () => {
 		if (audioElementRef.current && hasUserInteracted) {
@@ -186,6 +207,9 @@ const Sound = ({ letterCount = 0 }) => {
 			updateWaveAnimation(false, false);
 		} else if (letterCount > 0) {
 			// Only turn sound on if there are letters
+			// Rotate to next sound when manually turning on
+			rotateToNextSound();
+
 			if (audioElementRef.current) {
 				audioElementRef.current
 					.play()
@@ -220,7 +244,7 @@ const Sound = ({ letterCount = 0 }) => {
 			{/* hidden audio element that's controlled directly */}
 			<audio
 				ref={audioElementRef}
-				src="/sounds/sound.mp3"
+				src={soundsArray[1]}
 				loop
 				preload="auto"
 				style={{ display: "none" }}
