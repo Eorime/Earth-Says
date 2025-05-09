@@ -75,7 +75,7 @@ const Sound = ({ letterCount = 0 }) => {
 			// calculate volume based on letter count
 			const baseVolume = 0;
 			const maxVolumeIncrease = 1;
-			const maxLettersForFullVolume = 50;
+			const maxLettersForFullVolume = 10;
 
 			const volumeIncrease =
 				Math.min(letterCount / maxLettersForFullVolume, 1) * maxVolumeIncrease;
