@@ -315,24 +315,16 @@ const Letters = ({ onLetterCountChange }) => {
 		}
 	}, [lines, onLetterCountChange]);
 
-	//new
-	useEffect(() => {
-		if (
-			maxRowLetters > 0 &&
-			lineWeights[currentLine] === maxRowLetters - 0.5 &&
-			currentLine < 3
-		) {
-			setCurrentLine((prevLine) => prevLine + 1);
-		}
-	}, [lineWeights, currentLine, maxRowLetters]);
-
 	// check if current line is full and should move to next
 	useEffect(() => {
 		// only run this effect if we have valid maxRowLetters and the current line has content
 		if (
-			maxRowLetters > 0 &&
-			lines[currentLine]?.length === maxRowLetters &&
-			currentLine < 3
+			(maxRowLetters > 0 &&
+				lines[currentLine]?.length === maxRowLetters &&
+				currentLine < 3) ||
+			(maxRowLetters > 0 &&
+				lines[currentLine]?.length === maxRowLetters - 0.5 &&
+				currentLine)
 		) {
 			setCurrentLine((prevLine) => prevLine + 1);
 		}
