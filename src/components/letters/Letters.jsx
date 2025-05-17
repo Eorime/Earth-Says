@@ -204,10 +204,6 @@ export const letterImages = {
 	"<3": Heart,
 };
 
-//TODO: roca savsea line mag shemtxvevashi enter skips a line, fix that
-//TODO: wera daiwyos shuidan da avides zemot
-//TODO: loader
-
 const Letters = ({ onLetterCountChange }) => {
 	const [lines, setLines] = useState([[], [], [], []]);
 	const [currentLine, setCurrentLine] = useState(0);
@@ -225,9 +221,6 @@ const Letters = ({ onLetterCountChange }) => {
 			setCurrentLine(0);
 		}
 	}, [totalLetterCount]);
-
-	//if meores current letter count maximaluria we have to move the content up da ara currentLine, cuz otherwise
-	//prosta pirvelze aiyvans inputs
 
 	const heartImageUrl = Heart;
 
