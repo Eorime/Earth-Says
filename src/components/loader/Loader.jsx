@@ -12,7 +12,7 @@ const EArr = [
 	letterImages.A[0],
 	letterImages.B[1],
 	letterImages.C[2],
-	letterImages.H[3],
+	letterImages.H[1],
 	letterImages.S[1],
 	letterImages.P[1],
 	letterImages.T[2],
@@ -281,7 +281,7 @@ const Loader = ({ onComplete }) => {
 
 		const interval = setInterval(() => {
 			setIndex((prev) => prev + 1);
-		}, 100);
+		}, 500);
 
 		return () => clearInterval(interval);
 	}, [index, done, maxLength]);
