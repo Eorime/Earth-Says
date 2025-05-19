@@ -41,6 +41,13 @@ body {
 		--horizontal-top-padding: 150px;
 		--horizontal-bottom-padding: 300px;
 	}
+
+	@media (min-width: 1px) and (max-aspect-ratio: 2/1) {
+		body {
+			--horizontal-top-padding: 75px;
+			--horizontal-bottom-padding: 150px;
+		}
+	}
 }
 
 #root {
