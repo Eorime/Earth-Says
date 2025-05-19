@@ -105,9 +105,6 @@ export const letterImages = {
 	S: [
 		createImagePath("Letters", "S_-4.5016261, -71.3982632.webp"),
 		createImagePath("Letters", "S_-6.9575610, -71.2495006.webp"),
-		createImagePath("Letters", "S_-7.0519509, -71.5968845.webp"),
-		createImagePath("Letters", "S_-24.1658572, 132.8858198.webp"),
-		createImagePath("Letters", "S_18.8632011, 9.5828455.webp"),
 		createImagePath("Letters", "S_63.0554759, 112.3564609.webp"),
 	],
 	T: [
@@ -138,12 +135,11 @@ export const letterImages = {
 	],
 	Y: [
 		createImagePath("Letters", "Y_-0.8541393, -50.9045274.webp"),
-		createImagePath("Letters", "Y_-15.892431, 125.592784.webp"),
+		createImagePath("Lettesrs", "Y_-15.892431, 125.592784.webp"),
 		createImagePath("Letters", "Y_-22.6681130, 122.4295525.webp"),
 	],
 	Z: [
 		createImagePath("Letters", "Z_32.5769955, 56.5787235.webp"),
-		createImagePath("Letters", "Z_41.4084081, -107.3620640.webp"),
 		createImagePath("Letters", "Z_66.7623736, -84.6549331.webp"),
 	],
 	0: [

@@ -209,7 +209,7 @@ const YArr = [
 	letterImages.A[1],
 	letterImages.L[2],
 	letterImages.S[5],
-	letterImages.Y[1],
+	letterImages.Y[0],
 ];
 const S2Arr = [
 	letterImages.S[2],
