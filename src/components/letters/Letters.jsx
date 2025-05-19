@@ -171,12 +171,10 @@ export const letterImages = {
 	7: [
 		createImagePath("Numbers", "7_2.0350947, 128.2195701.webp"),
 		createImagePath("Numbers", "7_55.9708973, -79.8778501.webp"),
-		createImagePath("Numbers", "7_62.2364319, -67.1955357.webp"),
 	],
 	8: [
 		createImagePath("Numbers", "8_-1.634558, 123.167095.webp"),
 		createImagePath("Numbers", "8_-18.4193588, 35.5663574.webp"),
-		createImagePath("Numbers", "8_69.3419162, 70.6078746.webp"),
 	],
 	9: [
 		createImagePath("Numbers", "9_-23.1019969, -68.3604047.webp"),
