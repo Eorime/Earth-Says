@@ -44,8 +44,8 @@ body {
 
 	@media (min-width: 1px) and (max-aspect-ratio: 2/1) {
 		body {
-			--horizontal-top-padding: 75px;
-			--horizontal-bottom-padding: 150px;
+			--horizontal-top-padding: 100px;
+			--horizontal-bottom-padding: 250px;
 		}
 	}
 }
