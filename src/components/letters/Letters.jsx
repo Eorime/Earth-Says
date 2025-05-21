@@ -215,14 +215,8 @@ export const letterImages = {
 		createImagePath("Symbols", "Dash_23.7953479, -76.1355714.jpg"),
 		createImagePath("Symbols", "Dash_23.8836197, -76.2686472.jpg"),
 	],
-	"<": [
-		createImagePath("Symbols", "Less_-11.3863809, -53.1170106.jpg"),
-		createImagePath("Symbols", "less_55.8922052, -115.7817679.jpg"),
-	],
-	">": [
-		createImagePath("Symbols", "More_-11.3863809, -53.1170106.jpg"),
-		createImagePath("Symbols", "More_55.8922052, -115.7817679.jpg"),
-	],
+	"<": [createImagePath("Symbols", "less_55.8922052, -115.7817679.jpg")],
+	">": [createImagePath("Symbols", "More_-11.3863809, -53.1170106.jpg")],
 	"?": [createImagePath("Symbols", "Question_-0.0391871, 127.4402888.jpg")],
 	'"': [
 		createImagePath("Symbols", "Quotation_51.2047505, -58.3081988.jpg"),
