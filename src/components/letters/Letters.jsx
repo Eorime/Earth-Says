@@ -183,7 +183,6 @@ export const letterImages = {
 	"-": [createImagePath("Symbols", "-_-24.9348044, 15.5824006.jpg")],
 	",": [
 		createImagePath("Symbols", ",_-7.0747433, 114.5775325.jpg"),
-		createImagePath("Symbols", ",_5.9530164, 73.1324277.jpg"),
 		createImagePath("Symbols", ",_18.3294235, -64.8071554.jpg"),
 	],
 	"!": [
