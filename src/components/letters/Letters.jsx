@@ -243,7 +243,7 @@ const MemoizedLetterBox = React.memo(({ letterObj }) => (
 	</LetterBox>
 ));
 
-const MemoizedSpaceBox = React.memo(({ id }) => (
+const MemoizedSpaceBox = React.memo(() => (
 	<SpaceBox style={{ width: "1.8rem" }} />
 ));
 
@@ -254,7 +254,7 @@ const MemoizedLettersRow = React.memo(({ line, lineIndex }) => (
 				letterObj.char !== " " ? (
 					<MemoizedLetterBox key={letterObj.id} letterObj={letterObj} />
 				) : (
-					<MemoizedSpaceBox key={letterObj.id} id={letterObj.id} />
+					<MemoizedSpaceBox key={letterObj.id} />
 				)
 			)}
 		</LettersDisplay>
@@ -270,6 +270,8 @@ const Letters = ({ onLetterCountChange }) => {
 	const [lastChar, setLastChar] = useState(null);
 	const nextIdRef = useRef(1);
 
+	const resizeTimeoutRef = useRef(null);
+
 	const heartImageUrl = useMemo(() => letterImages["<3"], []);
 
 	const totalLetterCount = useMemo(() => {
@@ -278,17 +280,23 @@ const Letters = ({ onLetterCountChange }) => {
 		}, 0);
 	}, [lines]);
 
+	const throttledOnLetterCountChange = useRef(null);
+	useEffect(() => {
+		if (!throttledOnLetterCountChange.current) {
+			throttledOnLetterCountChange.current = setTimeout(() => {
+				if (onLetterCountChange) {
+					onLetterCountChange(totalLetterCount);
+				}
+				throttledOnLetterCountChange.current = null;
+			}, 16);
+		}
+	}, [totalLetterCount, onLetterCountChange]);
+
 	useEffect(() => {
 		if (totalLetterCount === 0) {
 			setCurrentLine(0);
 		}
 	}, [totalLetterCount]);
-
-	useEffect(() => {
-		if (onLetterCountChange) {
-			onLetterCountChange(totalLetterCount);
-		}
-	}, [totalLetterCount, onLetterCountChange]);
 
 	const checkForHeartEmoji = useCallback(
 		(char) => {
@@ -298,7 +306,6 @@ const Letters = ({ onLetterCountChange }) => {
 					const lineContent = prev[currentLine];
 
 					if (lineContent.length > 0) {
-						// Remove the last character ('<') and add heart
 						const updatedLine = lineContent.slice(0, -1);
 						const heartEmoji = {
 							char: "<3",
@@ -322,33 +329,39 @@ const Letters = ({ onLetterCountChange }) => {
 	);
 
 	useEffect(() => {
-		let timeoutId;
 		const handleResize = () => {
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(() => {
+			if (resizeTimeoutRef.current) {
+				clearTimeout(resizeTimeoutRef.current);
+			}
+
+			resizeTimeoutRef.current = setTimeout(() => {
 				const boxElement = document.querySelector("#box");
 				if (boxElement) {
 					const boxSize = boxElement.offsetHeight + 16;
 					const maxBoxes = Math.floor(window.innerWidth / boxSize);
 					setMaxRowLetters(maxBoxes);
 
-					document.documentElement.style.setProperty(
-						"--windowHeight",
-						`${window.innerHeight}px`
-					);
-					document.documentElement.style.setProperty(
-						"--windowWidth",
-						`${window.innerWidth}px`
-					);
+					requestAnimationFrame(() => {
+						document.documentElement.style.setProperty(
+							"--windowHeight",
+							`${window.innerHeight}px`
+						);
+						document.documentElement.style.setProperty(
+							"--windowWidth",
+							`${window.innerWidth}px`
+						);
+					});
 				}
-			}, 100);
+			}, 150);
 		};
 
 		handleResize();
 		window.addEventListener("resize", handleResize);
 		return () => {
 			window.removeEventListener("resize", handleResize);
-			clearTimeout(timeoutId);
+			if (resizeTimeoutRef.current) {
+				clearTimeout(resizeTimeoutRef.current);
+			}
 		};
 	}, []);
 
@@ -358,7 +371,9 @@ const Letters = ({ onLetterCountChange }) => {
 			lines[currentLine]?.length >= maxRowLetters &&
 			currentLine < 3
 		) {
-			setCurrentLine((prevLine) => prevLine + 1);
+			setTimeout(() => {
+				setCurrentLine((prevLine) => prevLine + 1);
+			}, 0);
 		}
 	}, [lines, currentLine, maxRowLetters]);
 
@@ -415,7 +430,6 @@ const Letters = ({ onLetterCountChange }) => {
 			}
 
 			setLines((prev) => {
-				const newLines = [...prev];
 				const currentLineContent = prev[currentLine];
 
 				if (char === " ") {
@@ -423,18 +437,20 @@ const Letters = ({ onLetterCountChange }) => {
 						currentLineContent.length > 0 &&
 						currentLineContent[currentLineContent.length - 1].char !== " "
 					) {
+						const newLines = [...prev];
 						newLines[currentLine] = [
 							...newLines[currentLine],
 							{ char: " ", id: nextIdRef.current++, imageSrc: null },
 						];
+						return newLines;
 					}
+					return prev;
 				} else {
-					// Handle regular character
 					const charWithImage = assignRandomImage(processedChar);
+					const newLines = [...prev];
 					newLines[currentLine] = [...newLines[currentLine], charWithImage];
+					return newLines;
 				}
-
-				return newLines;
 			});
 
 			return true;
@@ -451,25 +467,25 @@ const Letters = ({ onLetterCountChange }) => {
 
 	const deleteLastCharacter = useCallback(() => {
 		setLines((prev) => {
-			const newLines = [...prev];
-
 			let lastNonEmptyLineIndex = -1;
-			for (let i = newLines.length - 1; i >= 0; i--) {
-				if (newLines[i].length > 0) {
+			for (let i = prev.length - 1; i >= 0; i--) {
+				if (prev[i].length > 0) {
 					lastNonEmptyLineIndex = i;
 					break;
 				}
 			}
 
 			if (lastNonEmptyLineIndex !== -1) {
+				const newLines = [...prev];
 				newLines[lastNonEmptyLineIndex] = newLines[lastNonEmptyLineIndex].slice(
 					0,
 					-1
 				);
-				setCurrentLine(lastNonEmptyLineIndex);
+				setTimeout(() => setCurrentLine(lastNonEmptyLineIndex), 0);
+				return newLines;
 			}
 
-			return newLines;
+			return prev;
 		});
 
 		setLastChar(null);
@@ -517,23 +533,25 @@ const Letters = ({ onLetterCountChange }) => {
 				return;
 			}
 
-			if (e.key === "Enter") {
+			if (["Enter", "Backspace"].includes(e.key) || e.key.length === 1) {
 				e.preventDefault();
-				if (enterEnabled) {
-					handleEnterKey();
-				}
-			} else if (e.key === "Backspace") {
-				e.preventDefault();
-				deleteLastCharacter();
-			} else if (e.key.length === 1) {
-				e.preventDefault();
-				addCharacter(e.key);
 			}
+
+			requestAnimationFrame(() => {
+				if (e.key === "Enter") {
+					if (enterEnabled) {
+						handleEnterKey();
+					}
+				} else if (e.key === "Backspace") {
+					deleteLastCharacter();
+				} else if (e.key.length === 1) {
+					addCharacter(e.key);
+				}
+			});
 		},
 		[enterEnabled, handleEnterKey, deleteLastCharacter, addCharacter]
 	);
 
-	// Set up keyboard event listener
 	useEffect(() => {
 		document.addEventListener("keydown", handleKeyDown);
 		return () => {
