@@ -281,7 +281,7 @@ const Loader = ({ onComplete }) => {
 
 		const interval = setInterval(() => {
 			setIndex((prev) => prev + 1);
-		}, 500);
+		}, 200);
 
 		return () => clearInterval(interval);
 	}, [index, done, maxLength]);
