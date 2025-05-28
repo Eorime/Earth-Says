@@ -268,7 +268,7 @@ const Sound = ({ letterCount = 0 }) => {
 							ref={waveRef}
 							fill="none"
 							stroke="rgb(102, 102, 102)"
-							strokeWidth="2"
+							strokeWidth="1.8"
 							strokeLinecap="round"
 							strokeLinejoin="round"
 						/>
