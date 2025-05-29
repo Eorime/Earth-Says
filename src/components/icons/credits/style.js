@@ -52,6 +52,7 @@ export const Figure = styled.div`
 			height: 5px;
 			top: 11px;
 			border: 2px solid rgb(102, 102, 102);
+			border-bottom: none;
 			border-radius: 7px 7px 0px 0px;
 			left: 50%;
 			transform: translateX(-50%);
@@ -83,6 +84,7 @@ export const Figure = styled.div`
 			height: 5px;
 			top: 11px;
 			border: 2px solid rgb(102, 102, 102);
+			border-bottom: none;
 			border-radius: 7px 7px 0px 0px;
 			left: 50%;
 			transform: translateX(-50%);
