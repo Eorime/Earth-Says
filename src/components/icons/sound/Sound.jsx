@@ -6,7 +6,7 @@ const Sound = ({ letterCount = 0 }) => {
 	const [isHovering, setIsHovering] = useState(false);
 	const [isSoundOn, setIsSoundOn] = useState(false);
 	const [hasUserInteracted, setHasUserInteracted] = useState(false);
-	const [currentSoundIndex, setCurrentSoundIndex] = useState(0); // Track current sound index
+	const [currentSoundIndex, setCurrentSoundIndex] = useState(0);
 	const waveRef = useRef(null);
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
@@ -55,10 +55,8 @@ const Sound = ({ letterCount = 0 }) => {
 			setIsSoundOn(true);
 			rotateToNextSound();
 			playSound();
-			// Set up initial static wave
 			updateWaveAnimation(true, false);
 		} else if (!wasEmpty && isEmpty) {
-			// Going from some letters to 0 letters
 			if (audioElementRef.current) {
 				audioElementRef.current.pause();
 				setIsSoundOn(false);
@@ -127,11 +125,10 @@ const Sound = ({ letterCount = 0 }) => {
 		return points;
 	};
 
-	// A function to update the wave animation without recreating it on every letter count change
+	// a function to update the wave animation without recreating it on every letter count change
 	const updateWaveAnimation = (shouldShow, shouldAnimate) => {
 		if (!waveRef.current) return;
 
-		// Clean up previous animations
 		animationsRef.current.forEach((anim) => anim.kill());
 		animationsRef.current = [];
 
@@ -140,37 +137,30 @@ const Sound = ({ letterCount = 0 }) => {
 		const amplitude = shouldShow ? 4 : 0;
 		const segments = 210;
 
-		// Clear existing points
 		while (wave.points.length > 0) {
 			wave.points.removeItem(0);
 		}
 
-		// Create points - static if not animating, animated if hovering
+		// create points - static if not animating, animated if hovering
 		const points = createWavePoints(wave, width, amplitude, segments);
 
-		// Only create animated points if we should animate (when hovering)
 		if (shouldShow && shouldAnimate && letterCount > 0 && isSoundOn) {
-			// Create a timeline for the wave effect
 			const timeline = gsap.timeline({
 				repeat: -1,
 				defaults: { ease: "linear" },
 			});
 
-			// Create a group of animations that will run simultaneously
 			const phaseShifts = [];
 
-			// Create animations with phase shifts
 			points.forEach((point, i) => {
 				const norm = i / (segments - 1);
 
-				// Create a phase shift animation (moving right to left instead of left to right)
 				const phaseShift = gsap.to(
 					{},
 					{
 						duration: 1,
 						onUpdate: function () {
-							const phase = -this.progress() * Math.PI * 2; // Negative to reverse direction
-							// Increased frequency from 3.5 to 7 to make waves less wide
+							const phase = -this.progress() * Math.PI * 2;
 							point.y = -(amplitude * Math.sin(norm * Math.PI * 7 + phase));
 						},
 						repeat: -1,
@@ -184,7 +174,7 @@ const Sound = ({ letterCount = 0 }) => {
 		}
 	};
 
-	// Setup wave animation initially and on hover state change
+	// setup wave animation initially and on hover state change
 	useEffect(() => {
 		// Only animate when hovering
 		updateWaveAnimation(letterCount > 0 && isSoundOn, isHovering);

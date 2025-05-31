@@ -280,15 +280,9 @@ const Letters = ({ onLetterCountChange }) => {
 		}, 0);
 	}, [lines]);
 
-	const throttledOnLetterCountChange = useRef(null);
 	useEffect(() => {
-		if (!throttledOnLetterCountChange.current) {
-			throttledOnLetterCountChange.current = setTimeout(() => {
-				if (onLetterCountChange) {
-					onLetterCountChange(totalLetterCount);
-				}
-				throttledOnLetterCountChange.current = null;
-			}, 16);
+		if (onLetterCountChange) {
+			onLetterCountChange(totalLetterCount);
 		}
 	}, [totalLetterCount, onLetterCountChange]);
 
