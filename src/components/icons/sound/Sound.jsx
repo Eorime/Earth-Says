@@ -11,6 +11,7 @@ const Sound = ({ letterCount = 0 }) => {
 	const svgRef = useRef(null);
 	const animationsRef = useRef([]);
 	const audioElementRef = useRef(null);
+	const clickAudioRef = useRef(null);
 	const prevLetterCountRef = useRef(letterCount);
 	const hasLettersRef = useRef(letterCount > 0);
 
@@ -21,6 +22,86 @@ const Sound = ({ letterCount = 0 }) => {
 		"/sounds/sound4.mp3",
 		"/sounds/sound5.mp3",
 	];
+
+	const clickSounds = ["sounds/click/on.mp3", "sounds/click/off.mp3"];
+
+	//click function
+	const playClick = (isKeyDown) => {
+		if (!hasUserInteracted || !clickAudioRef.current) {
+			return;
+		}
+
+		const soundIndex = isKeyDown ? 0 : 1;
+
+		clickAudioRef.current.src = clickSounds[soundIndex];
+		clickAudioRef.current.volume = 0.5;
+
+		clickAudioRef.current
+			.play()
+			.then(() => console.log("clickity"))
+			.catch((err) => console.log("naurr", err));
+	};
+
+	useEffect(() => {
+		console.log("clickaudioref.current:", clickAudioRef.current);
+		if (clickAudioRef.current) {
+			clickAudioRef.current.src = clickSounds[0];
+		}
+	}, []);
+
+	//manage click state
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (
+				event.repeat ||
+				[
+					"Shift",
+					"Control",
+					"Alt",
+					"Meta",
+					"CapsLock",
+					"Enter",
+					"Escape",
+					"[",
+					"]",
+					"`",
+					"Tab",
+				].includes(event.key)
+			) {
+				return;
+			}
+			playClick(true);
+		};
+
+		const handleKeyUp = (event) => {
+			if (
+				[
+					"Shift",
+					"Control",
+					"Alt",
+					"Meta",
+					"CapsLock",
+					"Enter",
+					"Escape",
+					"[",
+					"]",
+					"`",
+					"Tab",
+				].includes(event.key)
+			) {
+				return;
+			}
+			playClick(false);
+		};
+
+		document.addEventListener("keydown", handleKeyDown);
+		document.addEventListener("keyup", handleKeyUp);
+
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown);
+			document.removeEventListener("keyup", handleKeyUp);
+		};
+	}, [hasUserInteracted]);
 
 	// handle initial user interaction
 	useEffect(() => {
@@ -40,18 +121,18 @@ const Sound = ({ letterCount = 0 }) => {
 		};
 	}, []);
 
-	// Automatically start sound and enable sound on when letterCount changes from 0 to positive
+	// automatically start sound and enable sound on when letterCount changes from 0 to positive
 	useEffect(() => {
 		const wasEmpty = !hasLettersRef.current;
 		const isEmpty = letterCount === 0;
 		const hasLettersNow = letterCount > 0;
 
-		// Update our ref to track letter state
+		// update our ref to track letter state
 		hasLettersRef.current = hasLettersNow;
 
-		// Only respond to transitions between empty and non-empty
+		// only respond to transitions between empty and non-empty
 		if (wasEmpty && hasLettersNow && hasUserInteracted) {
-			// Going from 0 letters to some letters
+			// going from 0 letters to some
 			setIsSoundOn(true);
 			rotateToNextSound();
 			playSound();
@@ -239,6 +320,9 @@ const Sound = ({ letterCount = 0 }) => {
 				preload="auto"
 				style={{ display: "none" }}
 			/>
+
+			{/* Separate audio element for click sounds */}
+			<audio ref={clickAudioRef} preload="auto" style={{ display: "none" }} />
 
 			<ToggleSound
 				onClick={handleSoundToggle}
