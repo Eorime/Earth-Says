@@ -68,3 +68,26 @@ body {
 		height: calc(100vh - 20px);
 	}
 }
+
+/* lock content on rotation */
+@media screen and (orientation: landscape) and (max-width: 1024px) {
+	#root {
+		transform: rotate(90deg);
+		transform-origin: left top;
+		width: 100vh;
+		height: 100vw;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		overflow-x: hidden;
+	}
+
+	.App {
+		padding: 10px;
+		width: calc(100vh - 20px);
+		height: calc(100vw - 20px);
+	}
+}
+
+@media screen and (orientation: landscape) and (min-width: 1025px) {
+}

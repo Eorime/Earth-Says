@@ -38,12 +38,11 @@ const Sound = ({ letterCount = 0 }) => {
 
 		clickAudioRef.current
 			.play()
-			.then(() => console.log("clickity"))
-			.catch((err) => console.log("naurr", err));
+			.then(() => console.log())
+			.catch((err) => console.log(err));
 	};
 
 	useEffect(() => {
-		console.log("clickaudioref.current:", clickAudioRef.current);
 		if (clickAudioRef.current) {
 			clickAudioRef.current.src = clickSounds[0];
 		}
@@ -284,7 +283,7 @@ const Sound = ({ letterCount = 0 }) => {
 			if (audioElementRef.current) {
 				audioElementRef.current
 					.play()
-					.then(() => console.log("audio started successfully"))
+					.then(() => console.log())
 					.catch((error) => {
 						console.error("error playing audio:", error);
 						// try muted first to bypass autoplay restrictions
