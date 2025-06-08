@@ -69,8 +69,28 @@ body {
 	}
 }
 
+body::before {
+	content: "";
+	position: fixed;
+	width: 100px;
+	height: 100px;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-image: url("../public/Letters/A_3.5541800\,\ 72.8948102.jpg");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0;
+	pointer-events: none;
+	z-index: 200;
+}
+
 /* lock content on rotation */
 @media screen and (orientation: landscape) and (max-width: 1024px) {
+	body::before {
+		opacity: 1;
+	}
 	#root {
 		transform: rotate(90deg);
 		transform-origin: left top;
