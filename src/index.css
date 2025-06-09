@@ -77,7 +77,7 @@ body::before {
 	top: 40%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-image: url("../public/Letters/A_3.5541800\,\ 72.8948102.jpg");
+	background-image: url("/Letters/A_3.5541800\,\ 72.8948102.jpg");
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
